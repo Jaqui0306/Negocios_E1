@@ -1,0 +1,315 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f6f8;
+    color: #222;
+}
+
+/* ===== MENÚ ===== */
+
+header {
+    background-color: #111827;
+    color: white;
+    padding: 20px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: #38bdf8;
+    text-decoration: none;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 16px;
+}
+
+nav a:hover,
+nav a.activo {
+    color: #38bdf8;
+}
+
+/* ===== LANDING PAGE (index.html) ===== */
+.inicio {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 50px 10%;
+    background-color: #0f172a;
+    color: white;
+}
+
+.inicio-contenido {
+    max-width: 800px;
+}
+
+.inicio h1 {
+    font-size: 50px;
+    margin-bottom: 20px;
+}
+
+.inicio h1 span {
+    color: #38bdf8;
+}
+
+.inicio p {
+    font-size: 19px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: #dbeafe;
+}
+
+.boton {
+    display: inline-block;
+    background-color: #38bdf8;
+    color: #082f49;
+    padding: 13px 25px;
+    border-radius: 7px;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.boton:hover {
+    background-color: #7dd3fc;
+}
+
+/* ===== SECCIONES GENERALES ===== */
+section {
+    padding: 70px 8%;
+}
+
+section h2 {
+    text-align: center;
+    font-size: 35px;
+    margin-bottom: 15px;
+    color: #0f172a;
+}
+
+.subtitulo {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 40px;
+}
+
+/* ===== SOBRE NOSOTROS (nosotros.html) ===== */
+.nosotros {
+    max-width: 900px;
+    margin: auto;
+    background-color: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.nosotros p {
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.valores {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.valor {
+    background-color: #f1f5f9;
+    padding: 25px;
+    text-align: center;
+    border-radius: 10px;
+    width: 30%;
+}
+
+.valor h3 {
+    margin-bottom: 10px;
+    color: #0284c7;
+}
+
+/* ===== CATÁLOGO (productos.html) ===== */
+.productos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.producto {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.producto-imagen {
+    font-size: 70px;
+    margin-bottom: 15px;
+}
+
+.producto h3 {
+    margin-bottom: 10px;
+    color: #0f172a;
+}
+
+.producto p {
+    color: #64748b;
+    margin-bottom: 15px;
+}
+
+.precio {
+    font-size: 20px;
+    font-weight: bold;
+    color: #0284c7;
+}
+
+.aviso-catalogo {
+    text-align: center;
+    max-width: 600px;
+    margin: -20px auto 40px auto;
+    color: #94a3b8;
+    font-size: 14px;
+    font-style: italic;
+}
+
+/* ===== REGISTRO / LOGIN (registro.html, login.html) ===== */
+.formulario {
+    max-width: 450px;
+    margin: auto;
+    background-color: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.formulario h2 {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.campo {
+    margin-bottom: 20px;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.campo input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.formulario button {
+    width: 100%;
+}
+
+.enlace-alterno {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.enlace-alterno a {
+    color: #0284c7;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.enlace-alterno a:hover {
+    text-decoration: underline;
+}
+
+/* ===== PERFIL (perfil.html) ===== */
+.perfil {
+    max-width: 600px;
+    margin: auto;
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.perfil-icono {
+    font-size: 80px;
+    margin-bottom: 15px;
+}
+
+.perfil h3 {
+    font-size: 25px;
+    margin-bottom: 25px;
+}
+
+.informacion {
+    text-align: left;
+}
+
+.informacion p {
+    padding: 15px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* ===== PIE DE PÁGINA (todas las páginas) ===== */
+footer {
+    background-color: #111827;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+/* ===== DISEÑO PARA CELULAR ===== */
+@media (max-width: 768px) {
+
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav {
+        text-align: center;
+    }
+
+    nav a {
+        display: inline-block;
+        margin: 5px;
+    }
+
+    .inicio h1 {
+        font-size: 38px;
+    }
+
+    .productos {
+        grid-template-columns: 1fr;
+    }
+
+    .valores {
+        flex-direction: column;
+    }
+
+    .valor {
+        width: 100%;
+    }
+}
