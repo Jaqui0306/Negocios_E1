@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechZone - Iniciar sesión</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">
+            <img src="img/logo.svg" alt="TechZone" class="logo-img">
+            TechZone
+        </a>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="productos.html">Productos</a>
+            <a href="registro.html">Registro</a>
+            <a href="login.html" class="activo">Login</a>
+            <a href="perfil.html">Perfil</a>
+        </nav>
+    </header>
+
+    <section class="acceso">
+        <div class="acceso-envoltura">
+
+            <div class="acceso-panel">
+                <div>
+                    <h2>Qué bueno verte de nuevo</h2>
+                    <p>Inicia sesión para revisar tu perfil, tus pedidos y tus productos guardados.</p>
+                    <img src="img/logo.svg" alt="TechZone" class="logo-grande">
+                </div>
+                <div class="acceso-panel-pie">
+                    acceso · cuenta existente
+                </div>
+            </div>
+
+            <form class="formulario" id="formulario-login">
+                <h2>Iniciar sesión</h2>
+                <p>Ingresa tus datos para continuar.</p>
+
+                <div class="campo">
+                    <label for="correo">Correo electrónico</label>
+                    <input type="email" id="correo" name="correo" placeholder="tucorreo@ejemplo.com" required>
+                </div>
+
+                <div class="campo">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="Tu contraseña" required>
+                </div>
+
+                <button type="submit" class="boton boton-ancho">Iniciar sesión</button>
+
+                <p class="enlace-alterno">¿No tienes cuenta? <a href="registro.html">Regístrate</a></p>
+            </form>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-envoltura">
+            <div class="footer-marca">
+                <img src="img/logo.svg" alt="">
+                TechZone
+            </div>
+            <div class="footer-redes">
+                <a href="#" class="red-social" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+                </a>
+                <a href="#" class="red-social" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 8.5h2.5V5H14c-2 0-3.5 1.6-3.5 3.5V11H8v3.5h2.5V21H14v-6.5h2.7l.5-3.5h-3.2V8.9c0-.4.3-.4.5-.4Z"/></svg>
+                </a>
+                <a href="#" class="red-social" aria-label="WhatsApp">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20l1.3-3.9A7.9 7.9 0 1 1 8.7 19L4 20Z"/><path d="M8.5 9.3c0 3.5 2.7 6.2 6.2 6.2.6 0 .9-.7.5-1.1l-1.4-1.4c-.2-.2-.5-.3-.8-.2l-.9.4a5 5 0 0 1-2.6-2.6l.4-.9c.1-.3 0-.6-.2-.8L8.5 7.5c-.4-.4-1.1-.1-1.1.5Z"/></svg>
+                </a>
+            </div>
+        </div>
+        <p class="footer-copy">© 2026 TechZone — Tienda de dispositivos electrónicos</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
