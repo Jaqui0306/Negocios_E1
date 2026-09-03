@@ -4,21 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechZone - Productos</title>
+    <link rel="icon" type="image/svg+xml" href="img/logo.svg">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
     <header>
-        <a href="index.html" class="logo">
+        <a href="inicio.html" class="logo">
             <img src="img/logo.svg" alt="TechZone" class="logo-img">
             TechZone
         </a>
         <nav>
-            <a href="index.html">Inicio</a>
+            <a href="inicio.html">Inicio</a>
+            <a href="productos.html" class="activo">Catálogo</a>
             <a href="nosotros.html">Nosotros</a>
-            <a href="productos.html" class="activo">Productos</a>
+            <a href="index.html#contacto">Contacto</a>
             <a href="registro.html">Registro</a>
-            <a href="login.html">Login</a>
+            <a href="login.html">Iniciar sesión</a>
             <a href="perfil.html">Perfil</a>
         </nav>
     </header>
@@ -26,7 +28,7 @@
     <div class="pagina-cabecera">
         <div class="envoltura">
             <h1>Catálogo</h1>
-            <p>Explora nuestros productos. Esta sección es únicamente visual por ahora.</p>
+            <p>Explora nuestros productos. Esta sección es de muestra por ahora.</p>
         </div>
     </div>
 
@@ -47,7 +49,9 @@
 
             <div class="producto">
                 <span class="producto-etiqueta">cómputo</span>
-                <div class="producto-imagen">💻</div>
+                <div class="producto-imagen producto-imagen-computo">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="#14171C" stroke-width="3"><rect x="10" y="14" width="44" height="28" rx="3"/><path d="M4 50h56l-6-8H10z"/></svg>
+                </div>
                 <h3>Laptop Nimbus 14"</h3>
                 <ul class="producto-specs">
                     <li>Pantalla 14" · 1080p</li>
@@ -56,13 +60,15 @@
                 </ul>
                 <div class="producto-pie">
                     <span class="precio">$14,999<span class="precio-detalle">MXN</span></span>
-                    <button class="boton boton-contorno boton-mini" disabled>Ver más</button>
+                    <a href="detalle.html?id=laptop" class="boton boton-contorno boton-mini">Ver detalle</a>
                 </div>
             </div>
 
             <div class="producto">
                 <span class="producto-etiqueta">audio</span>
-                <div class="producto-imagen">🎧</div>
+                <div class="producto-imagen producto-imagen-audio">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="#14171C" stroke-width="3"><path d="M10 34v-4a22 22 0 0 1 44 0v4"/><rect x="6" y="34" width="14" height="18" rx="6"/><rect x="44" y="34" width="14" height="18" rx="6"/></svg>
+                </div>
                 <h3>Audífonos Pulse ANC</h3>
                 <ul class="producto-specs">
                     <li>Cancelación de ruido</li>
@@ -71,13 +77,15 @@
                 </ul>
                 <div class="producto-pie">
                     <span class="precio">$1,899<span class="precio-detalle">MXN</span></span>
-                    <button class="boton boton-contorno boton-mini" disabled>Ver más</button>
+                    <a href="detalle.html?id=audifonos" class="boton boton-contorno boton-mini">Ver detalle</a>
                 </div>
             </div>
 
             <div class="producto">
                 <span class="producto-etiqueta">hogar</span>
-                <div class="producto-imagen">💡</div>
+                <div class="producto-imagen producto-imagen-hogar">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="#14171C" stroke-width="3"><circle cx="32" cy="26" r="16"/><path d="M32 42v8M24 54h16M26 58h12"/></svg>
+                </div>
                 <h3>Foco inteligente Orbit</h3>
                 <ul class="producto-specs">
                     <li>Control por app y voz</li>
@@ -86,13 +94,15 @@
                 </ul>
                 <div class="producto-pie">
                     <span class="precio">$349<span class="precio-detalle">MXN</span></span>
-                    <button class="boton boton-contorno boton-mini" disabled>Ver más</button>
+                    <a href="detalle.html?id=foco" class="boton boton-contorno boton-mini">Ver detalle</a>
                 </div>
             </div>
 
             <div class="producto">
                 <span class="producto-etiqueta">móvil</span>
-                <div class="producto-imagen">⌚</div>
+                <div class="producto-imagen producto-imagen-movil">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="#14171C" stroke-width="3"><rect x="18" y="18" width="28" height="28" rx="6"/><path d="M26 10h12M26 54h12"/></svg>
+                </div>
                 <h3>Reloj inteligente Orbit Fit</h3>
                 <ul class="producto-specs">
                     <li>Monitor de ritmo cardiaco</li>
@@ -101,13 +111,15 @@
                 </ul>
                 <div class="producto-pie">
                     <span class="precio">$2,299<span class="precio-detalle">MXN</span></span>
-                    <button class="boton boton-contorno boton-mini" disabled>Ver más</button>
+                    <a href="detalle.html?id=reloj" class="boton boton-contorno boton-mini">Ver detalle</a>
                 </div>
             </div>
 
             <div class="producto">
                 <span class="producto-etiqueta">cómputo</span>
-                <div class="producto-imagen">🖱️</div>
+                <div class="producto-imagen producto-imagen-computo">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="#14171C" stroke-width="3"><rect x="20" y="10" width="24" height="44" rx="12"/><path d="M32 10v16"/></svg>
+                </div>
                 <h3>Mouse inalámbrico Glide</h3>
                 <ul class="producto-specs">
                     <li>Sensor óptico 1600 DPI</li>
@@ -116,13 +128,15 @@
                 </ul>
                 <div class="producto-pie">
                     <span class="precio">$429<span class="precio-detalle">MXN</span></span>
-                    <button class="boton boton-contorno boton-mini" disabled>Ver más</button>
+                    <a href="detalle.html?id=mouse" class="boton boton-contorno boton-mini">Ver detalle</a>
                 </div>
             </div>
 
             <div class="producto">
                 <span class="producto-etiqueta">audio</span>
-                <div class="producto-imagen">🔊</div>
+                <div class="producto-imagen producto-imagen-audio">
+                    <svg viewBox="0 0 64 64" fill="none" stroke="#14171C" stroke-width="3"><rect x="14" y="8" width="36" height="48" rx="10"/><circle cx="32" cy="24" r="6"/><circle cx="32" cy="42" r="9"/></svg>
+                </div>
                 <h3>Bocina portátil Boom Mini</h3>
                 <ul class="producto-specs">
                     <li>Resistente al agua IPX6</li>
@@ -131,7 +145,7 @@
                 </ul>
                 <div class="producto-pie">
                     <span class="precio">$799<span class="precio-detalle">MXN</span></span>
-                    <button class="boton boton-contorno boton-mini" disabled>Ver más</button>
+                    <a href="detalle.html?id=bocina" class="boton boton-contorno boton-mini">Ver detalle</a>
                 </div>
             </div>
 

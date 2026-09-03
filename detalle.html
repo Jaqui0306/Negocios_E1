@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechZone - Crear cuenta</title>
+    <title>TechZone - Detalle de producto</title>
     <link rel="icon" type="image/svg+xml" href="img/logo.svg">
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -16,53 +16,27 @@
         </a>
         <nav>
             <a href="inicio.html">Inicio</a>
-            <a href="productos.html">Catálogo</a>
+            <a href="productos.html" class="activo">Catálogo</a>
             <a href="nosotros.html">Nosotros</a>
             <a href="index.html#contacto">Contacto</a>
-            <a href="registro.html" class="activo">Registro</a>
+            <a href="registro.html">Registro</a>
             <a href="login.html">Iniciar sesión</a>
             <a href="perfil.html">Perfil</a>
         </nav>
     </header>
 
-    <section class="acceso">
-        <div class="acceso-envoltura">
+    <section>
+        <div class="detalle-producto" id="detalle-producto">
+            <div class="detalle-imagen" id="detalle-imagen"></div>
+            <span class="detalle-categoria">Ficha de producto</span>
+            <h1 id="detalle-nombre">—</h1>
+            <span class="detalle-precio" id="detalle-precio">—</span>
+            <p class="detalle-descripcion" id="detalle-descripcion">—</p>
 
-            <div class="acceso-panel">
-                <div>
-                    <img src="img/logo.svg" alt="TechZone" class="logo-grande">
-                    <h2>Crea tu cuenta en TechZone</h2>
-                    <p>Guarda tus datos, da seguimiento a tus compras y recibe avisos cuando lleguen nuevos productos.</p>
-                </div>
-                <div class="acceso-panel-pie">
-                    registro · paso 1 de 1
-                </div>
+            <div class="detalle-acciones">
+                <a href="productos.html" class="boton boton-contorno">Regresar al catálogo</a>
+                <button class="boton" id="boton-agregar-carrito">Agregar al carrito</button>
             </div>
-
-            <form class="formulario" id="formulario-registro">
-                <h2>Crear cuenta</h2>
-                <p>Es gratis y toma menos de un minuto.</p>
-
-                <div class="campo">
-                    <label for="nombre">Nombre completo</label>
-                    <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
-                </div>
-
-                <div class="campo">
-                    <label for="correo">Correo electrónico</label>
-                    <input type="email" id="correo" name="correo" placeholder="tucorreo@ejemplo.com" required>
-                </div>
-
-                <div class="campo">
-                    <label for="password">Contraseña</label>
-                    <input type="password" id="password" name="password" placeholder="Mínimo 8 caracteres" required>
-                </div>
-
-                <button type="submit" class="boton boton-ancho">Registrarme</button>
-
-                <p class="enlace-alterno">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
-            </form>
-
         </div>
     </section>
 
