@@ -68,7 +68,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var usuario = obtenerUsuario();
 
-    // ---- Mostrar/ocultar enlaces del menú según haya sesión ----
+    // ---- Menú dinámico en páginas públicas (Nosotros, Catálogo, Detalle) ----
+    // Sin sesión: solo Catálogo / Nosotros. Con sesión: menú principal completo.
+    var navMenu = document.getElementById("nav-menu");
+    if (navMenu && usuario) {
+        var pagina = navMenu.getAttribute("data-pagina");
+        var enlaces = [
+            { href: "inicio.html", texto: "Inicio", id: "inicio" },
+            { href: "productos.html", texto: "Catálogo", id: "productos" },
+            { href: "nosotros.html", texto: "Nosotros", id: "nosotros" },
+            { href: "index.html#contacto", texto: "Contacto", id: "contacto" },
+            { href: "perfil.html", texto: "Perfil", id: "perfil" }
+        ];
+        var htmlMenu = "";
+        enlaces.forEach(function (enlace) {
+            var esActivo = (enlace.id === pagina) ? ' class="activo"' : "";
+            htmlMenu += '<a href="' + enlace.href + '"' + esActivo + '>' + enlace.texto + '</a>';
+        });
+        navMenu.innerHTML = htmlMenu;
+    }
+
+    // ---- Mostrar/ocultar enlaces del menú fijo (inicio.html, perfil.html) según haya sesión ----
     var enlacePerfil = document.querySelector('nav a[href="perfil.html"]');
     var enlaceRegistro = document.querySelector('nav a[href="registro.html"]');
     var enlaceLogin = document.querySelector('nav a[href="login.html"]');
