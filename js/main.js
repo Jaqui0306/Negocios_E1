@@ -8,42 +8,70 @@ document.addEventListener("DOMContentLoaded", function () {
             precio: "$14,999 MXN",
             categoria: "computo",
             descripcion: 'Laptop ligera pensada para clases y home office, con pantalla de 14" Full HD, 16 GB de RAM, 512 GB de almacenamiento y batería para todo el día.',
-            icono: '<svg viewBox="0 0 64 64" fill="none" stroke="#14171C" stroke-width="3"><rect x="10" y="14" width="44" height="28" rx="3"/><path d="M4 50h56l-6-8H10z"/></svg>'
-        },
-        audifonos: {
-            nombre: "Audífonos Pulse ANC",
-            precio: "$1,899 MXN",
-            categoria: "audio",
-            descripcion: "Audífonos inalámbricos con cancelación activa de ruido, hasta 30 horas de batería y conexión Bluetooth 5.3.",
-            icono: '<svg viewBox="0 0 64 64" fill="none" stroke="#14171C" stroke-width="3"><path d="M10 34v-4a22 22 0 0 1 44 0v4"/><rect x="6" y="34" width="14" height="18" rx="6"/><rect x="44" y="34" width="14" height="18" rx="6"/></svg>'
-        },
-        foco: {
-            nombre: "Foco inteligente Orbit",
-            precio: "$349 MXN",
-            categoria: "hogar",
-            descripcion: "Foco Wi-Fi controlable por app o por voz, con 16 millones de tonos de color para ambientar tu espacio.",
-            icono: '<svg viewBox="0 0 64 64" fill="none" stroke="#14171C" stroke-width="3"><circle cx="32" cy="26" r="16"/><path d="M32 42v8M24 54h16M26 58h12"/></svg>'
-        },
-        reloj: {
-            nombre: "Reloj inteligente Orbit Fit",
-            precio: "$2,299 MXN",
-            categoria: "movil",
-            descripcion: "Reloj resistente al agua con monitor de ritmo cardiaco y batería de hasta 7 días de duración.",
-            icono: '<svg viewBox="0 0 64 64" fill="none" stroke="#14171C" stroke-width="3"><rect x="18" y="18" width="28" height="28" rx="6"/><path d="M26 10h12M26 54h12"/></svg>'
+            imagen: "https://loremflickr.com/500/350/laptop,computer?lock=11"
         },
         mouse: {
             nombre: "Mouse inalámbrico Glide",
             precio: "$429 MXN",
             categoria: "computo",
             descripcion: "Mouse silencioso y preciso con sensor óptico de 1600 DPI, recargable por USB-C.",
-            icono: '<svg viewBox="0 0 64 64" fill="none" stroke="#14171C" stroke-width="3"><rect x="20" y="10" width="24" height="44" rx="12"/><path d="M32 10v16"/></svg>'
+            imagen: "https://loremflickr.com/500/350/mouse,computer?lock=22"
+        },
+        teclado: {
+            nombre: "Teclado mecánico Type-X",
+            precio: "$1,299 MXN",
+            categoria: "computo",
+            descripcion: "Teclado mecánico con switches táctiles, retroiluminación RGB y cable trenzado desmontable, ideal para trabajo y juego.",
+            imagen: "https://loremflickr.com/500/350/keyboard,mechanical?lock=33"
+        },
+        monitor: {
+            nombre: 'Monitor UltraView 24"',
+            precio: "$3,199 MXN",
+            categoria: "computo",
+            descripcion: "Monitor Full HD de 24 pulgadas con panel IPS y 75 Hz, con entradas HDMI y VGA para conectar cualquier equipo.",
+            imagen: "https://loremflickr.com/500/350/monitor,screen?lock=44"
+        },
+        audifonos: {
+            nombre: "Audífonos Pulse ANC",
+            precio: "$1,899 MXN",
+            categoria: "audio",
+            descripcion: "Audífonos inalámbricos con cancelación activa de ruido, hasta 30 horas de batería y conexión Bluetooth 5.3.",
+            imagen: "https://loremflickr.com/500/350/headphones?lock=55"
         },
         bocina: {
             nombre: "Bocina portátil Boom Mini",
             precio: "$799 MXN",
             categoria: "audio",
             descripcion: "Bocina resistente al agua IPX6, con sonido estéreo y hasta 12 horas de batería.",
-            icono: '<svg viewBox="0 0 64 64" fill="none" stroke="#14171C" stroke-width="3"><rect x="14" y="8" width="36" height="48" rx="10"/><circle cx="32" cy="24" r="6"/><circle cx="32" cy="42" r="9"/></svg>'
+            imagen: "https://loremflickr.com/500/350/speaker,bluetooth?lock=66"
+        },
+        foco: {
+            nombre: "Foco inteligente Orbit",
+            precio: "$349 MXN",
+            categoria: "hogar",
+            descripcion: "Foco Wi-Fi controlable por app o por voz, con 16 millones de tonos de color para ambientar tu espacio.",
+            imagen: "https://loremflickr.com/500/350/lightbulb,smart?lock=88"
+        },
+        camara: {
+            nombre: "Cámara de seguridad SafeView",
+            precio: "$899 MXN",
+            categoria: "hogar",
+            descripcion: "Cámara de seguridad con visión nocturna, detección de movimiento y grabación en la nube para cuidar tu hogar.",
+            imagen: "https://loremflickr.com/500/350/security,camera?lock=99"
+        },
+        speaker: {
+            nombre: "Bocina inteligente Echo Home",
+            precio: "$1,599 MXN",
+            categoria: "hogar",
+            descripcion: "Bocina con asistente de voz integrado, sonido envolvente 360° y control de otros dispositivos inteligentes del hogar.",
+            imagen: "https://loremflickr.com/500/350/smart,speaker?lock=77"
+        },
+        reloj: {
+            nombre: "Reloj inteligente Orbit Fit",
+            precio: "$2,299 MXN",
+            categoria: "movil",
+            descripcion: "Reloj resistente al agua con monitor de ritmo cardiaco y batería de hasta 7 días de duración.",
+            imagen: "https://loremflickr.com/500/350/smartwatch?lock=110"
         }
     };
 
@@ -154,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("detalle-precio").textContent = producto.precio;
             document.getElementById("detalle-descripcion").textContent = producto.descripcion;
             var imagenEl = document.getElementById("detalle-imagen");
-            imagenEl.innerHTML = producto.icono;
+            imagenEl.innerHTML = '<img src="' + producto.imagen + '" alt="' + producto.nombre + '">';
             imagenEl.classList.add("producto-imagen-" + producto.categoria);
             document.title = "TechZone - " + producto.nombre;
         } else {

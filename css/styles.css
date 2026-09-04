@@ -1,6 +1,3 @@
-/* ============================================================
-   TechZone — fuentes locales (sin conexión a internet)
-   ============================================================ */
 @font-face {
     font-family: "Space Grotesk";
     src: url("../fonts/space-grotesk-latin-500-normal.woff2") format("woff2");
@@ -1109,19 +1106,28 @@ footer {
         text-align: center;
     }
 
-    .logo-grande {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 16px;
+/* ============================================================
+   BLOQUE PERSONALIZADO TECHZONE — versión final consolidada.
+   Si ya habías pegado bloques de mensajes anteriores, bórralos
+   y deja solo este.
+   ============================================================ */
+
+/* ---- Logo destacado (login, registro) ---- */
+.logo-grande {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 18px;
 }
 
 @media (max-width: 768px) {
     .logo-grande {
-        width: 32px;
-        height: 32px;
-        margin-bottom: 12px;
+        width: 34px;
+        height: 34px;
+        margin-bottom: 14px;
     }
 }
+
+/* ---- Categorías (index / inicio) ---- */
 .categorias {
     background-color: var(--paper-dim);
 }
@@ -1143,48 +1149,102 @@ footer {
     flex-shrink: 0;
 }
 
-.categoria-icono svg {
-    width: 20px;
-    height: 20px;
-}
+.categoria-icono svg { width: 20px; height: 20px; }
 
 .categoria-icono-computo { background-color: #6EC3FF; }
 .categoria-icono-audio   { background-color: #FF8F70; }
 .categoria-icono-hogar   { background-color: #C8FF4D; }
 .categoria-icono-movil   { background-color: #B9A6FF; }
 
+@media (max-width: 768px) {
+    .categorias { padding-top: 50px; }
+}
+
+/* ---- Métricas del hero (index) ---- */
 .inicio-metricas {
     display: flex;
     gap: 36px;
     border-top: 1px solid var(--line-dark);
     padding-top: 24px;
+    flex-wrap: wrap;
 }
 
 .metrica {
-    position: relative;
-    padding-left: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
 }
 
-.metrica-punto {
-    position: absolute;
-    left: 0;
-    top: 7px;
-    width: 8px;
-    height: 8px;
+.metrica-icono {
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
-.metrica-punto-verde { background-color: #C8FF4D; }
-.metrica-punto-azul  { background-color: #6EC3FF; }
-.metrica-punto-coral { background-color: #FF8F70; }
+.metrica-icono svg { width: 18px; height: 18px; }
 
-@media (max-width: 768px) {
-    .categorias {
-        padding-top: 50px;
-    }
+.metrica-icono-verde { background-color: #C8FF4D; }
+.metrica-icono-azul  { background-color: #6EC3FF; }
+.metrica-icono-coral { background-color: #FF8F70; }
+
+.metrica-texto .valor {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--paper);
+    line-height: 1.1;
 }
 
-/* ===== FORMULARIO DE CONTACTO ===== */
+.metrica-texto .etiqueta {
+    font-size: 13px;
+    color: var(--steel-light);
+    margin-top: 2px;
+}
+
+/* ---- Fila de contacto (index) ---- */
+.contacto-fila {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line-dark);
+}
+
+.contacto-icono {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.contacto-icono svg { width: 16px; height: 16px; }
+
+.contacto-icono-verde   { background-color: #C8FF4D; }
+.contacto-icono-azul    { background-color: #6EC3FF; }
+.contacto-icono-coral   { background-color: #FF8F70; }
+.contacto-icono-violeta { background-color: #B9A6FF; }
+
+.contacto-fila .etiqueta {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--steel-light);
+    margin-bottom: 3px;
+}
+
+.contacto-fila .valor {
+    font-size: 15px;
+    color: var(--paper);
+}
+
+/* ---- Formulario de contacto (index) ---- */
 .form-contacto {
     margin-top: 36px;
     padding-top: 28px;
@@ -1197,9 +1257,7 @@ footer {
     margin-bottom: 16px;
 }
 
-.form-contacto .campo {
-    margin-bottom: 16px;
-}
+.form-contacto .campo { margin-bottom: 16px; }
 
 .form-contacto label {
     display: block;
@@ -1227,11 +1285,9 @@ footer {
     outline: none;
 }
 
-.form-contacto textarea {
-    min-height: 100px;
-}
+.form-contacto textarea { min-height: 100px; }
 
-/* ===== DATOS BÁSICOS (Nosotros) ===== */
+/* ---- Datos básicos (Nosotros) ---- */
 .nosotros-datos {
     margin-top: 28px;
     padding-top: 24px;
@@ -1246,44 +1302,47 @@ footer {
 }
 
 .dato-icono {
-    width: 34px;
-    height: 34px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
+    background-color: var(--signal);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
 }
 
-.dato-icono svg { width: 15px; height: 15px; }
-
-.dato-icono-coral { background-color: #FF8F70; }
-.dato-icono-azul { background-color: #6EC3FF; }
+.dato-icono svg { width: 12px; height: 12px; }
 
 .dato-fila .valor {
     font-size: 14px;
     color: var(--ink);
 }
 
-/* ===== IMÁGENES DE PRODUCTO (reemplaza emojis) ===== */
+/* ---- Imágenes de producto reales (Catálogo) ---- */
 .producto-imagen {
     width: 100%;
-    height: 120px;
+    height: 150px;
     border-radius: var(--radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
     margin-bottom: 22px;
+    background-color: var(--paper-dim);
+    border-top: 4px solid transparent;
 }
 
-.producto-imagen svg { width: 56px; height: 56px; }
+.producto-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
 
-.producto-imagen-computo { background-color: #6EC3FF; }
-.producto-imagen-audio   { background-color: #FF8F70; }
-.producto-imagen-hogar   { background-color: #C8FF4D; }
-.producto-imagen-movil   { background-color: #B9A6FF; }
+.producto-imagen-computo { border-top-color: #6EC3FF; }
+.producto-imagen-audio   { border-top-color: #FF8F70; }
+.producto-imagen-hogar   { border-top-color: #C8FF4D; }
+.producto-imagen-movil   { border-top-color: #B9A6FF; }
 
-/* ===== DETALLE DE PRODUCTO ===== */
+/* ---- Detalle de producto ---- */
 .detalle-producto {
     max-width: 640px;
     margin: 60px auto;
@@ -1291,15 +1350,19 @@ footer {
 
 .detalle-imagen {
     width: 100%;
-    height: 220px;
+    height: 260px;
     border-radius: var(--radius);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
     margin-bottom: 30px;
+    background-color: var(--paper-dim);
 }
 
-.detalle-imagen svg { width: 96px; height: 96px; }
+.detalle-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
 
 .detalle-categoria {
     font-family: var(--font-mono);
@@ -1309,10 +1372,7 @@ footer {
     margin-bottom: 10px;
 }
 
-.detalle-producto h1 {
-    font-size: 28px;
-    margin-bottom: 10px;
-}
+.detalle-producto h1 { font-size: 28px; margin-bottom: 10px; }
 
 .detalle-precio {
     font-family: var(--font-mono);
@@ -1337,7 +1397,7 @@ footer {
     flex-wrap: wrap;
 }
 
-/* ===== PERFIL: secciones ===== */
+/* ---- Perfil: secciones ---- */
 .perfil-seccion-titulo {
     font-size: 13px;
     color: var(--steel);
