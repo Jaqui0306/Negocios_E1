@@ -1,7 +1,0 @@
-<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
-  <rect width="400" height="300" fill="#6EC3FF"/>
-  <g transform="translate(155,60)" stroke="#14171C" stroke-width="7" fill="none" stroke-linejoin="round" stroke-linecap="round">
-    <rect x="0" y="0" width="90" height="170" rx="45"/>
-    <line x1="45" y1="0" x2="45" y2="55"/>
-  </g>
-</svg>
