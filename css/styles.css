@@ -1107,311 +1107,581 @@ footer {
     }
 
 /* ============================================================
-   BLOQUE PERSONALIZADO TECHZONE — versión final consolidada.
-   Si ya habías pegado bloques de mensajes anteriores, bórralos
-   y deja solo este.
+   BLOQUE PERSONALIZADO TECHZONE — VERSIÓN FINAL CONSOLIDADA
+   Reemplaza cualquier bloque personalizado anterior por este.
    ============================================================ */
 
-/* ---- Logo destacado (login, registro) ---- */
+/* ---- Logo grande del hero (index.html) ---- */
 .logo-grande {
     width: 44px;
     height: 44px;
     margin-bottom: 18px;
 }
-
 @media (max-width: 768px) {
-    .logo-grande {
-        width: 34px;
-        height: 34px;
-        margin-bottom: 14px;
-    }
+    .logo-grande { width: 34px; height: 34px; margin-bottom: 14px; }
 }
 
-/* ---- Categorías (index / inicio) ---- */
-.categorias {
-    background-color: var(--paper-dim);
-}
-
-.categoria {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
+/* ---- Categorías (inicio.html) ---- */
+.categorias { background-color: var(--paper-dim); }
+.categoria { display: flex; flex-direction: column; align-items: flex-start; }
 .categoria-icono {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 16px;
-    flex-shrink: 0;
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px; flex-shrink: 0;
 }
-
 .categoria-icono svg { width: 20px; height: 20px; }
-
 .categoria-icono-computo { background-color: #6EC3FF; }
 .categoria-icono-audio   { background-color: #FF8F70; }
 .categoria-icono-hogar   { background-color: #C8FF4D; }
 .categoria-icono-movil   { background-color: #B9A6FF; }
 
-@media (max-width: 768px) {
-    .categorias { padding-top: 50px; }
-}
-
-/* ---- Métricas del hero (index) ---- */
-.inicio-metricas {
-    display: flex;
-    gap: 36px;
-    border-top: 1px solid var(--line-dark);
-    padding-top: 24px;
-    flex-wrap: wrap;
-}
-
-.metrica {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.metrica-icono {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
+/* ---- Métricas del hero (index.html) ---- */
+.inicio-metricas { display: flex; gap: 36px; border-top: 1px solid var(--line-dark); padding-top: 24px; flex-wrap: wrap; }
+.metrica { display: flex; align-items: center; gap: 14px; }
+.metrica-icono { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .metrica-icono svg { width: 18px; height: 18px; }
-
 .metrica-icono-verde { background-color: #C8FF4D; }
 .metrica-icono-azul  { background-color: #6EC3FF; }
 .metrica-icono-coral { background-color: #FF8F70; }
+.metrica-texto .valor { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--paper); line-height: 1.1; }
+.metrica-texto .etiqueta { font-size: 13px; color: var(--steel-light); margin-top: 2px; }
 
-.metrica-texto .valor {
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--paper);
-    line-height: 1.1;
+/* ---- Bloque "Visítanos" del landing — CORREGIDO ---- */
+.contacto-resumen { background-color: #14171C; padding: 60px 24px; }
+.contacto-resumen-envoltura { max-width: 640px; margin: 0 auto; text-align: center; }
+.contacto-resumen h2 { color: #F7F5F1; font-size: 22px; margin-bottom: 8px; }
+.contacto-resumen-direccion { color: #9AA3AE; font-size: 14px; margin-bottom: 22px; }
+.boton-resaltado {
+    display: inline-block;
+    background-color: #C8FF4D;
+    color: #14171C;
+    font-weight: 700;
+    padding: 13px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: transform .15s, box-shadow .15s;
 }
+.boton-resaltado:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(200,255,77,0.35); }
 
-.metrica-texto .etiqueta {
-    font-size: 13px;
-    color: var(--steel-light);
-    margin-top: 2px;
-}
-
-/* ---- Fila de contacto (index) ---- */
-.contacto-fila {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 18px 0;
-    border-bottom: 1px solid var(--line-dark);
-}
-
-.contacto-icono {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
+/* ---- Contacto: fila de datos e íconos ---- */
+.contacto-fila { display: flex; align-items: center; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line-dark); }
+.contacto-icono { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .contacto-icono svg { width: 16px; height: 16px; }
-
 .contacto-icono-verde   { background-color: #C8FF4D; }
 .contacto-icono-azul    { background-color: #6EC3FF; }
 .contacto-icono-coral   { background-color: #FF8F70; }
 .contacto-icono-violeta { background-color: #B9A6FF; }
+.contacto-fila .etiqueta { display: block; font-size: 12px; color: var(--steel-light); margin-bottom: 3px; }
+.contacto-fila .valor { font-size: 15px; color: var(--paper); }
 
-.contacto-fila .etiqueta {
-    display: block;
-    font-family: var(--font-body);
-    font-size: 12px;
-    color: var(--steel-light);
-    margin-bottom: 3px;
-}
-
-.contacto-fila .valor {
-    font-size: 15px;
-    color: var(--paper);
-}
-
-/* ---- Formulario de contacto (index) ---- */
-.form-contacto {
-    margin-top: 36px;
-    padding-top: 28px;
-    border-top: 1px solid var(--line-dark);
-}
-
-.form-contacto h3 {
-    color: var(--paper);
-    font-size: 16px;
-    margin-bottom: 16px;
-}
-
+/* ---- Formulario de contacto ---- */
+.form-contacto { margin-top: 36px; padding: 28px; background-color: var(--ink-soft); border: 1px solid var(--line-dark); border-radius: 14px; }
+.form-contacto h3 { color: var(--paper); font-size: 17px; margin-bottom: 4px; }
+.form-contacto-subtitulo { color: var(--steel-light); font-size: 13px; margin-bottom: 20px; }
+.form-contacto-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 560px) { .form-contacto-fila { grid-template-columns: 1fr; } }
 .form-contacto .campo { margin-bottom: 16px; }
-
-.form-contacto label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 13px;
-    color: var(--steel-light);
-}
-
+.form-contacto label { display: block; margin-bottom: 6px; font-size: 13px; color: var(--steel-light); }
 .form-contacto input,
 .form-contacto textarea {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1px solid var(--line-dark);
-    border-radius: var(--radius);
-    background-color: var(--ink-soft);
-    color: var(--paper);
-    font-family: var(--font-body);
-    font-size: 14px;
-    resize: vertical;
+    width: 100%; padding: 12px 14px; border: 1px solid var(--line-dark); border-radius: 10px;
+    background-color: var(--ink); color: var(--paper); font-family: var(--font-body); font-size: 14px;
+    resize: vertical; transition: border-color .15s, box-shadow .15s;
 }
-
-.form-contacto input:focus,
-.form-contacto textarea:focus {
-    border-color: var(--signal-dim);
-    outline: none;
+.form-contacto input:focus, .form-contacto textarea:focus {
+    border-color: #31E1C9; box-shadow: 0 0 0 3px rgba(49, 225, 201, 0.18); outline: none;
 }
+.form-contacto textarea { min-height: 110px; }
+.form-contacto button[type="submit"] { width: 100%; margin-top: 4px; }
 
-.form-contacto textarea { min-height: 100px; }
-
-/* ---- Datos básicos (Nosotros) ---- */
-.nosotros-datos {
-    margin-top: 28px;
-    padding-top: 24px;
-    border-top: 1px solid var(--line);
+/* ---- Datos básicos (Nosotros) — REDISEÑADO ---- */
+.nosotros-datos { margin-top: 30px; display: grid; gap: 14px; }
+.dato-tarjeta {
+    display: flex; align-items: center; gap: 16px;
+    background-color: var(--paper-dim); border: 1px solid var(--line);
+    border-radius: 12px; padding: 16px 18px;
 }
-
-.dato-fila {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 10px 0;
+.dato-tarjeta .dato-icono {
+    width: 40px; height: 40px; min-width: 40px; border-radius: 50%;
+    background-color: #C8FF4D; display: flex; align-items: center; justify-content: center;
 }
-
-.dato-icono {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background-color: var(--signal);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.dato-icono svg { width: 12px; height: 12px; }
-
-.dato-fila .valor {
-    font-size: 14px;
-    color: var(--ink);
-}
+.dato-tarjeta .dato-icono svg { width: 18px !important; height: 18px !important; display: block; }
+.dato-texto-label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--steel); margin-bottom: 2px; }
+.dato-texto-valor { font-size: 14px; color: var(--ink); font-weight: 600; }
 
 /* ---- Imágenes de producto reales (Catálogo) ---- */
-.producto-imagen {
-    width: 100%;
-    height: 150px;
-    border-radius: var(--radius);
-    overflow: hidden;
-    margin-bottom: 22px;
-    background-color: var(--paper-dim);
-    border-top: 4px solid transparent;
-}
-
-.producto-imagen img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
+.producto-imagen { width: 100%; height: 150px; border-radius: var(--radius); overflow: hidden; margin-bottom: 22px; background-color: var(--paper-dim); border-top: 4px solid transparent; }
+.producto-imagen img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .producto-imagen-computo { border-top-color: #6EC3FF; }
 .producto-imagen-audio   { border-top-color: #FF8F70; }
 .producto-imagen-hogar   { border-top-color: #C8FF4D; }
 .producto-imagen-movil   { border-top-color: #B9A6FF; }
 
-/* ---- Detalle de producto ---- */
-.detalle-producto {
-    max-width: 640px;
-    margin: 60px auto;
-}
+/* ---- Catálogo: título por categoría + submenú + tarjetas con hover ---- */
+.categoria-titulo { font-size: 20px; margin: 44px 0 18px; scroll-margin-top: 90px; }
+.categoria-titulo:first-of-type { margin-top: 8px; }
 
-.detalle-imagen {
+.catalogo-submenu {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; gap: 10px; overflow-x: auto;
+    padding: 14px 0; background-color: var(--paper);
+    border-bottom: 1px solid var(--line); margin-bottom: 10px;
+}
+.catalogo-submenu a {
+    flex-shrink: 0; padding: 8px 16px; border-radius: 999px;
+    border: 1px solid var(--line); font-size: 13px; color: var(--ink);
+    text-decoration: none; white-space: nowrap; transition: background-color .15s, color .15s;
+}
+.catalogo-submenu a:hover { background-color: #14171C; color: #F7F5F1; border-color: #14171C; }
+
+.producto { transition: transform .18s, box-shadow .18s; border-radius: 14px; }
+.producto:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(20,23,28,0.12); }
+
+/* ---- Detalle de producto — más grande y con brillo por categoría ---- */
+.detalle-envoltura { max-width: 1100px; margin: 50px auto; padding: 0 24px; }
+.detalle-tarjeta { background-color: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 48px; box-shadow: 0 12px 40px rgba(20,23,28,0.08); display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+@media (max-width: 768px) { .detalle-tarjeta { grid-template-columns: 1fr; padding: 24px; gap: 28px; } }
+.detalle-imagen { width: 100%; height: 420px; border-radius: 14px; overflow: hidden; background-color: var(--paper-dim); box-shadow: 0 16px 40px rgba(20,23,28,0.15); }
+@media (max-width: 768px) { .detalle-imagen { height: 300px; } }
+.detalle-imagen img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.detalle-imagen.producto-imagen-computo { box-shadow: 0 16px 40px rgba(110,195,255,0.35); }
+.detalle-imagen.producto-imagen-audio   { box-shadow: 0 16px 40px rgba(255,143,112,0.35); }
+.detalle-imagen.producto-imagen-hogar   { box-shadow: 0 16px 40px rgba(200,255,77,0.35); }
+.detalle-imagen.producto-imagen-movil   { box-shadow: 0 16px 40px rgba(185,166,255,0.35); }
+.detalle-miniaturas { display: flex; gap: 10px; margin-top: 14px; }
+.detalle-miniaturas img { width: 62px; height: 62px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; opacity: .6; transition: opacity .15s, border-color .15s; }
+.detalle-miniaturas img:hover { opacity: .9; }
+.detalle-miniaturas img.activa { border-color: var(--signal); opacity: 1; }
+.detalle-categoria-badge { display: inline-block; font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; padding: 5px 12px; border-radius: 20px; color: #14171C; margin-bottom: 16px; }
+.badge-computo { background-color: #6EC3FF; }
+.badge-audio   { background-color: #FF8F70; }
+.badge-hogar   { background-color: #C8FF4D; }
+.badge-movil   { background-color: #B9A6FF; }
+.detalle-info h1 { font-size: 30px; line-height: 1.25; margin-bottom: 14px; }
+.detalle-precio { display: block; font-family: var(--font-mono); font-size: 32px; font-weight: 700; color: var(--ink); margin-bottom: 20px; }
+.detalle-descripcion { color: var(--steel); font-size: 16px; line-height: 1.75; margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+.detalle-especificaciones-titulo { font-size: 14px; text-transform: uppercase; letter-spacing: .04em; color: var(--steel); margin-bottom: 14px; }
+.detalle-especificaciones-lista { list-style: none; padding: 0; margin: 0 0 30px; display: grid; gap: 10px; }
+.detalle-especificaciones-lista li { font-size: 14px; color: var(--ink); padding-left: 24px; position: relative; }
+.detalle-especificaciones-lista li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 16px; height: 16px; color: #14171C; background-color: var(--signal); border-radius: 50%; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.detalle-acciones { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* ---- Perfil — REDISEÑADO ---- */
+.perfil-envoltura { max-width: 640px; margin: 50px auto; background-color: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 40px; box-shadow: 0 14px 40px rgba(20,23,28,0.08); }
+.perfil-cabecera { display: flex; align-items: center; gap: 18px; padding-bottom: 28px; margin-bottom: 8px; border-bottom: 1px solid var(--line); }
+.perfil-icono { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #C8FF4D, #31E1C9); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 22px; color: #14171C; font-family: var(--font-display); }
+.perfil-cabecera h3 { font-size: 19px; margin-bottom: 4px; }
+.perfil-cabecera .estado { display: inline-block; font-size: 12px; color: #14171C; background-color: #C8FF4D; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
+.perfil-seccion-titulo { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--steel); margin: 26px 0 14px; }
+.fila-info { display: flex; justify-content: space-between; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.fila-info .campo-nombre { color: var(--steel); }
+.fila-info .campo-valor { color: var(--ink); font-weight: 600; }
+.mis-compras-vacio { padding: 28px; border: 1px dashed var(--line); border-radius: 12px; color: var(--steel); font-size: 14px; text-align: center; background-color: var(--paper-dim); }
+.perfil-acciones { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
+
+/* ---- Promociones (inicio.html) ---- */
+.promos { padding: 50px 24px; }
+.promos-cabecera { max-width: 1100px; margin: 0 auto 24px; }
+.promos-cabecera h2 { font-size: 22px; }
+.promos-lista { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1100px; margin: 0 auto; }
+@media (max-width: 900px) { .promos-lista { grid-template-columns: 1fr; } }
+.promo-card { position: relative; border-radius: 16px; overflow: hidden; text-decoration: none; display: block; background-color: #14171C; color: #F7F5F1; }
+.promo-card img { width: 100%; height: 150px; object-fit: cover; display: block; opacity: .9; }
+.promo-etiqueta { position: absolute; top: 14px; left: 14px; background-color: #C8FF4D; color: #14171C; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: .03em; }
+.promo-info { padding: 16px; }
+.promo-info h3 { font-size: 16px; margin-bottom: 6px; color: #F7F5F1; }
+.promo-precio { font-family: var(--font-mono); color: #C8FF4D; font-weight: 700; font-size: 15px; }
+.promo-precio-antes { text-decoration: line-through; color: #5B6472; font-size: 13px; margin-right: 6px; }
+
+}
+/* ============================================================
+   AJUSTES FINALES — PRESENTACIÓN TECHZONE
+   ============================================================ */
+
+/* Landing page: conservar encabezado limpio y sin menú principal */
+body:has(.landing-marker) header nav { display: flex; }
+
+/* Catálogo: imágenes uniformes, centradas y sin recortes */
+.producto-imagen {
+    height: 220px;
+    margin: 0 0 24px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #ffffff 0%, #eeece6 100%);
+    border-radius: 16px;
+    border-top: 4px solid transparent;
+    box-shadow: inset 0 0 0 1px rgba(20,23,28,.05);
+}
+.producto-imagen img {
     width: 100%;
-    height: 260px;
-    border-radius: var(--radius);
-    overflow: hidden;
-    margin-bottom: 30px;
-    background-color: var(--paper-dim);
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    mix-blend-mode: multiply;
+    transition: transform .25s ease;
 }
+.producto:hover .producto-imagen img { transform: scale(1.06); }
 
+/* Detalle: producto protagonista, siempre completo */
+.detalle-imagen {
+    height: 450px;
+    padding: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 40%, #ffffff 0%, #ece9e2 100%);
+}
 .detalle-imagen img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    display: block;
+    object-fit: contain;
+    object-position: center;
+    mix-blend-mode: multiply;
 }
+.detalle-miniaturas img { object-fit: contain; background: #fff; padding: 4px; }
 
-.detalle-categoria {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--steel);
-    display: block;
-    margin-bottom: 10px;
+/* Promociones de inicio: imágenes sin deformación */
+.promo-card img {
+    height: 190px;
+    object-fit: contain;
+    object-position: center;
+    padding: 18px;
+    background: linear-gradient(145deg, #242933, #14171C);
 }
+.promo-card { transition: transform .2s ease, box-shadow .2s ease; }
+.promo-card:hover { transform: translateY(-5px); box-shadow: 0 18px 38px rgba(20,23,28,.18); }
 
-.detalle-producto h1 { font-size: 28px; margin-bottom: 10px; }
-
-.detalle-precio {
-    font-family: var(--font-mono);
-    font-size: 24px;
-    font-weight: 600;
-    color: var(--ink);
-    display: block;
-    margin-bottom: 22px;
-}
-
-.detalle-descripcion {
-    color: var(--steel);
-    font-size: 16px;
-    line-height: 1.7;
-    margin-bottom: 34px;
-    max-width: 55ch;
-}
-
-.detalle-acciones {
+/* Formularios de acceso: más modernos y claramente diferenciados */
+.acceso {
+    min-height: calc(100vh - 180px);
     display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
+    align-items: center;
+    background:
+        radial-gradient(circle at 10% 15%, rgba(200,255,77,.14), transparent 28%),
+        radial-gradient(circle at 90% 85%, rgba(110,195,255,.14), transparent 30%),
+        var(--paper);
 }
-
-/* ---- Perfil: secciones ---- */
-.perfil-seccion-titulo {
-    font-size: 13px;
-    color: var(--steel);
+.acceso-envoltura {
+    width: min(1050px, 92%);
+    margin: 48px auto;
+    min-height: 570px;
+    border: 0;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 24px 70px rgba(20,23,28,.14);
+    grid-template-columns: .9fr 1.1fr;
+}
+.acceso-panel {
+    position: relative;
+    padding: 58px 50px;
+    background:
+        radial-gradient(circle at 85% 15%, rgba(200,255,77,.18), transparent 24%),
+        linear-gradient(145deg, #171a20, #0f1115);
+    overflow: hidden;
+}
+.acceso-panel::after {
+    content: "";
+    position: absolute;
+    width: 210px;
+    height: 210px;
+    right: -75px;
+    bottom: -75px;
+    border: 1px solid rgba(200,255,77,.2);
+    border-radius: 50%;
+    box-shadow: 0 0 0 28px rgba(200,255,77,.035), 0 0 0 58px rgba(200,255,77,.02);
+}
+.acceso-panel h2 { font-size: 34px; max-width: 11ch; }
+.acceso-panel p { max-width: 38ch; }
+.acceso-panel-pie { position: relative; z-index: 1; }
+.formulario {
+    padding: 56px 62px;
+    background: #fff;
+}
+.formulario h2 { font-size: 30px; }
+.formulario > p { margin-bottom: 34px; }
+.campo { margin-bottom: 22px; }
+.campo label {
+    font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin-bottom: 14px;
+    letter-spacing: .055em;
+    color: var(--steel);
+    margin-bottom: 8px;
+}
+.campo input {
+    min-height: 50px;
+    padding: 13px 16px;
+    border: 1px solid #d5d1c8;
+    border-radius: 12px;
+    background: #faf9f6;
+    box-shadow: inset 0 1px 2px rgba(20,23,28,.025);
+    transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.campo input::placeholder { color: #a4a7ad; }
+.campo input:hover { border-color: #b9b4aa; }
+.campo input:focus {
+    outline: none;
+    border-color: #9fcf35;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(200,255,77,.18);
+}
+.formulario .boton-ancho {
+    min-height: 52px;
+    border-radius: 12px;
+    font-size: 15px;
+    box-shadow: 0 8px 18px rgba(158,204,50,.18);
+}
+.enlace-alterno { text-align: center; }
+
+/* Contacto: formulario como tarjeta premium */
+.form-contacto {
+    padding: 34px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 20px 50px rgba(0,0,0,.16);
+}
+.form-contacto input,
+.form-contacto textarea {
+    min-height: 50px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: #12151a;
+}
+.form-contacto textarea { min-height: 140px; }
+.form-contacto input:focus,
+.form-contacto textarea:focus {
+    outline: none;
+    border-color: #9fcf35;
+    box-shadow: 0 0 0 4px rgba(200,255,77,.12);
+}
+.form-contacto button[type="submit"] { min-height: 52px; border-radius: 12px; }
+
+/* Perfil: acabado de panel */
+.perfil-envoltura {
+    width: min(720px, 92%);
+    padding: 42px;
+    border-radius: 22px;
+    background: #fff;
+    box-shadow: 0 20px 55px rgba(20,23,28,.1);
+}
+.mis-compras-vacio { background: linear-gradient(145deg, #f8f7f3, #efede7); }
+
+/* Footer más limpio */
+footer { margin-top: 0; }
+
+/* Responsive */
+@media (max-width: 900px) {
+    .acceso-envoltura { grid-template-columns: 1fr; min-height: auto; }
+    .acceso-panel { min-height: 250px; }
+    .formulario { padding: 42px 32px; }
+    .producto-imagen { height: 205px; }
+}
+@media (max-width: 700px) {
+    header { padding: 15px 5%; }
+    header nav { gap: 10px; }
+    header nav a { margin-left: 10px; font-size: 13px; }
+    .inicio { padding-top: 65px; }
+    .inicio h1 { font-size: 40px; }
+    .inicio-metricas { flex-wrap: wrap; gap: 18px; }
+    .acceso { padding: 20px 0; }
+    .acceso-panel { padding: 38px 28px; }
+    .acceso-panel h2 { font-size: 29px; }
+    .formulario { padding: 38px 26px; }
+    .detalle-imagen { height: 340px; }
+}
+@media (max-width: 520px) {
+    .producto-imagen { height: 190px; }
+    .promo-card img { height: 165px; }
+    .form-contacto { padding: 24px 20px; }
 }
 
-.mis-compras-vacio {
-    padding: 26px;
-    border: 1px dashed var(--line);
-    border-radius: var(--radius);
-    color: var(--steel);
-    font-size: 14px;
-    text-align: center;
+
+/* ===== DISEÑO PREMIUM TECHZONE - BLOQUE 1 ===== */
+:root{--tz-green:#c8ff4d;--tz-blue:#6ec3ff;--tz-coral:#ff8f70;--tz-dark:#14171c;--tz-panel:#1e222a;--tz-muted:#697384}
+body{background:linear-gradient(180deg,#fbfaf7 0%,#f2f4f7 100%)}
+header{backdrop-filter:blur(14px);background:rgba(255,255,255,.88);box-shadow:0 8px 30px rgba(20,23,28,.06);border-bottom:1px solid rgba(20,23,28,.08)}
+nav a{transition:.25s ease;border-radius:999px;padding:9px 13px}nav a:hover{background:#eef2f5;transform:translateY(-1px)}
+.logo-img{filter:drop-shadow(0 4px 8px rgba(20,23,28,.12))}
+.inicio{position:relative;overflow:hidden;background:radial-gradient(circle at 85% 30%,rgba(110,195,255,.22),transparent 28%),radial-gradient(circle at 15% 80%,rgba(200,255,77,.18),transparent 25%)}
+.inicio:before{content:"";position:absolute;width:320px;height:320px;border:1px solid rgba(20,23,28,.08);border-radius:50%;right:-90px;top:-100px}
+.inicio-contenido h1{font-size:clamp(42px,6vw,76px);letter-spacing:-3px;line-height:.98}.inicio-contenido p{font-size:18px;line-height:1.75;color:#596273;max-width:650px}.inicio-ilustracion{background:rgba(255,255,255,.55);border:1px solid rgba(20,23,28,.08);border-radius:34px;padding:20px;box-shadow:0 24px 70px rgba(20,23,28,.12)}
+.boton{box-shadow:0 10px 25px rgba(20,23,28,.12);border-radius:14px}.boton:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(20,23,28,.16)}
+.publicidad-techzone{max-width:1180px;margin:35px auto 70px;padding:0 6%;display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:stretch}.publicidad-contenido{background:linear-gradient(135deg,#14171c,#292f38);color:#fff;border-radius:30px;padding:48px;box-shadow:0 25px 60px rgba(20,23,28,.2);position:relative;overflow:hidden}.publicidad-contenido:after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:var(--tz-green);opacity:.09;right:-50px;bottom:-80px}.publicidad-tag{font-size:11px;letter-spacing:2px;color:var(--tz-green);font-weight:800}.publicidad-contenido h2{font-size:38px;line-height:1.05;max-width:620px;margin:14px 0}.publicidad-contenido p{color:#cbd2dc;line-height:1.7;max-width:620px}.publicidad-beneficios{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}.publicidad-beneficios span{background:rgba(255,255,255,.08);padding:9px 13px;border-radius:999px;font-size:13px}.publicidad-visual{border-radius:30px;overflow:hidden;background:linear-gradient(135deg,#dff3ff,#f2ffd2);min-height:330px;display:flex;align-items:center;justify-content:center;box-shadow:0 25px 60px rgba(20,23,28,.12)}.publicidad-visual img{width:92%;height:92%;object-fit:contain;mix-blend-mode:multiply;transition:.4s}.publicidad-visual:hover img{transform:scale(1.06) rotate(-2deg)}
+.promos{padding:70px 6%;background:linear-gradient(180deg,#fff,#f5f7f9)}.promos-cabecera h2,.categorias h2{font-size:36px;letter-spacing:-1px}.promos-lista{gap:24px}.promo-card{border:1px solid #e2e6eb;border-radius:24px;overflow:hidden;background:#fff;box-shadow:0 12px 35px rgba(20,23,28,.08);transition:.3s}.promo-card:hover{transform:translateY(-8px);box-shadow:0 22px 45px rgba(20,23,28,.14)}.promo-card img{height:245px;width:100%;object-fit:contain;padding:22px;background:linear-gradient(135deg,#f6f8fa,#edf3f7)}.promo-etiqueta{border-radius:999px;box-shadow:0 6px 15px rgba(20,23,28,.1)}
+.categorias{padding:75px 6%}.categoria{border:1px solid #e2e6eb;border-radius:22px;background:#fff;padding:28px;box-shadow:0 10px 28px rgba(20,23,28,.06);transition:.3s}.categoria:hover{transform:translateY(-6px);border-color:#cfd6df;box-shadow:0 20px 38px rgba(20,23,28,.1)}.categoria-icono{box-shadow:0 10px 22px rgba(20,23,28,.08)}
+.pagina-cabecera{background:radial-gradient(circle at 80% 20%,rgba(110,195,255,.18),transparent 25%),linear-gradient(135deg,#14171c,#2a3039);color:#fff;padding:75px 6%;position:relative;overflow:hidden}.pagina-cabecera h1{font-size:56px;letter-spacing:-2px}.pagina-cabecera p{color:#c9d0da;font-size:17px}
+.productos{gap:26px}.producto{background:#fff;border:1px solid #e2e6eb;border-radius:24px;padding:0 0 22px;overflow:hidden;box-shadow:0 12px 32px rgba(20,23,28,.07);transition:.3s}.producto:hover{transform:translateY(-7px);box-shadow:0 22px 45px rgba(20,23,28,.13)}.producto-imagen{height:250px!important;background:linear-gradient(135deg,#f6f8fa,#eaf0f4)!important;padding:22px!important}.producto-imagen img{width:100%;height:100%;object-fit:contain;transition:.35s}.producto:hover .producto-imagen img{transform:scale(1.07)}.producto h3,.producto-specs,.producto-pie{margin-left:22px;margin-right:22px}.producto-etiqueta{margin:15px;border-radius:999px}
+.form-contacto,.formulario,.login-card,.registro-card{border:1px solid #e0e5eb!important;border-radius:28px!important;background:rgba(255,255,255,.94)!important;box-shadow:0 22px 60px rgba(20,23,28,.1)!important;padding:34px!important}.campo input,.campo textarea,.formulario input,.login-card input,.registro-card input{border:1px solid #d9dfe6!important;border-radius:14px!important;background:#f8fafb!important;padding:15px 16px!important;transition:.2s}.campo input:focus,.campo textarea:focus,.formulario input:focus,.login-card input:focus,.registro-card input:focus{outline:none!important;border-color:var(--tz-blue)!important;box-shadow:0 0 0 4px rgba(110,195,255,.16)!important;background:#fff!important}.form-contacto h3{font-size:28px}.contacto{padding:70px 6%}.contacto-mapa{border-radius:28px!important;overflow:hidden!important;box-shadow:0 22px 55px rgba(20,23,28,.16)!important;border:1px solid #dce2e8}.contacto-mapa svg{width:100%;height:100%;min-height:360px;display:block}.contacto-mapa-pie{background:#14171c!important;color:#fff!important;padding:18px 22px!important;display:flex;justify-content:space-between;gap:15px}.contacto-fila{background:#fff;border:1px solid #e5e9ee;border-radius:18px;padding:15px;box-shadow:0 7px 20px rgba(20,23,28,.05);margin-bottom:12px}.red-social{width:44px;height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#fff;border:1px solid #e1e6eb;box-shadow:0 8px 18px rgba(20,23,28,.07);transition:.25s}.red-social:hover{transform:translateY(-3px);background:#14171c;color:#fff}
+.nosotros-cuerpo{background:#fff;border:1px solid #e1e6eb;border-radius:30px;padding:45px;box-shadow:0 20px 55px rgba(20,23,28,.08);margin:40px 6%}.nosotros-texto p{font-size:17px;line-height:1.8;color:#596273}.nosotros-datos{gap:15px}.dato-tarjeta,.valor,.cifra{border:1px solid #e1e6eb!important;border-radius:20px!important;background:#fff!important;box-shadow:0 10px 25px rgba(20,23,28,.06)!important;transition:.25s}.dato-tarjeta:hover,.valor:hover{transform:translateY(-4px)}.valores{padding:0 6% 70px;gap:20px}
+.perfil-envoltura{max-width:1050px;margin:65px auto;padding:38px!important;background:#fff;border:1px solid #e0e5eb;border-radius:30px;box-shadow:0 25px 65px rgba(20,23,28,.1)!important}.perfil-cabecera{background:linear-gradient(135deg,#14171c,#303743);color:#fff!important;border-radius:24px;padding:30px!important;margin-bottom:30px}.perfil-icono{box-shadow:0 0 0 7px rgba(200,255,77,.14),0 15px 30px rgba(0,0,0,.25)}.estado{background:rgba(200,255,77,.15)!important;color:#c8ff4d!important;border:1px solid rgba(200,255,77,.3);padding:7px 12px;border-radius:999px}.fila-info{padding:20px!important;border-bottom:1px solid #edf0f3}.perfil-seccion-titulo{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:#697384;font-weight:800}.perfil-bloque{border:1px solid #e1e6eb;border-radius:20px;padding:22px;background:#fafbfc;box-shadow:0 8px 20px rgba(20,23,28,.04)}
+.landing-marker header{box-shadow:0 10px 35px rgba(20,23,28,.08)}.landing-marker .inicio{min-height:calc(100vh - 80px);display:flex;align-items:center}.landing-marker .inicio-grid{max-width:1200px}.landing-marker .inicio-contenido h1{font-size:clamp(50px,7vw,86px)}.landing-marker .inicio-ilustracion{transform:rotate(1deg);animation:tzFloat 5s ease-in-out infinite}.landing-marker .inicio-metricas{gap:18px}.landing-marker .metrica{background:rgba(255,255,255,.8);border:1px solid #e0e5eb;border-radius:18px;padding:15px;box-shadow:0 10px 25px rgba(20,23,28,.06)}@keyframes tzFloat{0%,100%{transform:translateY(0) rotate(1deg)}50%{transform:translateY(-8px) rotate(-1deg)}}
+@media(max-width:800px){.publicidad-techzone{grid-template-columns:1fr;padding:0 5%}.publicidad-contenido{padding:32px}.publicidad-contenido h2{font-size:31px}.pagina-cabecera h1{font-size:42px}.nosotros-cuerpo,.perfil-envoltura{margin:30px 5%;padding:25px!important}.contacto{padding:35px 5%}.contacto-mapa svg{min-height:280px}}
+
+/* ============================================================
+   TECHZONE — REDISEÑO VISUAL FINAL
+   ============================================================ */
+:root{
+  --tz-green:#c8ff4d;--tz-blue:#6ec3ff;--tz-coral:#ff8f70;
+  --tz-purple:#b9a6ff;--tz-dark:#111419;--tz-text:#161a20;
 }
+html{scroll-behavior:smooth}
+body{overflow-x:hidden}
+header{position:sticky;top:0;z-index:50}
+
+/* Landing: bienvenida sin logo gigante */
+.landing-marker .inicio{min-height:calc(100vh - 76px);display:flex;align-items:center;padding:90px 6%;background:
+ radial-gradient(circle at 78% 20%,rgba(110,195,255,.26),transparent 25%),
+ radial-gradient(circle at 18% 75%,rgba(200,255,77,.22),transparent 27%),
+ linear-gradient(135deg,#fdfdfb 0%,#eef3f7 100%)}
+.landing-marker .inicio-grid{max-width:1180px;width:100%;margin:auto;grid-template-columns:1.05fr .95fr;gap:70px}
+.landing-marker .inicio-contenido{position:relative;z-index:2}
+.landing-marker .inicio-contenido h1{font-size:clamp(52px,7vw,86px);max-width:760px;margin-bottom:24px}
+.landing-marker .inicio-contenido h1 em{display:block;color:#56616f;font-style:normal}
+.landing-marker .inicio-contenido p{font-size:19px;max-width:590px}
+.landing-marker .inicio-acciones{margin-top:32px}
+.landing-marker .inicio-ilustracion{min-height:440px;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(235,241,246,.72));border:1px solid rgba(20,23,28,.1);box-shadow:0 30px 90px rgba(20,23,28,.14);position:relative}
+.landing-marker .inicio-ilustracion:before{content:'TECNOLOGÍA · ACCESORIOS · INNOVACIÓN';position:absolute;top:22px;left:26px;font:700 10px var(--font-mono);letter-spacing:2px;color:#677281}
+.landing-marker .inicio-ilustracion svg{width:min(430px,90%);height:auto;filter:drop-shadow(0 25px 25px rgba(20,23,28,.14))}
+.landing-marker header{background:rgba(255,255,255,.9)}
+.landing-marker header nav a{padding:10px 18px}
+
+/* Inicio principal */
+.inicio:not(.landing-marker .inicio){padding-top:100px;padding-bottom:100px}
+.inicio-contenido{animation:tzUp .65s ease both}
+.inicio-ilustracion{animation:tzFloat .8s ease both}
+.inicio-acciones .boton{padding:15px 23px}
+
+/* Más publicidad */
+.publicidad-techzone{position:relative}
+.publicidad-contenido h2{font-size:clamp(34px,4vw,52px)}
+.publicidad-techzone:before{content:'PROMO';position:absolute;right:34px;top:-13px;background:var(--tz-green);color:#111419;padding:7px 14px;border-radius:999px;font:800 10px var(--font-mono);letter-spacing:1px;z-index:2;box-shadow:0 8px 18px rgba(20,23,28,.12)}
+.confianza-techzone{padding:95px 6%;background:#111419;color:#fff;position:relative;overflow:hidden}
+.confianza-techzone:after{content:'';position:absolute;width:480px;height:480px;border:1px solid rgba(200,255,77,.12);border-radius:50%;right:-180px;top:-210px;box-shadow:0 0 0 55px rgba(200,255,77,.025),0 0 0 110px rgba(110,195,255,.025)}
+.confianza-titulo{max-width:820px;margin:0 auto 45px;text-align:center;position:relative;z-index:1}
+.confianza-titulo h2{font-size:clamp(32px,4vw,50px);line-height:1.05;margin:12px 0 15px;letter-spacing:-1.5px}
+.confianza-titulo p{color:#aeb7c2;font-size:16px;line-height:1.7}
+.confianza-grid{max-width:1120px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;position:relative;z-index:1}
+.confianza-card{display:flex;gap:18px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:22px;background:rgba(255,255,255,.045);transition:.3s}
+.confianza-card:hover{transform:translateY(-6px);background:rgba(255,255,255,.075);border-color:rgba(200,255,77,.35)}
+.confianza-num{font:800 13px var(--font-mono);color:var(--tz-green);padding-top:3px}
+.confianza-card h3{font-size:18px;margin-bottom:7px}.confianza-card p{color:#aeb7c2;font-size:13px;line-height:1.65}
+.banner-oferta{max-width:1120px;margin:75px auto;padding:42px 48px;border-radius:28px;background:linear-gradient(110deg,#c8ff4d,#a9ecf7 52%,#b9a6ff);display:flex;align-items:center;justify-content:space-between;gap:30px;box-shadow:0 25px 60px rgba(20,23,28,.14);position:relative;overflow:hidden}
+.banner-oferta:after{content:'SALE';position:absolute;right:80px;bottom:-45px;font-size:130px;font-weight:900;color:rgba(255,255,255,.24);transform:rotate(-8deg)}
+.banner-oferta-tag{font:800 10px var(--font-mono);letter-spacing:2px;color:#303a26}.banner-oferta h2{font-size:clamp(28px,4vw,45px);line-height:1.05;max-width:650px;margin:10px 0}.banner-oferta p{max-width:650px;color:#33404a}.banner-oferta .boton{position:relative;z-index:2;background:#111419;color:#fff}
+
+/* Ofertas más publicitarias */
+.promos-cabecera{display:flex;align-items:end;justify-content:space-between;gap:20px}
+.promos-cabecera:after{content:'OFERTAS • NUEVOS • MÁS VENDIDOS';font:700 10px var(--font-mono);letter-spacing:1.5px;color:#7a8593}
+.promo-card{position:relative}.promo-card:after{content:'VER PRODUCTO →';position:absolute;right:18px;bottom:18px;font:700 10px var(--font-mono);color:#7b8591;opacity:0;transition:.25s}.promo-card:hover:after{opacity:1}
+.promo-info{padding:20px 22px 8px}.promo-info h3{font-size:18px;margin-bottom:10px}.promo-precio{font-size:20px!important;font-weight:800}.promo-precio-antes{font-size:12px!important;color:#8c949d;text-decoration:line-through;margin-right:6px}
+
+/* Catálogo premium */
+.productos{align-items:stretch}.producto{position:relative}.producto::before{content:'TECHZONE';position:absolute;right:17px;top:18px;font:800 9px var(--font-mono);letter-spacing:1px;color:#9ba3ad;opacity:.75;z-index:2}.producto-imagen{position:relative}.producto-imagen:after{content:'';position:absolute;inset:12px;border:1px solid rgba(20,23,28,.05);border-radius:15px;pointer-events:none}.producto:hover{border-color:#cbd4dd}.categoria-titulo{display:flex;align-items:center;gap:15px;margin-top:65px}.categoria-titulo:after{content:'';height:1px;background:#dce2e8;flex:1}
+.catalogo-submenu{background:#fff;border:1px solid #e1e6eb;border-radius:999px;padding:7px;box-shadow:0 10px 28px rgba(20,23,28,.07)}
+.catalogo-submenu a{border-radius:999px!important}
+
+/* Nosotros */
+.nosotros-cuerpo{max-width:1120px!important;gap:55px!important}
+.nosotros-texto{font-size:16px}.nosotros-texto>p{line-height:1.85}
+.mision-card{margin:30px 0;padding:34px;border-radius:26px;background:linear-gradient(145deg,#15191f,#252b34);color:#fff;box-shadow:0 22px 55px rgba(20,23,28,.16);position:relative;overflow:hidden}
+.mision-card:after{content:'MISSION';position:absolute;right:-20px;bottom:-35px;font-size:100px;font-weight:900;color:rgba(255,255,255,.035)}
+.mision-card h2{font-size:28px;line-height:1.15;max-width:600px;margin:10px 0}.mision-card p{color:#b9c2cd;line-height:1.7;max-width:650px}.mision-linea{margin-top:25px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;font:700 9px var(--font-mono);letter-spacing:1.5px;color:#c8ff4d}
+.dato-tarjeta{transition:.25s}.dato-tarjeta:hover{transform:translateX(5px);box-shadow:0 12px 30px rgba(20,23,28,.08)}
+.cifra{border-radius:18px;transition:.25s}.cifra:hover{transform:translateY(-5px);background:#fff;box-shadow:0 15px 35px rgba(20,23,28,.08)}
+.valores .valor{border-radius:22px;transition:.25s}.valores .valor:hover{transform:translateY(-5px);box-shadow:0 18px 35px rgba(20,23,28,.08)}
+
+/* Perfil más completo */
+.perfil-envoltura{width:min(920px,92%);padding:0;overflow:hidden;background:#fff}
+.perfil-envoltura:before{content:'MI ESPACIO TECHZONE';display:block;padding:13px 30px;background:#111419;color:#c8ff4d;font:800 10px var(--font-mono);letter-spacing:2px}
+.perfil-cabecera{padding:38px 42px 30px;margin:0;background:linear-gradient(135deg,#eef8e1,#eaf5fb);border-bottom:0;position:relative}
+.perfil-cabecera:after{content:'Cuenta verificada';position:absolute;right:34px;top:32px;font:700 10px var(--font-mono);color:#596674}
+.perfil-icono{width:82px;height:82px;font-size:28px;box-shadow:0 12px 28px rgba(20,23,28,.12)}
+.perfil-cabecera h3{font-size:26px}.perfil-cabecera .estado{padding:5px 12px}
+.perfil-seccion-titulo{margin:30px 42px 14px;font-weight:800}
+.informacion{margin:0 42px;border:1px solid #e2e7ec;border-radius:18px;overflow:hidden}
+.fila-info{padding:18px 20px!important;background:#fff;transition:.2s}.fila-info:nth-child(even){background:#f8fafb}.fila-info:hover{background:#eef7e4}
+.campo-valor{font-weight:600}.mis-compras-vacio{margin:0 42px;padding:30px;border-radius:18px;border:1px dashed #ccd4dc!important;text-align:center;line-height:1.7;color:#687484}
+.perfil-acciones{padding:10px 42px 42px}.perfil-acciones .boton{min-height:48px}
+
+/* Contacto y mapa */
+.contacto{padding-top:75px!important;padding-bottom:90px!important}.contacto-grid{max-width:1160px!important;gap:55px!important}.contacto-info>h2{font-size:50px;letter-spacing:-2px}.contacto-info>p{font-size:17px;line-height:1.75}
+.contacto-mapa{position:relative;border-radius:28px!important;overflow:hidden!important;box-shadow:0 25px 65px rgba(20,23,28,.18)!important;border:8px solid #fff!important;background:#17202a!important}
+.contacto-mapa svg{width:100%;height:390px!important;display:block;filter:saturate(.85)}
+.mapa-badge{position:absolute;top:20px;left:20px;display:flex;align-items:center;gap:10px;padding:11px 15px;background:rgba(17,20,25,.9);border:1px solid rgba(255,255,255,.13);border-radius:14px;color:#fff;backdrop-filter:blur(10px);z-index:3}.mapa-badge strong{display:block;font-size:13px}.mapa-badge small{display:block;color:#aab3bd;font-size:10px;margin-top:2px}.mapa-punto{width:10px;height:10px;border-radius:50%;background:#c8ff4d;box-shadow:0 0 0 6px rgba(200,255,77,.13)}
+.mapa-controles{position:absolute;right:20px;top:20px;display:grid;gap:5px;z-index:3}.mapa-controles button{width:36px;height:36px;border:0;border-radius:10px;background:rgba(255,255,255,.94);font-size:20px;cursor:default;box-shadow:0 6px 18px rgba(0,0,0,.15)}
+.mapa-ruta{position:absolute;left:20px;bottom:58px;background:#c8ff4d;color:#111419;padding:9px 13px;border-radius:999px;font-size:11px;font-weight:800;z-index:3;box-shadow:0 10px 25px rgba(0,0,0,.18)}
+.contacto-mapa-pie{background:#111419!important;color:#fff!important;padding:17px 20px!important;border:0!important}.contacto-mapa-pie span:last-child{color:#7f8a97!important}
+
+/* Formularios */
+.formulario,.form-contacto{position:relative}.formulario:before{content:'TECHZONE';position:absolute;right:28px;top:25px;font:800 9px var(--font-mono);letter-spacing:1.5px;color:#9ba3ad}.formulario h2,.form-contacto h3{letter-spacing:-.5px}.campo input,.campo textarea{font-size:15px}.campo label{font-weight:700}.formulario .boton-ancho,.form-contacto .boton{background:linear-gradient(135deg,#14171c,#303640);color:#fff}.formulario .boton-ancho:hover,.form-contacto .boton:hover{background:#111419}
+
+@keyframes tzUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes tzFloat{from{opacity:0;transform:translateY(22px) scale(.98)}to{opacity:1;transform:none}}
+
+@media(max-width:900px){
+ .landing-marker .inicio-grid{grid-template-columns:1fr;gap:35px}.landing-marker .inicio-ilustracion{min-height:330px}
+ .confianza-grid{grid-template-columns:1fr}.banner-oferta{margin:55px 6%;padding:34px;flex-direction:column;align-items:flex-start}.banner-oferta:after{right:-10px}
+ .perfil-cabecera:after{display:none}.informacion,.mis-compras-vacio{margin-left:26px;margin-right:26px}.perfil-seccion-titulo{margin-left:26px;margin-right:26px}.perfil-acciones{padding-left:26px;padding-right:26px}
+ .contacto-mapa svg{height:330px!important}
 }
+@media(max-width:600px){
+ .landing-marker .inicio{padding:55px 6%}.landing-marker .inicio-contenido h1{font-size:45px;letter-spacing:-2px}.landing-marker .inicio-ilustracion{min-height:270px}.landing-marker .inicio-ilustracion:before{font-size:8px}
+ .promos-cabecera{display:block}.promos-cabecera:after{display:block;margin-top:10px}.promo-card img{height:210px}
+ .pagina-cabecera h1{font-size:42px}.contacto-info>h2{font-size:40px}.contacto-mapa{border-width:5px!important}.contacto-mapa svg{height:280px!important}.mapa-ruta{font-size:9px;max-width:75%}
+ .mision-card{padding:27px}.mision-card h2{font-size:24px}
+ .perfil-cabecera{padding:30px 24px}.perfil-icono{width:68px;height:68px}.perfil-cabecera h3{font-size:22px}.informacion,.mis-compras-vacio{margin-left:18px;margin-right:18px}.perfil-seccion-titulo{margin-left:18px;margin-right:18px}.perfil-acciones{padding:8px 18px 28px}
+}
+
+/* ===== MEJORA VISUAL FINAL TECHZONE ===== */
+.boton,.boton-resaltado,.boton-contorno{font-weight:800!important;letter-spacing:.1px!important}
+.boton{color:#10151b!important;background:linear-gradient(135deg,#d9ff73,#c8ff4d)!important;box-shadow:0 10px 24px rgba(20,23,28,.14)!important}
+.boton:hover{color:#10151b!important;transform:translateY(-2px)}
+.boton-secundario{color:#fff!important;background:#252b34!important;border-color:#67717e!important}
+.boton-contorno{color:#14171c!important;background:#fff!important;border:1.5px solid #1d232b!important}
+.boton-contorno:hover{color:#fff!important;background:#14171c!important}
+.boton-mini{padding:10px 15px!important;font-size:12px!important}
+
+/* Landing */
+.landing-marker header{background:rgba(10,13,17,.96);border-bottom:1px solid #2e3540;position:sticky;top:0;z-index:20}
+.landing-marker header .logo,.landing-marker header nav a{color:#fff!important}
+.landing-marker header nav a:hover{color:#c8ff4d!important}
+.landing-marker .inicio{background:radial-gradient(circle at 80% 15%,#26313e 0,#14171c 35%,#0e1115 100%);position:relative}
+.landing-marker .inicio:before{content:'TECHZONE / ELECTRONICS';position:absolute;top:32px;right:6%;font:700 10px var(--font-mono);letter-spacing:2px;color:#6f7b89}
+.landing-marker .inicio-contenido{animation:tzUp .6s ease both}
+.landing-marker .inicio-ilustracion{animation:tzFloat .8s ease .15s both;filter:drop-shadow(0 25px 35px rgba(0,0,0,.25))}
+.landing-marker .inicio-acciones .boton-secundario{background:transparent!important;color:#fff!important}
+.landing-marker .inicio-acciones .boton-secundario:hover{background:#fff!important;color:#14171c!important}
+.landing-kicker,.visitanos-kicker{display:inline-block;font:800 10px var(--font-mono);letter-spacing:2px;color:#66717d;margin-bottom:12px}
+.razones{background:#fff!important;padding:90px 6%!important}
+.razones-cabecera{max-width:850px!important;margin-bottom:36px!important}
+.razones-cabecera h2{font-size:clamp(34px,5vw,56px)!important;line-height:1.05!important}
+.razon{position:relative!important;background:linear-gradient(145deg,#fff,#f4f7f2)!important;border:1px solid #dfe5df!important;border-radius:22px!important;padding:30px!important;box-shadow:0 12px 35px rgba(20,23,28,.06)!important}
+.razon-num{display:inline-flex;width:38px;height:38px;border-radius:12px;background:#14171c;color:#c8ff4d;align-items:center;justify-content:center;font:700 11px var(--font-mono);margin-bottom:22px}
+.razon h3{font-size:21px!important}.razon p{color:#596674!important}
+.landing-cta{margin-top:34px;padding:24px 28px;border-radius:20px;background:#14171c;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:24px;box-shadow:0 18px 40px rgba(20,23,28,.14)}
+.landing-cta strong{display:block;font:700 20px var(--font-display);margin-bottom:5px}.landing-cta span{color:#aeb7c1;font-size:13px}
+.boton-landing-cta{white-space:nowrap}.boton-landing-cta span{color:#14171c!important;font-size:18px}
+.landing-publicidad{margin:0 6% 70px;padding:42px 46px;border-radius:26px;background:linear-gradient(120deg,#c8ff4d,#eaffc2 52%,#d8edf9);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:28px;box-shadow:0 20px 45px rgba(20,23,28,.1)}
+.landing-publicidad-badge{font:800 10px var(--font-mono);letter-spacing:1.5px;background:#14171c;color:#c8ff4d;border-radius:999px;padding:9px 13px}.landing-publicidad h2{font-size:30px}.landing-publicidad p{color:#48525d;margin-top:5px}.landing-publicidad-link{font-weight:800;text-decoration:none;color:#14171c;border-bottom:2px solid #14171c;padding-bottom:4px}
+.contacto-resumen{margin:0 6% 70px!important;border-radius:30px!important;overflow:hidden;position:relative;background:radial-gradient(circle at 85% 30%,#384452,#14171c 60%)!important;color:#fff!important;box-shadow:0 22px 50px rgba(20,23,28,.2)}
+.contacto-resumen:before{content:'05';position:absolute;right:5%;bottom:-45px;font:800 180px var(--font-display);color:rgba(255,255,255,.035)}
+.contacto-resumen-envoltura{padding:58px!important;position:relative;z-index:1}.visitanos-kicker{color:#c8ff4d}.contacto-resumen h2{color:#fff!important;font-size:48px!important;margin-bottom:8px}.contacto-resumen-direccion{color:#fff!important;font-size:18px!important;font-weight:700}.visitanos-horario{color:#9ea8b4;font-size:14px;margin-top:5px}.visitanos-acciones{display:flex;gap:18px;align-items:center;margin-top:25px}.boton-resaltado{display:inline-flex;padding:13px 22px;background:#c8ff4d;color:#14171c!important;border-radius:10px;text-decoration:none}.visitanos-link{color:#fff;text-decoration:none;font-weight:700}.footer-redes .red-social,.contacto-redes .red-social{background:#252c35!important;color:#fff!important;border:1px solid #4a5562!important;box-shadow:0 8px 20px rgba(0,0,0,.15)}.footer-redes .red-social svg,.contacto-redes .red-social svg{width:21px!important;height:21px!important;stroke:#c8ff4d!important}.footer-redes .red-social:hover,.contacto-redes .red-social:hover{background:#c8ff4d!important;color:#14171c!important}.footer-redes .red-social:hover svg,.contacto-redes .red-social:hover svg{stroke:#14171c!important}
+
+/* Catálogo y productos */
+.pagina-cabecera{background:radial-gradient(circle at 80% 10%,#303b49,#14171c 65%)!important;border-bottom:0!important;padding:70px 0!important}.pagina-cabecera h1,.pagina-cabecera p{color:#fff!important}.pagina-cabecera p{color:#aeb7c1!important}
+.categoria-titulo{margin-top:58px!important;margin-bottom:20px!important;padding:18px 22px!important;border-radius:18px!important;background:#14171c!important;color:#fff!important;box-shadow:0 12px 28px rgba(20,23,28,.1)}
+.productos{gap:22px!important}.producto{border:1px solid #dce2e7!important;border-radius:22px!important;background:#fff!important;padding:18px!important;box-shadow:0 12px 32px rgba(20,23,28,.07)!important;transition:transform .2s,box-shadow .2s!important;overflow:hidden}.producto:hover{transform:translateY(-5px);box-shadow:0 20px 45px rgba(20,23,28,.13)!important}
+.producto-imagen{height:245px!important;border-radius:16px!important;background:linear-gradient(145deg,#f7f9fb,#e9eef2)!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden!important}.producto-imagen img{width:100%!important;height:100%!important;object-fit:contain!important;padding:20px!important;mix-blend-mode:multiply}.producto-etiqueta{background:#14171c!important;color:#c8ff4d!important;border-radius:999px!important;padding:6px 10px!important;font-size:9px!important;font-weight:800!important}
+.producto h3{font-size:20px!important;margin-top:18px!important;color:#14171c!important}.producto-specs{color:#596674!important}.precio{color:#14171c!important;font-weight:800!important;font-size:20px!important}
+/* Formulario nosotros / datos */
+.nosotros-cuerpo{gap:38px!important}.nosotros-texto{font-size:16px!important;color:#46515d!important}.nosotros-datos{gap:14px!important}.dato-tarjeta{background:#fff!important;border:1px solid #dce2e7!important;border-radius:18px!important;padding:20px!important;box-shadow:0 10px 25px rgba(20,23,28,.06)!important}.dato-tarjeta .etiqueta,.dato-tarjeta .valor,.dato-texto-valor{color:#14171c!important}.dato-tarjeta .etiqueta{color:#6a7582!important}.mision-card{border-radius:24px!important;background:linear-gradient(135deg,#14171c,#29323c)!important;box-shadow:0 20px 45px rgba(20,23,28,.15)!important}.mision-card h2,.mision-card p{color:#fff!important}.mision-card p{color:#c0c8d0!important}.mision-linea{color:#c8ff4d!important;border-top-color:#46515d!important}.nosotros-cifras{gap:14px!important}.cifra{border:1px solid #dce2e7!important;border-radius:18px!important;background:#fff!important;padding:22px!important;box-shadow:0 8px 24px rgba(20,23,28,.05)!important}.cifra .valor{color:#14171c!important}.cifra .etiqueta{color:#65717e!important}.valores .valor{border-radius:20px!important;background:#f2f6ef!important;border:1px solid #dfe8da!important;padding:25px!important}.valores .valor h3{color:#14171c!important}
+/* Contacto */
+.contacto-info{background:#fff;padding:34px;border-radius:26px;box-shadow:0 15px 40px rgba(20,23,28,.08);border:1px solid #e2e7eb}.contacto-info>h2{color:#14171c!important}.contacto-info>p{color:#596674!important}.contacto-fila{padding:14px!important;border-radius:15px!important;background:#f6f8f9!important;margin-bottom:9px}.contacto-fila .valor{color:#14171c!important;font-weight:700}.contacto-fila .etiqueta{color:#697583!important}.contacto-redes{padding:16px 0!important}.form-contacto{background:#f7f9fa!important;border:1px solid #dfe5e9!important;border-radius:22px!important;padding:25px!important;box-shadow:none!important}.form-contacto h3{color:#14171c!important}.form-contacto-subtitulo{color:#687482!important}.campo label{color:#26303a!important}.campo input,.campo textarea{background:#fff!important;color:#14171c!important;border:1.5px solid #cbd3db!important;border-radius:12px!important}.campo input::placeholder,.campo textarea::placeholder{color:#89939e!important}.campo input:focus,.campo textarea:focus{border-color:#7c9c34!important;box-shadow:0 0 0 4px rgba(200,255,77,.2)!important}
+.contacto-mapa{background:#121820!important}.contacto-mapa svg{height:430px!important;background:linear-gradient(145deg,#16212b,#293946)!important}.contacto-mapa:after{content:'MAPA DE UBICACIÓN · AGUASCALIENTES';position:absolute;left:20px;top:86px;color:#8995a2;font:700 9px var(--font-mono);letter-spacing:1.5px;z-index:2}.mapa-ruta{background:#fff!important;color:#14171c!important}.mapa-punto{background:#c8ff4d!important}.mapa-controles button{color:#14171c!important;font-weight:800}
+/* Detalle */
+.detalle-tarjeta{border-radius:28px!important;border:1px solid #dce2e7!important;box-shadow:0 20px 55px rgba(20,23,28,.1)!important;overflow:hidden}.detalle-galeria{background:linear-gradient(145deg,#f8fafb,#e9eef2)!important;padding:25px!important}.detalle-imagen{min-height:450px!important;border-radius:20px!important;background:#fff!important;display:flex!important;align-items:center!important;justify-content:center!important;overflow:hidden}.detalle-imagen img{object-fit:contain!important;max-height:420px!important;width:100%!important;padding:35px!important}.detalle-info{padding:42px!important}.detalle-info h1{font-size:42px!important;color:#14171c!important}.detalle-precio{color:#14171c!important;font-size:30px!important;font-weight:800!important}.detalle-descripcion{color:#596674!important;line-height:1.8!important}.detalle-especificaciones-lista{color:#46515d!important}.detalle-acciones .boton{min-height:50px!important}
+/* Perfil */
+.perfil-envoltura{border:1px solid #dce2e7!important;border-radius:28px!important;box-shadow:0 20px 55px rgba(20,23,28,.1)!important}.perfil-cabecera{background:linear-gradient(135deg,#14171c,#29343f)!important;color:#fff!important}.perfil-cabecera h3{color:#fff!important}.perfil-cabecera .estado{background:#c8ff4d!important;color:#14171c!important}.perfil-icono{background:#c8ff4d!important;color:#14171c!important;border:5px solid rgba(255,255,255,.12)}
+@media(max-width:760px){.landing-publicidad{grid-template-columns:1fr;padding:30px}.landing-cta{flex-direction:column;align-items:flex-start}.contacto-resumen-envoltura{padding:36px!important}.contacto-resumen h2{font-size:38px!important}.visitanos-acciones{flex-wrap:wrap}.contacto-info{padding:20px}.detalle-info{padding:28px}.detalle-info h1{font-size:32px!important}}

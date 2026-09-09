@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechZone - Contacto</title>
+    <link rel="icon" type="image/svg+xml" href="img/logo.svg">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">
+            <img src="img/logo.svg" alt="TechZone" class="logo-img">
+            TechZone
+        </a>
+        <nav id="nav-menu" data-pagina="contacto">
+            <a href="nosotros.html">Nosotros</a>
+            <a href="contacto.html" class="activo">Contacto</a>
+        </nav>
+    </header>
+
+    <section class="contacto" id="contacto">
+        <div class="contacto-grid">
+
+            <div class="contacto-info">
+                <h2>Contáctanos</h2>
+                <p>
+                    ¿Dudas sobre un producto o tu pedido? Escríbenos
+                    o pasa a visitarnos, con gusto te ayudamos.
+                </p>
+
+                <div class="contacto-datos">
+                    <div class="contacto-fila">
+                        <span class="contacto-icono contacto-icono-verde">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#14171C" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5 12 13l9-6.5"/></svg>
+                        </span>
+                        <div>
+                            <span class="etiqueta">Correo</span>
+                            <span class="valor">contacto@techzone.mx</span>
+                        </div>
+                    </div>
+                    <div class="contacto-fila">
+                        <span class="contacto-icono contacto-icono-azul">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#14171C" stroke-width="1.8"><path d="M4 4c0 9 7 16 16 16l2-4-6-2-2 2c-2-1-4-3-5-5l2-2-2-6-4 1z"/></svg>
+                        </span>
+                        <div>
+                            <span class="etiqueta">Teléfono</span>
+                            <span class="valor">449 210 5588</span>
+                        </div>
+                    </div>
+                    <div class="contacto-fila">
+                        <span class="contacto-icono contacto-icono-coral">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#14171C" stroke-width="1.8"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
+                        </span>
+                        <div>
+                            <span class="etiqueta">Tienda</span>
+                            <span class="valor">Av. Universidad 501, Aguascalientes, Ags.</span>
+                        </div>
+                    </div>
+                    <div class="contacto-fila">
+                        <span class="contacto-icono contacto-icono-violeta">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#14171C" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                        </span>
+                        <div>
+                            <span class="etiqueta">Horario</span>
+                            <span class="valor">Lun a sáb, 10:00–19:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contacto-redes">
+                    <a href="#" class="red-social" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+                    </a>
+                    <a href="#" class="red-social" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 8.5h2.5V5H14c-2 0-3.5 1.6-3.5 3.5V11H8v3.5h2.5V21H14v-6.5h2.7l.5-3.5h-3.2V8.9c0-.4.3-.4.5-.4Z"/></svg>
+                    </a>
+                    <a href="#" class="red-social" aria-label="WhatsApp">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20l1.3-3.9A7.9 7.9 0 1 1 8.7 19L4 20Z"/><path d="M8.5 9.3c0 3.5 2.7 6.2 6.2 6.2.6 0 .9-.7.5-1.1l-1.4-1.4c-.2-.2-.5-.3-.8-.2l-.9.4a5 5 0 0 1-2.6-2.6l.4-.9c.1-.3 0-.6-.2-.8L8.5 7.5c-.4-.4-1.1-.1-1.1.5Z"/></svg>
+                    </a>
+                </div>
+
+                <form class="form-contacto" id="formulario-contacto">
+                    <h3>Escríbenos</h3>
+                    <p class="form-contacto-subtitulo">Respondemos en menos de 24 horas.</p>
+                    <div class="form-contacto-fila">
+                        <div class="campo">
+                            <label for="contacto-nombre">Nombre</label>
+                            <input type="text" id="contacto-nombre" name="nombre" placeholder="Tu nombre">
+                        </div>
+                        <div class="campo">
+                            <label for="contacto-correo">Correo electrónico</label>
+                            <input type="email" id="contacto-correo" name="correo" placeholder="tucorreo@ejemplo.com">
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <label for="contacto-mensaje">Mensaje</label>
+                        <textarea id="contacto-mensaje" name="mensaje" placeholder="¿En qué te ayudamos?"></textarea>
+                    </div>
+                    <button type="submit" class="boton">Enviar mensaje</button>
+                </form>
+            </div>
+
+            <div class="contacto-mapa">
+                <svg viewBox="0 0 480 260" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="480" height="260" fill="#1E222A"/>
+                    <path d="M0 60 H480 M0 130 H480 M0 200 H480" stroke="#2B3038" stroke-width="1"/>
+                    <path d="M60 0 V260 M160 0 V260 M260 0 V260 M360 0 V260 M420 0 V260" stroke="#2B3038" stroke-width="1"/>
+                    <path d="M0 95 C120 70, 200 150, 480 110" stroke="#5B6472" stroke-width="3" fill="none"/>
+                    <path d="M180 0 C210 90, 150 170, 220 260" stroke="#5B6472" stroke-width="3" fill="none"/>
+                    <circle cx="240" cy="130" r="7" fill="#C8FF4D"/>
+                    <circle cx="240" cy="130" r="14" fill="none" stroke="#C8FF4D" stroke-width="1.5" opacity="0.6"/>
+                    <path d="M240 116 v-22" stroke="#C8FF4D" stroke-width="1.5"/>
+                    <text x="252" y="99" fill="#F7F5F1" font-family="monospace" font-size="12">TechZone</text>
+                </svg>
+                <div class="mapa-badge"><span class="mapa-punto"></span><div><strong>TechZone</strong><small>Estamos aquí</small></div></div>
+                <div class="mapa-controles"><button type="button">+</button><button type="button">−</button></div>
+                <div class="mapa-ruta">📍 Av. Universidad 501 · Aguascalientes</div>
+                <div class="contacto-mapa-pie">
+                    <span>Av. Universidad 501, Aguascalientes</span>
+                    <span>Ubicación ilustrativa</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-envoltura">
+            <div class="footer-marca">
+                <img src="img/logo.svg" alt="">
+                TechZone
+            </div>
+            <div class="footer-redes">
+                <a href="#" class="red-social" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+                </a>
+                <a href="#" class="red-social" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 8.5h2.5V5H14c-2 0-3.5 1.6-3.5 3.5V11H8v3.5h2.5V21H14v-6.5h2.7l.5-3.5h-3.2V8.9c0-.4.3-.4.5-.4Z"/></svg>
+                </a>
+                <a href="#" class="red-social" aria-label="WhatsApp">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20l1.3-3.9A7.9 7.9 0 1 1 8.7 19L4 20Z"/><path d="M8.5 9.3c0 3.5 2.7 6.2 6.2 6.2.6 0 .9-.7.5-1.1l-1.4-1.4c-.2-.2-.5-.3-.8-.2l-.9.4a5 5 0 0 1-2.6-2.6l.4-.9c.1-.3 0-.6-.2-.8L8.5 7.5c-.4-.4-1.1-.1-1.1.5Z"/></svg>
+                </a>
+            </div>
+        </div>
+        <p class="footer-copy">© 2026 TechZone — Tienda de dispositivos electrónicos</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

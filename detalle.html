@@ -15,22 +15,37 @@
             TechZone
         </a>
         <nav id="nav-menu" data-pagina="productos">
-            <a href="productos.html" class="activo">Catálogo</a>
             <a href="nosotros.html">Nosotros</a>
+            <a href="contacto.html">Contacto</a>
         </nav>
     </header>
 
     <section>
-        <div class="detalle-producto" id="detalle-producto">
-            <div class="detalle-imagen" id="detalle-imagen"></div>
-            <span class="detalle-categoria">Ficha de producto</span>
-            <h1 id="detalle-nombre">—</h1>
-            <span class="detalle-precio" id="detalle-precio">—</span>
-            <p class="detalle-descripcion" id="detalle-descripcion">—</p>
+        <div class="detalle-envoltura">
+            <div class="detalle-tarjeta" id="detalle-producto">
 
-            <div class="detalle-acciones">
-                <a href="productos.html" class="boton boton-contorno">Regresar al catálogo</a>
-                <button class="boton" id="boton-agregar-carrito">Agregar al carrito</button>
+                <div class="detalle-galeria">
+                    <div class="detalle-imagen" id="detalle-imagen">
+                        <img id="detalle-imagen-actual" src="" alt="">
+                    </div>
+                    <div class="detalle-miniaturas" id="detalle-miniaturas"></div>
+                </div>
+
+                <div class="detalle-info">
+                    <span class="detalle-categoria-badge" id="detalle-badge">Producto</span>
+                    <h1 id="detalle-nombre">—</h1>
+                    <span class="detalle-precio" id="detalle-precio">—</span>
+                    <p class="detalle-descripcion" id="detalle-descripcion">—</p>
+
+                    <h3 class="detalle-especificaciones-titulo">Especificaciones</h3>
+                    <ul class="detalle-especificaciones-lista" id="detalle-especificaciones"></ul>
+
+                    <div class="detalle-acciones">
+                        <a href="productos.html" class="boton boton-contorno">Regresar al catálogo</a>
+                        <button class="boton" id="boton-agregar-carrito">Agregar al carrito</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
