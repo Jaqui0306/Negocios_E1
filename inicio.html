@@ -14,7 +14,7 @@
             <img src="img/logo.svg" alt="TechZone" class="logo-img">
             TechZone
         </a>
-        <nav>
+        <nav id="nav-menu">
             <a href="inicio.html" class="activo">Inicio</a>
             <a href="productos.html">Catálogo</a>
             <a href="nosotros.html">Nosotros</a>
@@ -22,6 +22,7 @@
             <a href="registro.html">Registro</a>
             <a href="login.html">Iniciar sesión</a>
             <a href="perfil.html">Perfil</a>
+            <a href="#" class="carrito-nav" aria-label="Carrito de compras (próximamente)" onclick="return false;">🛒 <span>Carrito</span><b class="carrito-badge">0</b></a>
         </nav>
     </header>
 
@@ -63,20 +64,21 @@
         </div>
     </section>
 
+
     <section class="publicidad-techzone">
         <div class="publicidad-contenido">
             <span class="publicidad-tag">TECHZONE / ESPECIAL</span>
             <h2>Actualiza tu tecnología sin complicarte.</h2>
             <p>Descubre equipos, accesorios y dispositivos pensados para estudiar, trabajar y disfrutar.</p>
             <div class="publicidad-beneficios"><span>✓ Productos seleccionados</span><span>✓ Atención personalizada</span><span>✓ Catálogo actualizado</span></div>
-            <a href="productos.html" class="boton">Explorar catálogo</a>
+            <a href="productos.html" class="boton">Descubrir productos</a>
         </div>
         <div class="publicidad-visual"><img src="img/laptop.webp" alt="Tecnología TechZone"></div>
     </section>
 
     <section class="promos">
         <div class="promos-cabecera">
-            <h2>Ofertas destacadas</h2>
+            <div><span class="seccion-kicker">TECHZONE / PROMOCIONES</span><h2>Ofertas destacadas</h2><p>Encuentra tecnología seleccionada con precios especiales y novedades para tu día a día.</p></div><a href="productos.html" class="promos-ver-todas">Ver promociones <span>→</span></a>
         </div>
         <div class="promos-lista">
             <a href="detalle.html?id=laptop" class="promo-card">
@@ -126,45 +128,12 @@
             <h2>Renueva tu setup. Mejora tu experiencia.</h2>
             <p>Encuentra laptops, audio, accesorios y tecnología inteligente en un solo lugar.</p>
         </div>
-        <a href="productos.html" class="boton">Ver catálogo completo</a>
+        <a href="productos.html" class="boton">Ver ofertas</a>
     </section>
 
-    <section class="categorias">
-        <div class="categorias-lista">
-            <a href="productos.html" class="categoria">
-                <span class="categoria-icono categoria-icono-computo">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#14171C" stroke-width="1.6"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M2 19h20l-2-3H4z"/></svg>
-                </span>
-                <span class="categoria-codigo">01 / cómputo</span>
-                <h3>Laptops y accesorios</h3>
-                <p>Para clases, home office y diseño.</p>
-            </a>
-            <a href="productos.html" class="categoria">
-                <span class="categoria-icono categoria-icono-audio">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#14171C" stroke-width="1.6"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2" y="14" width="6" height="7" rx="2"/><rect x="16" y="14" width="6" height="7" rx="2"/></svg>
-                </span>
-                <span class="categoria-codigo">02 / audio</span>
-                <h3>Audífonos y bocinas</h3>
-                <p>Sonido claro para el día a día.</p>
-            </a>
-            <a href="productos.html" class="categoria">
-                <span class="categoria-icono categoria-icono-hogar">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#14171C" stroke-width="1.6"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.4c.7.6 1 1.3 1 2.1h6c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3Z"/></svg>
-                </span>
-                <span class="categoria-codigo">03 / hogar</span>
-                <h3>Hogar inteligente</h3>
-                <p>Ilumina y controla tu espacio.</p>
-            </a>
-            <a href="productos.html" class="categoria">
-                <span class="categoria-icono categoria-icono-movil">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#14171C" stroke-width="1.6"><rect x="7" y="3" width="10" height="18" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
-                </span>
-                <span class="categoria-codigo">04 / móvil</span>
-                <h3>Celulares y wearables</h3>
-                <p>Conectividad donde estés.</p>
-            </a>
-        </div>
-    </section>
+
+
+
 
     <footer>
         <div class="footer-envoltura">
@@ -184,7 +153,7 @@
                 </a>
             </div>
         </div>
-        <p class="footer-copy">© 2026 TechZone — Tienda de dispositivos electrónicos</p>
+        <p class="footer-copy">© 2026 TechZone — Tienda de dispositivos electrónicos</p><span class="footer-demo">Sitio demostrativo · Sin base de datos</span>
     </footer>
 
     <script src="js/main.js"></script>

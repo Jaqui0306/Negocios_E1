@@ -143,6 +143,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Modos de ejercicio integrados"
             ]
         }
+    ,
+        teclado_gamer: { nombre: "Teclado Gamer RGB Pro", precio: "$1,799 MXN", categoria: "computo", descripcion: "Teclado de alto rendimiento con iluminación RGB y diseño cómodo para estudio, trabajo y gaming.", imagenes: [], especificaciones: ["Iluminación RGB", "Switches mecánicos", "Conexión USB", "Diseño ergonómico", "Compatible con Windows y Mac"] },
+        webcam: { nombre: "Webcam Vision HD", precio: "$699 MXN", categoria: "computo", descripcion: "Webcam compacta para clases, videollamadas y reuniones en línea.", imagenes: [], especificaciones: ["Resolución Full HD", "Micrófono integrado", "Enfoque automático", "Conexión USB", "Compatible con videollamadas"] },
+        barra: { nombre: "Barra de sonido SoundBar X", precio: "$1,499 MXN", categoria: "audio", descripcion: "Barra de sonido compacta para mejorar el audio de tu computadora, televisión o espacio de entretenimiento.", imagenes: [], especificaciones: ["Sonido estéreo", "Bluetooth", "Entrada auxiliar", "Control de volumen", "Diseño compacto"] },
+        microfono: { nombre: "Micrófono Stream Pro", precio: "$1,099 MXN", categoria: "audio", descripcion: "Micrófono USB pensado para clases, streaming, podcasts y videollamadas.", imagenes: [], especificaciones: ["Conexión USB", "Patrón cardioide", "Control de ganancia", "Base ajustable", "Indicador LED"] },
+        enchufe: { nombre: "Enchufe inteligente SmartPlug", precio: "$299 MXN", categoria: "hogar", descripcion: "Controla aparatos eléctricos desde tu celular y crea horarios para automatizar tu espacio.", imagenes: [], especificaciones: ["Control desde app", "Programación de horarios", "Wi-Fi 2.4 GHz", "Control por voz", "Formato compacto"] },
+        tira: { nombre: "Tira LED SmartGlow", precio: "$499 MXN", categoria: "hogar", descripcion: "Tira LED inteligente para ambientar escritorios, habitaciones y espacios de entretenimiento.", imagenes: [], especificaciones: ["Colores personalizables", "Control por app", "Temporizador", "Wi-Fi", "Instalación adhesiva"] },
+        cargador: { nombre: "Cargador rápido PowerGo", precio: "$549 MXN", categoria: "movil", descripcion: "Cargador compacto de carga rápida para dispositivos compatibles.", imagenes: [], especificaciones: ["Carga rápida", "Puerto USB-C", "Diseño compacto", "Protección contra sobrecarga", "Uso portátil"] },
+        powerbank: { nombre: "Power Bank Volt 20K", precio: "$899 MXN", categoria: "movil", descripcion: "Batería portátil de gran capacidad para mantener tus dispositivos cargados durante el día.", imagenes: [], especificaciones: ["20,000 mAh", "USB-C", "Indicador de carga", "Carga simultánea", "Diseño portátil"] },
+
     };
 
     function obtenerUsuario() {
@@ -166,21 +176,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var usuario = obtenerUsuario();
 
-    // ---- Menú dinámico en páginas públicas (Nosotros, Catálogo, Detalle, Contacto) ----
+    // ---- Menú dinámico: antes de iniciar sesión solo se muestran Nosotros y Contacto ----
     var navMenu = document.getElementById("nav-menu");
-    if (navMenu && usuario) {
-        var pagina = navMenu.getAttribute("data-pagina");
-        var enlaces = [
+    if (navMenu) {
+        var pagina = navMenu.getAttribute("data-pagina") || window.location.pathname.split("/").pop().toLowerCase();
+        var enlacesPublicos = [
+            { href: "nosotros.html", texto: "Nosotros", id: "nosotros" },
+            { href: "contacto.html", texto: "Contacto", id: "contacto" }
+        ];
+        var enlacesCompletos = [
             { href: "inicio.html", texto: "Inicio", id: "inicio" },
             { href: "productos.html", texto: "Catálogo", id: "productos" },
             { href: "nosotros.html", texto: "Nosotros", id: "nosotros" },
             { href: "contacto.html", texto: "Contacto", id: "contacto" },
-            { href: "perfil.html", texto: "Perfil", id: "perfil" }
+            { href: "perfil.html", texto: "Perfil", id: "perfil" },
+            { href: "#", texto: "🛒 Carrito", id: "carrito" }
         ];
+        var enlaces = usuario ? enlacesCompletos : enlacesPublicos;
         var htmlMenu = "";
         enlaces.forEach(function (enlace) {
-            var esActivo = (enlace.id === pagina) ? ' class="activo"' : "";
-            htmlMenu += '<a href="' + enlace.href + '"' + esActivo + '>' + enlace.texto + '</a>';
+            var esActivo = (enlace.id === pagina || pagina.indexOf(enlace.id) >= 0) ? ' class="activo"' : "";
+            if (enlace.id === "carrito") {
+                htmlMenu += '<a href="#" class="carrito-nav" aria-label="Carrito de compras (próximamente)" onclick="return false;">🛒 <span>Carrito</span><b class="carrito-badge">0</b></a>';
+            } else {
+                htmlMenu += '<a href="' + enlace.href + '"' + esActivo + '>' + enlace.texto + '</a>';
+            }
         });
         navMenu.innerHTML = htmlMenu;
     }
@@ -251,9 +271,15 @@ document.addEventListener("DOMContentLoaded", function () {
             document.title = "TechZone - " + producto.nombre;
 
             var imagenPrincipal = document.getElementById("detalle-imagen-actual");
-            imagenPrincipal.src = producto.imagenes[0];
-            imagenPrincipal.alt = producto.nombre;
-            document.getElementById("detalle-imagen").classList.add("producto-imagen-" + producto.categoria);
+            var cajaImagen = document.getElementById("detalle-imagen");
+            if (producto.imagenes && producto.imagenes.length) {
+                imagenPrincipal.src = producto.imagenes[0];
+                imagenPrincipal.alt = producto.nombre;
+            } else {
+                imagenPrincipal.style.display = "none";
+                cajaImagen.insertAdjacentHTML("beforeend", '<div class="detalle-placeholder"><span>IMAGEN DEL PRODUCTO</span><small>Espacio reservado para la fotografía</small></div>');
+            }
+            cajaImagen.classList.add("producto-imagen-" + producto.categoria);
 
             var nombresCategoria = { computo: "Cómputo", audio: "Audio", hogar: "Hogar", movil: "Móvil" };
             var badge = document.getElementById("detalle-badge");
@@ -261,22 +287,46 @@ document.addEventListener("DOMContentLoaded", function () {
             badge.classList.add("badge-" + producto.categoria);
 
             var contenedorMiniaturas = document.getElementById("detalle-miniaturas");
-            if (producto.imagenes.length > 1) {
-                producto.imagenes.forEach(function (src, indice) {
-                    var mini = document.createElement("img");
-                    mini.src = src;
-                    mini.alt = producto.nombre + " - vista " + (indice + 1);
-                    if (indice === 0) mini.classList.add("activa");
-                    mini.addEventListener("click", function () {
-                        imagenPrincipal.src = src;
-                        contenedorMiniaturas.querySelectorAll("img").forEach(function (img) {
-                            img.classList.remove("activa");
-                        });
-                        mini.classList.add("activa");
-                    });
-                    contenedorMiniaturas.appendChild(mini);
+            var contenedorSlots = document.getElementById("detalle-galeria-slots");
+            var vistas = (producto.imagenes || []).filter(Boolean);
+            var maxVistas = 5;
+            vistas.slice(0, maxVistas).forEach(function (src, indice) {
+                var mini = document.createElement("img");
+                mini.src = src;
+                mini.alt = producto.nombre + " - vista " + (indice + 1);
+                if (indice === 0) mini.classList.add("activa");
+                mini.addEventListener("click", function () {
+                    imagenPrincipal.src = src;
+                    contenedorMiniaturas.querySelectorAll("img").forEach(function (img) { img.classList.remove("activa"); });
+                    mini.classList.add("activa");
                 });
+                contenedorMiniaturas.appendChild(mini);
+            });
+            if (contenedorSlots) {
+                for (var vista = vistas.length; vista < maxVistas; vista++) {
+                    var slot = document.createElement("div");
+                    slot.className = "detalle-galeria-slot";
+                    slot.innerHTML = '<span>＋</span><strong>Vista ' + (vista + 1) + '</strong><small>Coloca aquí una imagen</small>';
+                    contenedorSlots.appendChild(slot);
+                }
             }
+
+            // Selector de cantidad y total estimado (simulado)
+            var cantidadInput = document.getElementById("cantidad-producto");
+            var cantidadMenos = document.getElementById("cantidad-menos");
+            var cantidadMas = document.getElementById("cantidad-mas");
+            var totalEl = document.getElementById("detalle-total");
+            var precioNumerico = Number(String(producto.precio).replace(/[^0-9]/g, "")) || 0;
+            function actualizarCantidad() {
+                if (!cantidadInput) return;
+                var cantidad = Math.min(10, Math.max(1, Number(cantidadInput.value) || 1));
+                cantidadInput.value = cantidad;
+                if (totalEl) totalEl.textContent = "$" + (precioNumerico * cantidad).toLocaleString("es-MX") + " MXN";
+            }
+            if (cantidadMenos) cantidadMenos.addEventListener("click", function(){ cantidadInput.value = Math.max(1, Number(cantidadInput.value || 1) - 1); actualizarCantidad(); });
+            if (cantidadMas) cantidadMas.addEventListener("click", function(){ cantidadInput.value = Math.min(10, Number(cantidadInput.value || 1) + 1); actualizarCantidad(); });
+            if (cantidadInput) cantidadInput.addEventListener("input", actualizarCantidad);
+            actualizarCantidad();
 
             var listaEspecs = document.getElementById("detalle-especificaciones");
             producto.especificaciones.forEach(function (item) {

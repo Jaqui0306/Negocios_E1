@@ -10,13 +10,19 @@
 <body>
 
     <header>
-        <a href="index.html" class="logo">
+        <a href="inicio.html" class="logo">
             <img src="img/logo.svg" alt="TechZone" class="logo-img">
             TechZone
         </a>
-        <nav id="nav-menu" data-pagina="productos">
+        <nav id="nav-menu">
+            <a href="inicio.html">Inicio</a>
+            <a href="productos.html" class="activo">Catálogo</a>
             <a href="nosotros.html">Nosotros</a>
             <a href="contacto.html">Contacto</a>
+            <a href="registro.html">Registro</a>
+            <a href="login.html">Iniciar sesión</a>
+            <a href="perfil.html">Perfil</a>
+            <a href="#" class="carrito-nav" aria-label="Carrito de compras (próximamente)" onclick="return false;">🛒 <span>Carrito</span><b class="carrito-badge">0</b></a>
         </nav>
     </header>
 
@@ -28,7 +34,7 @@
                     <div class="detalle-imagen" id="detalle-imagen">
                         <img id="detalle-imagen-actual" src="" alt="">
                     </div>
-                    <div class="detalle-miniaturas" id="detalle-miniaturas"></div>
+                    <div class="detalle-galeria-titulo"><span>Galería del producto</span><small>Agrega diferentes ángulos y vistas</small></div><div class="detalle-miniaturas" id="detalle-miniaturas"></div><div class="detalle-galeria-slots" id="detalle-galeria-slots"></div>
                 </div>
 
                 <div class="detalle-info">
@@ -40,10 +46,29 @@
                     <h3 class="detalle-especificaciones-titulo">Especificaciones</h3>
                     <ul class="detalle-especificaciones-lista" id="detalle-especificaciones"></ul>
 
-                    <div class="detalle-acciones">
-                        <a href="productos.html" class="boton boton-contorno">Regresar al catálogo</a>
-                        <button class="boton" id="boton-agregar-carrito">Agregar al carrito</button>
+                    <div class="detalle-compra-panel">
+                        <div class="detalle-cantidad">
+                            <div>
+                                <span class="detalle-cantidad-label">Cantidad</span>
+                                <span class="detalle-cantidad-ayuda">Selecciona cuántas piezas deseas</span>
+                            </div>
+                            <div class="cantidad-control">
+                                <button type="button" id="cantidad-menos" aria-label="Disminuir cantidad">−</button>
+                                <input id="cantidad-producto" type="number" min="1" max="10" value="1" aria-label="Cantidad de productos">
+                                <button type="button" id="cantidad-mas" aria-label="Aumentar cantidad">+</button>
+                            </div>
+                        </div>
+                        <div class="detalle-total">
+                            <span>Total estimado</span>
+                            <strong id="detalle-total">—</strong>
+                        </div>
                     </div>
+
+                    <div class="detalle-acciones">
+                        <a href="productos.html" class="boton boton-contorno">← Regresar al catálogo</a>
+                        <button class="boton boton-comprar" id="boton-agregar-carrito">Agregar al carrito</button>
+                    </div>
+                    <p class="detalle-nota">Compra simulada para esta etapa. El carrito y el pago se habilitarán próximamente.</p>
                 </div>
 
             </div>
@@ -68,7 +93,7 @@
                 </a>
             </div>
         </div>
-        <p class="footer-copy">© 2026 TechZone — Tienda de dispositivos electrónicos</p>
+        <p class="footer-copy">© 2026 TechZone — Tienda de dispositivos electrónicos</p><span class="footer-demo">Sitio demostrativo · Sin base de datos</span>
     </footer>
 
     <script src="js/main.js"></script>
