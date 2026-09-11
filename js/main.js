@@ -4,11 +4,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var PRODUCTOS = {
         laptop: {
-            nombre: 'Laptop Nimbus 14"',
+            nombre: 'Laptop Nimbus 14',
             precio: "$14,999 MXN",
             categoria: "computo",
             descripcion: 'Laptop ligera pensada para clases y home office. Cuenta con pantalla de 14" Full HD antirreflejo, 16 GB de RAM y 512 GB de almacenamiento SSD, ideal para trabajar, estudiar y entretenerte sin trabas durante todo el día.',
-            imagenes: ["img/laptop.webp"],
+            imagenes: [
+                "img/laptop.png",
+                "img/laptop2.png",
+                "img/laptop3.png",
+                "img/laptop4.png",
+            ],
             especificaciones: [
                 'Pantalla 14" Full HD antirreflejo',
                 "Procesador eficiente para uso diario",
@@ -22,7 +27,12 @@ document.addEventListener("DOMContentLoaded", function () {
             precio: "$429 MXN",
             categoria: "computo",
             descripcion: "Mouse inalámbrico silencioso y preciso, pensado para uso prolongado en oficina o clases. Su diseño ergonómico y sensor óptico de alta precisión lo hacen ideal para el día a día.",
-            imagenes: ["img/mouse.jpg"],
+            imagenes: [
+                "img/mouse.jpg",
+                "img/mouse2.png",
+                "img/mouse3.png",
+                "img/mouse4.png",
+            ],
             especificaciones: [
                 "Sensor óptico de 1600 DPI ajustable",
                 "Diseño ergonómico para uso prolongado",
@@ -36,7 +46,12 @@ document.addEventListener("DOMContentLoaded", function () {
             precio: "$1,299 MXN",
             categoria: "computo",
             descripcion: "Teclado mecánico con switches táctiles y retroiluminación RGB personalizable, pensado tanto para trabajo como para gaming, con un cable trenzado resistente y desmontable.",
-            imagenes: ["img/teclado.jpg"],
+            imagenes: [
+               "img/teclado.jpg",
+               "img/teclado1.2.png",
+               "img/teclado1.1.png",
+               "img/teclado1.3.png",
+            ],
             especificaciones: [
                 "Switches mecánicos táctiles",
                 "Retroiluminación RGB personalizable",
@@ -46,11 +61,16 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
         monitor: {
-            nombre: 'Monitor UltraView 24"',
+            nombre: 'Monitor UltraView 24',
             precio: "$3,199 MXN",
             categoria: "computo",
             descripcion: "Monitor de 24 pulgadas con panel IPS, ideal para trabajo, estudio y entretenimiento, con colores fieles y ángulos de visión amplios desde cualquier posición.",
-            imagenes: ["img/monitor.jpg"],
+            imagenes: [
+                "img/monitor.png",
+                "img/monitor2.png",
+                "img/monitor3.png",
+                "img/monitor4.png",
+            ],
             especificaciones: [
                 "Panel IPS con ángulos de visión amplios",
                 "Resolución Full HD 1920x1080",
@@ -64,7 +84,12 @@ document.addEventListener("DOMContentLoaded", function () {
             precio: "$1,899 MXN",
             categoria: "audio",
             descripcion: "Audífonos inalámbricos con cancelación activa de ruido, pensados para largas jornadas de trabajo, estudio o viaje, con un sonido nítido y cómodo ajuste.",
-            imagenes: ["img/audifonos.jpg"],
+            imagenes: [
+                "img/audifonos.jpg",
+                "img/audifonos2.png",
+                "img/audifonos3.png",
+                "img/audifonos4.png",
+            ],
             especificaciones: [
                 "Cancelación activa de ruido (ANC)",
                 "Hasta 30 horas de batería",
@@ -78,7 +103,12 @@ document.addEventListener("DOMContentLoaded", function () {
             precio: "$799 MXN",
             categoria: "audio",
             descripcion: "Bocina compacta y resistente al agua, perfecta para llevar a cualquier lado, con sonido estéreo envolvente y batería de larga duración.",
-            imagenes: ["img/bocina.jpg"],
+            imagenes: [
+                "img/bocina.jpg",
+                "img/bocina2.png",
+                "img/bocina3.png",
+                "img/bocina4.png",
+            ],
             especificaciones: [
                 "Resistencia al agua IPX6",
                 "Hasta 12 horas de batería",
@@ -92,7 +122,12 @@ document.addEventListener("DOMContentLoaded", function () {
             precio: "$349 MXN",
             categoria: "hogar",
             descripcion: "Foco inteligente controlable desde tu celular o por voz, con millones de combinaciones de color para ambientar cualquier espacio de tu hogar.",
-            imagenes: ["img/foco.jpg"],
+            imagenes: [
+                "img/foco.jpg",
+                "img/foco2.png",
+                "img/foco3.png",
+                "img/foco4.png",
+            ],
             especificaciones: [
                 "Control por app móvil o comandos de voz",
                 "16 millones de combinaciones de color",
@@ -106,7 +141,12 @@ document.addEventListener("DOMContentLoaded", function () {
             precio: "$899 MXN",
             categoria: "hogar",
             descripcion: "Cámara de seguridad para el hogar con visión nocturna y detección de movimiento, que te avisa a tu celular ante cualquier actividad inusual.",
-            imagenes: ["img/camara.jpg"],
+            imagenes: [
+                "img/camara.jpg",
+                "img/camara2.png",
+                "img/camara3.png",
+                "img/camara4.png",
+            ],
             especificaciones: [
                 "Visión nocturna infrarroja",
                 "Detección de movimiento con notificaciones",
@@ -120,7 +160,12 @@ document.addEventListener("DOMContentLoaded", function () {
             precio: "$1,599 MXN",
             categoria: "hogar",
             descripcion: "Bocina inteligente con asistente de voz integrado, capaz de controlar otros dispositivos del hogar y ofrecer un sonido envolvente en cualquier habitación.",
-            imagenes: ["img/bocinah.jpg"],
+            imagenes: [
+                "img/bocinah.png",
+                "img/bocinah2.png",
+                "img/bocinah3.png",
+                "img/bocinah4.png",
+            ],
             especificaciones: [
                 "Asistente de voz integrado",
                 "Control de otros dispositivos del hogar",
@@ -134,7 +179,13 @@ document.addEventListener("DOMContentLoaded", function () {
             precio: "$2,299 MXN",
             categoria: "movil",
             descripcion: "Reloj inteligente resistente al agua, con monitoreo de salud las 24 horas y notificaciones directas en tu muñeca, ideal para acompañarte en tu rutina diaria.",
-            imagenes: ["img/reloj.jpg"],
+            imagenes: [
+                "img/reloj.jpg",
+                "img/reloj2.png",
+                "img/reloj3.png",
+                "img/reloj4.png",
+
+            ],
             especificaciones: [
                 "Monitor de ritmo cardiaco 24/7",
                 "Resistente al agua hasta 50 metros",
@@ -144,15 +195,165 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         }
     ,
-        teclado_gamer: { nombre: "Teclado Gamer RGB Pro", precio: "$1,799 MXN", categoria: "computo", descripcion: "Teclado de alto rendimiento con iluminación RGB y diseño cómodo para estudio, trabajo y gaming.", imagenes: [], especificaciones: ["Iluminación RGB", "Switches mecánicos", "Conexión USB", "Diseño ergonómico", "Compatible con Windows y Mac"] },
-        webcam: { nombre: "Webcam Vision HD", precio: "$699 MXN", categoria: "computo", descripcion: "Webcam compacta para clases, videollamadas y reuniones en línea.", imagenes: [], especificaciones: ["Resolución Full HD", "Micrófono integrado", "Enfoque automático", "Conexión USB", "Compatible con videollamadas"] },
-        barra: { nombre: "Barra de sonido SoundBar X", precio: "$1,499 MXN", categoria: "audio", descripcion: "Barra de sonido compacta para mejorar el audio de tu computadora, televisión o espacio de entretenimiento.", imagenes: [], especificaciones: ["Sonido estéreo", "Bluetooth", "Entrada auxiliar", "Control de volumen", "Diseño compacto"] },
-        microfono: { nombre: "Micrófono Stream Pro", precio: "$1,099 MXN", categoria: "audio", descripcion: "Micrófono USB pensado para clases, streaming, podcasts y videollamadas.", imagenes: [], especificaciones: ["Conexión USB", "Patrón cardioide", "Control de ganancia", "Base ajustable", "Indicador LED"] },
-        enchufe: { nombre: "Enchufe inteligente SmartPlug", precio: "$299 MXN", categoria: "hogar", descripcion: "Controla aparatos eléctricos desde tu celular y crea horarios para automatizar tu espacio.", imagenes: [], especificaciones: ["Control desde app", "Programación de horarios", "Wi-Fi 2.4 GHz", "Control por voz", "Formato compacto"] },
-        tira: { nombre: "Tira LED SmartGlow", precio: "$499 MXN", categoria: "hogar", descripcion: "Tira LED inteligente para ambientar escritorios, habitaciones y espacios de entretenimiento.", imagenes: [], especificaciones: ["Colores personalizables", "Control por app", "Temporizador", "Wi-Fi", "Instalación adhesiva"] },
-        cargador: { nombre: "Cargador rápido PowerGo", precio: "$549 MXN", categoria: "movil", descripcion: "Cargador compacto de carga rápida para dispositivos compatibles.", imagenes: [], especificaciones: ["Carga rápida", "Puerto USB-C", "Diseño compacto", "Protección contra sobrecarga", "Uso portátil"] },
-        powerbank: { nombre: "Power Bank Volt 20K", precio: "$899 MXN", categoria: "movil", descripcion: "Batería portátil de gran capacidad para mantener tus dispositivos cargados durante el día.", imagenes: [], especificaciones: ["20,000 mAh", "USB-C", "Indicador de carga", "Carga simultánea", "Diseño portátil"] },
+        teclado_gamer: {
+    nombre: "Teclado Gamer RGB Pro",
+    precio: "$1,799 MXN",
+    categoria: "computo",
+    descripcion: "Teclado de alto rendimiento con iluminación RGB y diseño cómodo para estudio, trabajo y gaming.",
+    imagenes: [
+        "img/teclado2.png",
+        "img/teclado22.png",
+        "img/teclado23.png",
+        "img/teclado24.png",
+    ],
+    especificaciones: [
+        "Iluminación RGB",
+        "Switches mecánicos",
+        "Conexión USB",
+        "Diseño ergonómico",
+        "Compatible con Windows y Mac"
+    ]
+},
 
+webcam: {
+    nombre: "Webcam Vision HD",
+    precio: "$699 MXN",
+    categoria: "computo",
+    descripcion: "Webcam compacta para clases, videollamadas y reuniones en línea.",
+    imagenes: [
+        "img/webcam.png",
+        "img/webcam2.png",
+        "img/webcam3.png",
+        "img/webcam4.png"
+    ],
+    especificaciones: [
+        "Resolución Full HD",
+        "Micrófono integrado",
+        "Enfoque automático",
+        "Conexión USB",
+        "Compatible con videollamadas"
+    ]
+},
+
+barra: {
+    nombre: "Barra de sonido SoundBar X",
+    precio: "$1,499 MXN",
+    categoria: "audio",
+    descripcion: "Barra de sonido compacta para mejorar el audio de tu computadora, televisión o espacio de entretenimiento.",
+    imagenes: [
+        "img/barra.png",
+        "img/barra2.png",
+        "img/barra3.png",
+        "img/barra4.png"
+    ],
+    especificaciones: [
+        "Sonido estéreo",
+        "Bluetooth",
+        "Entrada auxiliar",
+        "Control de volumen",
+        "Diseño compacto"
+    ]
+},
+
+microfono: {
+    nombre: "Micrófono Stream Pro",
+    precio: "$1,099 MXN",
+    categoria: "audio",
+    descripcion: "Micrófono USB pensado para clases, streaming, podcasts y videollamadas.",
+    imagenes: [
+        "img/microfono.png",
+        "img/microfono2.png",
+        "img/microfono3.png",
+        "img/microfono4.png"
+    ],
+    especificaciones: [
+        "Conexión USB",
+        "Patrón cardioide",
+        "Control de ganancia",
+        "Base ajustable",
+        "Indicador LED"
+    ]
+},
+
+enchufe: {
+    nombre: "Enchufe inteligente SmartPlug",
+    precio: "$299 MXN",
+    categoria: "hogar",
+    descripcion: "Controla aparatos eléctricos desde tu celular y crea horarios para automatizar tu espacio.",
+    imagenes: [
+        "img/enchufe.png",
+        "img/enchufe2.png",
+        "img/enchufe3.png",
+        "img/enchufe4.png"
+    ],
+    especificaciones: [
+        "Control desde app",
+        "Programación de horarios",
+        "Wi-Fi 2.4 GHz",
+        "Control por voz",
+        "Formato compacto"
+    ]
+},
+
+tira: {
+    nombre: "Tira LED SmartGlow",
+    precio: "$499 MXN",
+    categoria: "hogar",
+    descripcion: "Tira LED inteligente para ambientar escritorios, habitaciones y espacios de entretenimiento.",
+    imagenes: [
+        "img/tiraled.png",
+        "img/tiraled2.png",
+        "img/tiraled3.png",
+        "img/tiraled4.png"
+    ],
+    especificaciones: [
+        "Colores personalizables",
+        "Control por app",
+        "Temporizador",
+        "Wi-Fi",
+        "Instalación adhesiva"
+    ]
+},
+
+cargador: {
+    nombre: "Cargador rápido PowerGo",
+    precio: "$549 MXN",
+    categoria: "movil",
+    descripcion: "Cargador compacto de carga rápida para dispositivos compatibles.",
+    imagenes: [
+        "img/cargador.png",
+        "img/cargador2.png",
+        "img/cargador3.png",
+        "img/cargador4.png"
+    ],
+    especificaciones: [
+        "Carga rápida",
+        "Puerto USB-C",
+        "Diseño compacto",
+        "Protección contra sobrecarga",
+        "Uso portátil"
+    ]
+},
+
+powerbank: {
+    nombre: "Power Bank Volt 20K",
+    precio: "$899 MXN",
+    categoria: "movil",
+    descripcion: "Batería portátil de gran capacidad para mantener tus dispositivos cargados durante el día.",
+    imagenes: [
+        "img/powerbank.png",
+        "img/powerbank2.png",
+        "img/powerbank3.png",
+        "img/powerbank4.png"
+    ],
+    especificaciones: [
+        "20,000 mAh",
+        "USB-C",
+        "Indicador de carga",
+        "Carga simultánea",
+        "Diseño portátil"
+    ]
+},
     };
 
     function obtenerUsuario() {
@@ -289,7 +490,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var contenedorMiniaturas = document.getElementById("detalle-miniaturas");
             var contenedorSlots = document.getElementById("detalle-galeria-slots");
             var vistas = (producto.imagenes || []).filter(Boolean);
-            var maxVistas = 5;
+            var maxVistas = 4;
             vistas.slice(0, maxVistas).forEach(function (src, indice) {
                 var mini = document.createElement("img");
                 mini.src = src;
@@ -377,4 +578,36 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+});
+
+/* ============================================================
+   ZOOM DE IMAGEN EN DETALLE DE PRODUCTO
+   ============================================================ */
+document.addEventListener("DOMContentLoaded", function () {
+    var zoomBox = document.getElementById("detalle-imagen");
+    var zoomImg = document.getElementById("detalle-imagen-actual");
+
+    if (!zoomBox || !zoomImg) return;
+
+    zoomBox.addEventListener("mouseenter", function () {
+        zoomBox.classList.add("zoom-activo");
+    });
+
+    zoomBox.addEventListener("mousemove", function (event) {
+        var rect = zoomBox.getBoundingClientRect();
+        var x = ((event.clientX - rect.left) / rect.width) * 100;
+        var y = ((event.clientY - rect.top) / rect.height) * 100;
+
+        x = Math.max(0, Math.min(100, x));
+        y = Math.max(0, Math.min(100, y));
+
+        zoomImg.style.transformOrigin = x + "% " + y + "%";
+        zoomImg.style.transform = "scale(2.15)";
+    });
+
+    zoomBox.addEventListener("mouseleave", function () {
+        zoomBox.classList.remove("zoom-activo");
+        zoomImg.style.transformOrigin = "50% 50%";
+        zoomImg.style.transform = "scale(1)";
+    });
 });
