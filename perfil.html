@@ -45,11 +45,11 @@
                 </div>
                 <div class="fila-info">
                     <span class="campo-nombre">Teléfono</span>
-                    <span class="campo-valor">No registrado</span>
+                    <span class="campo-valor" id="perfil-telefono">No registrado</span>
                 </div>
                 <div class="fila-info">
                     <span class="campo-nombre">Dirección de envío</span>
-                    <span class="campo-valor">No registrada</span>
+                    <span class="campo-valor" id="perfil-direccion">No registrada</span>
                 </div>
                 <div class="fila-info">
                     <span class="campo-nombre">Cliente desde</span>
@@ -62,8 +62,27 @@
                 Aún no tienes compras registradas. Esta función estará disponible más adelante.
             </div>
 
+
+            <div class="tz-editar-panel" id="panel-editar-perfil">
+                <div class="tz-editar-caja">
+                    <button type="button" class="tz-modal-cerrar" id="cancelar-edicion" aria-label="Cerrar">×</button>
+                    <h3>Editar mis datos</h3>
+                    <p>Actualiza la información de tu perfil.</p>
+                    <form id="formulario-editar-perfil">
+                        <label>Nombre completo<input id="editar-nombre" type="text" required></label>
+                        <label>Correo electrónico<input id="editar-correo" type="email" required></label>
+                        <label>Teléfono<input id="editar-telefono" type="tel" placeholder="Ej. 449 123 4567"></label>
+                        <label>Dirección de envío<input id="editar-direccion" type="text" placeholder="Ej. Calle, número, ciudad"></label>
+                        <div class="tz-editar-acciones">
+                            <button type="button" class="boton boton-contorno" id="cancelar-edicion-2">Cancelar</button>
+                            <button type="submit" class="boton">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <div class="perfil-acciones">
-                <button class="boton boton-contorno">Editar datos</button>
+                <button class="boton boton-contorno" id="boton-editar-datos" type="button">Editar datos</button>
                 <button class="boton boton-texto" id="boton-cerrar-sesion">Cerrar sesión</button>
             </div>
 

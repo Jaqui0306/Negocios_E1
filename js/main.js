@@ -2,6 +2,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var CLAVE_USUARIO = "techzone_usuario";
 
+    // Ventana de mensajes integrada a la tienda (reemplaza alert())
+    function mostrarMensaje(titulo, mensaje, tipo) {
+        var modal = document.getElementById("tz-mensaje-modal");
+        if (!modal) {
+            modal = document.createElement("div");
+            modal.id = "tz-mensaje-modal";
+            modal.className = "tz-modal";
+            modal.innerHTML = `
+                <div class="tz-modal-fondo"></div>
+                <div class="tz-modal-caja" role="dialog" aria-modal="true" aria-labelledby="tz-modal-titulo">
+                    <button type="button" class="tz-modal-cerrar" aria-label="Cerrar">×</button>
+                    <div class="tz-modal-icono" id="tz-modal-icono">✓</div>
+                    <h3 id="tz-modal-titulo"></h3>
+                    <p id="tz-modal-mensaje"></p>
+                    <button type="button" class="boton tz-modal-boton">Aceptar</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+
+            var cerrar = function () {
+                modal.classList.remove("visible");
+            };
+            modal.querySelector(".tz-modal-fondo").addEventListener("click", cerrar);
+            modal.querySelector(".tz-modal-cerrar").addEventListener("click", cerrar);
+            modal.querySelector(".tz-modal-boton").addEventListener("click", cerrar);
+        }
+
+        document.getElementById("tz-modal-titulo").textContent = titulo;
+        document.getElementById("tz-modal-mensaje").textContent = mensaje;
+
+        var icono = document.getElementById("tz-modal-icono");
+        icono.textContent = tipo === "info" ? "i" : "✓";
+        icono.className = "tz-modal-icono " + (tipo || "exito");
+
+        modal.classList.add("visible");
+
+        // El mensaje permanece visible al menos 10 segundos.
+        if (modal._tzTimer) clearTimeout(modal._tzTimer);
+        modal._tzTimer = setTimeout(function () {
+            modal.classList.remove("visible");
+        }, 10000);
+    }
+
     var PRODUCTOS = {
         laptop: {
             nombre: 'Laptop Nimbus 14',
@@ -371,8 +414,8 @@ powerbank: {
 
     function cerrarSesion() {
         localStorage.removeItem(CLAVE_USUARIO);
-        alert("Cerraste sesión correctamente.");
-        window.location.href = "index.html";
+        mostrarMensaje("Sesión cerrada", "Cerraste sesión correctamente.");
+        setTimeout(function () { window.location.href = "index.html"; }, 10000);
     }
 
     var usuario = obtenerUsuario();
@@ -427,8 +470,8 @@ powerbank: {
             var nombre = document.getElementById("nombre").value.trim() || "Cliente TechZone";
             var correo = document.getElementById("correo").value.trim() || "correo@ejemplo.com";
             guardarUsuario({ nombre: nombre, correo: correo });
-            alert("Registro exitoso (simulado)");
-            window.location.href = "login.html";
+            mostrarMensaje("Registro exitoso", "Tu registro se realizó correctamente (simulado).");
+            setTimeout(function () { window.location.href = "login.html"; }, 10000);
         });
     }
 
@@ -443,8 +486,8 @@ powerbank: {
                 nombre: existente ? existente.nombre : "Cliente TechZone",
                 correo: correo || (existente ? existente.correo : "correo@ejemplo.com")
             });
-            alert("Inicio de sesión exitoso (simulado)");
-            window.location.href = "perfil.html";
+            mostrarMensaje("Inicio de sesión exitoso", "Has iniciado sesión correctamente (simulado).");
+            setTimeout(function () { window.location.href = "perfil.html"; }, 10000);
         });
     }
 
@@ -453,7 +496,7 @@ powerbank: {
     if (formContacto) {
         formContacto.addEventListener("submit", function (e) {
             e.preventDefault();
-            alert("Mensaje enviado (simulado)");
+            mostrarMensaje("Mensaje enviado", "Tu mensaje fue enviado correctamente (simulado).");
             formContacto.reset();
         });
     }
@@ -545,9 +588,9 @@ powerbank: {
         if (botonCarrito) {
             botonCarrito.addEventListener("click", function () {
                 if (obtenerUsuario()) {
-                    alert("Función próximamente disponible. Aún no hay carrito de compras.");
+                    mostrarMensaje("Carrito próximamente", "La función del carrito estará disponible próximamente.");
                 } else {
-                    alert("Inicia sesión para poder comprar más adelante.");
+                    mostrarMensaje("Inicia sesión", "Debes iniciar sesión para poder comprar más adelante.", "info");
                     window.location.href = "login.html";
                 }
             });
@@ -563,13 +606,55 @@ powerbank: {
         }
         var nombreEl = document.getElementById("perfil-nombre");
         var correoEl = document.getElementById("perfil-correo");
+        var telefonoEl = document.getElementById("perfil-telefono");
+        var direccionEl = document.getElementById("perfil-direccion");
         var inicialesEl = document.getElementById("perfil-iniciales");
         if (nombreEl) nombreEl.textContent = usuario.nombre;
         if (correoEl) correoEl.textContent = usuario.correo;
+        if (telefonoEl) telefonoEl.textContent = usuario.telefono || "No registrado";
+        if (direccionEl) direccionEl.textContent = usuario.direccion || "No registrada";
         if (inicialesEl) {
             var partes = usuario.nombre.trim().split(/\s+/);
             var iniciales = (partes[0][0] || "") + (partes[1] ? partes[1][0] : "");
             inicialesEl.textContent = iniciales.toUpperCase();
+        }
+
+        var botonEditar = document.getElementById("boton-editar-datos");
+        var panelEditar = document.getElementById("panel-editar-perfil");
+        var formEditar = document.getElementById("formulario-editar-perfil");
+        var cancelarEditar = document.getElementById("cancelar-edicion");
+
+        if (botonEditar && panelEditar) {
+            botonEditar.addEventListener("click", function () {
+                document.getElementById("editar-nombre").value = usuario.nombre || "";
+                document.getElementById("editar-correo").value = usuario.correo || "";
+                document.getElementById("editar-telefono").value = usuario.telefono || "";
+                document.getElementById("editar-direccion").value = usuario.direccion || "";
+                panelEditar.classList.add("visible");
+            });
+        }
+        if (cancelarEditar && panelEditar) cancelarEditar.addEventListener("click", function () { panelEditar.classList.remove("visible"); });
+        var cancelarEditar2 = document.getElementById("cancelar-edicion-2");
+        if (cancelarEditar2 && panelEditar) cancelarEditar2.addEventListener("click", function () { panelEditar.classList.remove("visible"); });
+        if (formEditar) {
+            formEditar.addEventListener("submit", function (e) {
+                e.preventDefault();
+                usuario.nombre = document.getElementById("editar-nombre").value.trim() || "Cliente TechZone";
+                usuario.correo = document.getElementById("editar-correo").value.trim() || "correo@ejemplo.com";
+                usuario.telefono = document.getElementById("editar-telefono").value.trim();
+                usuario.direccion = document.getElementById("editar-direccion").value.trim();
+                guardarUsuario(usuario);
+                if (nombreEl) nombreEl.textContent = usuario.nombre;
+                if (correoEl) correoEl.textContent = usuario.correo;
+                if (telefonoEl) telefonoEl.textContent = usuario.telefono || "No registrado";
+                if (direccionEl) direccionEl.textContent = usuario.direccion || "No registrada";
+                if (inicialesEl) {
+                    var p = usuario.nombre.trim().split(/\s+/);
+                    inicialesEl.textContent = ((p[0] || "")[0] + (p[1] ? p[1][0] : "")).toUpperCase();
+                }
+                panelEditar.classList.remove("visible");
+                mostrarMensaje("Datos actualizados", "Los datos de tu perfil se guardaron correctamente.");
+            });
         }
 
         var botonSalir = document.getElementById("boton-cerrar-sesion");
