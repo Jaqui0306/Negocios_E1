@@ -38,11 +38,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         modal.classList.add("visible");
 
-        // El mensaje permanece visible al menos 10 segundos.
+        // La ventana permanece visible 15 segundos para dar tiempo a leer y procesar la acción.
         if (modal._tzTimer) clearTimeout(modal._tzTimer);
         modal._tzTimer = setTimeout(function () {
             modal.classList.remove("visible");
-        }, 10000);
+        }, 5000);
     }
 
     var PRODUCTOS = {
@@ -415,7 +415,7 @@ powerbank: {
     function cerrarSesion() {
         localStorage.removeItem(CLAVE_USUARIO);
         mostrarMensaje("Sesión cerrada", "Cerraste sesión correctamente.");
-        setTimeout(function () { window.location.href = "index.html"; }, 10000);
+        setTimeout(function () { window.location.href = "index.html"; }, 5000);
     }
 
     var usuario = obtenerUsuario();
@@ -425,8 +425,11 @@ powerbank: {
     if (navMenu) {
         var pagina = navMenu.getAttribute("data-pagina") || window.location.pathname.split("/").pop().toLowerCase();
         var enlacesPublicos = [
+            { href: "inicio.html", texto: "Inicio", id: "inicio" },
+            { href: "productos.html", texto: "Catálogo", id: "productos" },
             { href: "nosotros.html", texto: "Nosotros", id: "nosotros" },
-            { href: "contacto.html", texto: "Contacto", id: "contacto" }
+            { href: "contacto.html", texto: "Contacto", id: "contacto" },
+            { href: "login.html", texto: "Iniciar sesión", id: "login" }
         ];
         var enlacesCompletos = [
             { href: "inicio.html", texto: "Inicio", id: "inicio" },
@@ -471,7 +474,7 @@ powerbank: {
             var correo = document.getElementById("correo").value.trim() || "correo@ejemplo.com";
             guardarUsuario({ nombre: nombre, correo: correo });
             mostrarMensaje("Registro exitoso", "Tu registro se realizó correctamente (simulado).");
-            setTimeout(function () { window.location.href = "login.html"; }, 10000);
+            setTimeout(function () { window.location.href = "login.html"; }, 5000);
         });
     }
 
@@ -487,7 +490,7 @@ powerbank: {
                 correo: correo || (existente ? existente.correo : "correo@ejemplo.com")
             });
             mostrarMensaje("Inicio de sesión exitoso", "Has iniciado sesión correctamente (simulado).");
-            setTimeout(function () { window.location.href = "perfil.html"; }, 10000);
+            setTimeout(function () { window.location.href = "perfil.html"; }, 5000);
         });
     }
 

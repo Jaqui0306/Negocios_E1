@@ -2836,3 +2836,5 @@ button[type="submit"],.formulario-card .boton,.login-card .boton,.registro-card 
 .tz-editar-caja form{display:grid;gap:15px}.tz-editar-caja label{display:grid;gap:7px;font-weight:700;font-size:13px;color:#303743}.tz-editar-caja input{width:100%;box-sizing:border-box;border:1px solid #d9e0e7;border-radius:11px;padding:12px 13px;font:inherit;font-weight:400;outline:none}.tz-editar-caja input:focus{border-color:#176fe5;box-shadow:0 0 0 3px rgba(23,111,229,.1)}
 .tz-editar-acciones{display:flex;justify-content:flex-end;gap:10px;margin-top:7px;flex-wrap:wrap}
 
+
+
