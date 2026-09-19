@@ -444,7 +444,7 @@ powerbank: {
         enlaces.forEach(function (enlace) {
             var esActivo = (enlace.id === pagina || pagina.indexOf(enlace.id) >= 0) ? ' class="activo"' : "";
             if (enlace.id === "carrito") {
-                htmlMenu += '<a href="#" class="carrito-nav" aria-label="Carrito de compras (próximamente)" onclick="return false;">🛒 <span>Carrito</span><b class="carrito-badge">0</b></a>';
+                htmlMenu += '<a href="carrito.html" class="carrito-nav" aria-label="Carrito de compras">🛒 <span>Carrito</span><b class="carrito-badge">0</b></a>';
             } else {
                 htmlMenu += '<a href="' + enlace.href + '"' + esActivo + '>' + enlace.texto + '</a>';
             }
@@ -590,12 +590,31 @@ powerbank: {
         var botonCarrito = document.getElementById("boton-agregar-carrito");
         if (botonCarrito) {
             botonCarrito.addEventListener("click", function () {
-                if (obtenerUsuario()) {
-                    mostrarMensaje("Carrito próximamente", "La función del carrito estará disponible próximamente.");
-                } else {
-                    mostrarMensaje("Inicia sesión", "Debes iniciar sesión para poder comprar más adelante.", "info");
-                    window.location.href = "login.html";
+                if (!obtenerUsuario()) {
+                    mostrarMensaje("Inicia sesión", "Debes iniciar sesión para agregar productos al carrito.", "info");
+                    setTimeout(function () { window.location.href = "login.html"; }, 2200);
+                    return;
                 }
+
+                var cantidad = Math.min(10, Math.max(1, Number(document.getElementById("cantidad-producto").value) || 1));
+                var carrito = obtenerCarrito();
+                var existente = carrito.find(function (item) { return item.id === idProducto; });
+
+                if (existente) {
+                    existente.cantidad = Math.min(10, existente.cantidad + cantidad);
+                } else {
+                    carrito.push({
+                        id: idProducto,
+                        nombre: producto.nombre,
+                        precio: precioNumerico,
+                        imagen: (producto.imagenes && producto.imagenes[0]) || "",
+                        cantidad: cantidad
+                    });
+                }
+
+                guardarCarrito(carrito);
+                actualizarBadgesCarrito();
+                mostrarMensaje("Producto agregado", cantidad + " " + (cantidad === 1 ? "pieza" : "piezas") + " de " + producto.nombre + " se agregó al carrito.");
             });
         }
     }
@@ -666,6 +685,221 @@ powerbank: {
         }
     }
 
+});
+
+/* ============================================================
+   BLOQUE 2 — CARRITO, FILTROS Y PRODUCTOS RELACIONADOS
+   ============================================================ */
+function obtenerCarrito() {
+    try {
+        var datos = localStorage.getItem("techzone_carrito");
+        var carrito = datos ? JSON.parse(datos) : [];
+        return Array.isArray(carrito) ? carrito : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function guardarCarrito(carrito) {
+    localStorage.setItem("techzone_carrito", JSON.stringify(carrito));
+}
+
+function actualizarBadgesCarrito() {
+    var total = obtenerCarrito().reduce(function (suma, item) {
+        return suma + Number(item.cantidad || 0);
+    }, 0);
+    document.querySelectorAll(".carrito-badge").forEach(function (badge) {
+        badge.textContent = total;
+    });
+}
+
+function precioTexto(numero) {
+    return "$" + Number(numero || 0).toLocaleString("es-MX") + " MXN";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    actualizarBadgesCarrito();
+
+    // ----- Búsqueda y filtros del catálogo -----
+    var buscador = document.getElementById("buscador-productos");
+    var filtroPrecio = document.getElementById("filtro-precio");
+    var botonesCategoria = document.querySelectorAll(".filtro-categoria");
+    var tarjetas = Array.from(document.querySelectorAll(".producto[data-producto-id]"));
+    var resultado = document.getElementById("resultado-catalogo");
+    var categoriaActual = "todos";
+
+    function aplicarFiltros() {
+        var texto = (buscador ? buscador.value : "").trim().toLowerCase();
+        var orden = filtroPrecio ? filtroPrecio.value : "todos";
+        var visibles = tarjetas.filter(function (tarjeta) {
+            var coincideTexto = !texto || tarjeta.textContent.toLowerCase().indexOf(texto) >= 0;
+            var coincideCategoria = categoriaActual === "todos" || tarjeta.dataset.categoria === categoriaActual;
+            return coincideTexto && coincideCategoria;
+        });
+
+        tarjetas.forEach(function (tarjeta) {
+            tarjeta.style.display = visibles.indexOf(tarjeta) >= 0 ? "" : "none";
+        });
+
+        // Al elegir una categoría, ocultamos por completo las demás secciones.
+        document.querySelectorAll(".categoria-titulo").forEach(function (titulo) {
+            var categoria = titulo.id ? titulo.id.replace("cat-", "") : "";
+            titulo.classList.toggle("oculta-categoria", categoriaActual !== "todos" && categoria !== categoriaActual);
+        });
+        document.querySelectorAll(".productos[data-categoria]").forEach(function (grupo) {
+            var categoriaGrupo = grupo.dataset.categoria || "";
+            grupo.classList.toggle("oculta-categoria", categoriaActual !== "todos" && categoriaGrupo !== categoriaActual);
+        });
+
+        if (orden !== "todos") {
+            var contenedores = {};
+            tarjetas.forEach(function (tarjeta) {
+                var grupo = tarjeta.parentElement;
+                if (!contenedores[grupo]) contenedores[grupo] = [];
+            });
+            // Ordenamos cada grupo de productos sin cambiar la estructura de categorías.
+            document.querySelectorAll(".productos").forEach(function (grupo) {
+                var cards = Array.from(grupo.querySelectorAll(".producto[data-producto-id]"));
+                cards.sort(function (a, b) {
+                    var pa = Number(a.querySelector(".precio").textContent.replace(/[^0-9]/g, "")) || 0;
+                    var pb = Number(b.querySelector(".precio").textContent.replace(/[^0-9]/g, "")) || 0;
+                    return orden === "menor" ? pa - pb : pb - pa;
+                });
+                cards.forEach(function (card) { grupo.appendChild(card); });
+            });
+        }
+
+        if (resultado) {
+            resultado.textContent = visibles.length + (visibles.length === 1 ? " producto encontrado" : " productos encontrados");
+        }
+    }
+
+    botonesCategoria.forEach(function (boton) {
+        boton.addEventListener("click", function () {
+            botonesCategoria.forEach(function (b) { b.classList.remove("activo"); });
+            boton.classList.add("activo");
+            categoriaActual = boton.dataset.filtro || "todos";
+            aplicarFiltros();
+        });
+    });
+    if (buscador) buscador.addEventListener("input", aplicarFiltros);
+    if (filtroPrecio) filtroPrecio.addEventListener("change", aplicarFiltros);
+    if (tarjetas.length) aplicarFiltros();
+
+    // ----- Productos relacionados en el detalle -----
+    var relacionados = document.getElementById("productos-relacionados");
+    var detalleActual = new URLSearchParams(window.location.search).get("id");
+    if (relacionados && detalleActual) {
+        var productosCatalogo = {
+            laptop:["Laptop Nimbus 14",14999,"computo","img/laptop.png"],
+            mouse:["Mouse inalámbrico Glide",429,"computo","img/mouse.jpg"],
+            teclado:["Teclado mecánico Type-X",1299,"computo","img/teclado.jpg"],
+            monitor:["Monitor UltraView 24",3199,"computo","img/monitor.png"],
+            teclado_gamer:["Teclado Gamer RGB Pro",1799,"computo","img/teclado2.png"],
+            webcam:["Webcam Vision HD",699,"computo","img/webcam.png"],
+            audifonos:["Audífonos Pulse ANC",1899,"audio","img/audifonos.jpg"],
+            bocina:["Bocina portátil Boom Mini",799,"audio","img/bocina.jpg"],
+            barra:["Barra de sonido SoundBar X",1499,"audio","img/barra.png"],
+            microfono:["Micrófono Stream Pro",1099,"audio","img/microfono.png"],
+            foco:["Foco inteligente Orbit",349,"hogar","img/foco.jpg"],
+            camara:["Cámara de seguridad SafeView",899,"hogar","img/camara.jpg"],
+            speaker:["Bocina inteligente Echo Home",1599,"hogar","img/bocinah.png"],
+            enchufe:["Enchufe inteligente SmartPlug",299,"hogar","img/enchufe.png"],
+            tira:["Tira LED SmartGlow",499,"hogar","img/tiraled.png"],
+            reloj:["Reloj inteligente Orbit Fit",2299,"movil","img/reloj.jpg"],
+            cargador:["Cargador rápido PowerGo",549,"movil","img/cargador.png"],
+            powerbank:["Power Bank Volt 20K",899,"movil","img/powerbank.png"]
+        };
+        var actual = productosCatalogo[detalleActual];
+        if (actual) {
+            var relacionadosIds = Object.keys(productosCatalogo).filter(function (id) {
+                return id !== detalleActual && productosCatalogo[id][2] === actual[2];
+            }).slice(0, 3);
+            relacionadosIds.forEach(function (id) {
+                var item = productosCatalogo[id];
+                var card = document.createElement("a");
+                card.className = "relacionado-card";
+                card.href = "detalle.html?id=" + id;
+                card.innerHTML = '<div class="relacionado-imagen"><img src="' + item[3] + '" alt="' + item[0] + '"></div>' +
+                    '<div class="relacionado-info"><span>' + item[2] + '</span><h3>' + item[0] + '</h3><strong>' + precioTexto(item[1]) + '</strong><b>Ver detalle →</b></div>';
+                relacionados.appendChild(card);
+            });
+        }
+    }
+
+    // ----- Página del carrito -----
+    var carritoContenedor = document.getElementById("carrito-contenido");
+    if (carritoContenedor) {
+        var lista = document.getElementById("lista-carrito");
+        var vacio = document.getElementById("carrito-vacio");
+        var subtotalEl = document.getElementById("carrito-subtotal");
+        var totalEl = document.getElementById("carrito-total");
+        var finalizar = document.getElementById("boton-finalizar-compra");
+
+        function renderCarrito() {
+            var carrito = obtenerCarrito();
+            if (!lista) return;
+            lista.innerHTML = "";
+
+            if (!carrito.length) {
+                if (vacio) vacio.style.display = "";
+                if (subtotalEl) subtotalEl.textContent = precioTexto(0);
+                if (totalEl) totalEl.textContent = precioTexto(0);
+                if (finalizar) finalizar.disabled = true;
+                return;
+            }
+
+            if (vacio) vacio.style.display = "none";
+            var subtotal = 0;
+
+            carrito.forEach(function (item) {
+                var cantidad = Math.max(1, Number(item.cantidad) || 1);
+                var precio = Number(item.precio) || 0;
+                subtotal += precio * cantidad;
+
+                var fila = document.createElement("article");
+                fila.className = "carrito-item";
+                fila.innerHTML =
+                    '<img src="' + item.imagen + '" alt="' + item.nombre + '">' +
+                    '<div class="carrito-item-info"><h3>' + item.nombre + '</h3><span>' + precioTexto(precio) + ' por pieza</span></div>' +
+                    '<div class="carrito-cantidad"><button type="button" data-accion="menos">−</button><strong>' + cantidad + '</strong><button type="button" data-accion="mas">+</button></div>' +
+                    '<strong class="carrito-item-total">' + precioTexto(precio * cantidad) + '</strong>' +
+                    '<button type="button" class="carrito-eliminar" aria-label="Eliminar ' + item.nombre + '">Eliminar</button>';
+
+                fila.querySelector('[data-accion="menos"]').addEventListener("click", function () {
+                    item.cantidad = Math.max(1, cantidad - 1);
+                    guardarCarrito(carrito); renderCarrito(); actualizarBadgesCarrito();
+                });
+                fila.querySelector('[data-accion="mas"]').addEventListener("click", function () {
+                    item.cantidad = Math.min(10, cantidad + 1);
+                    guardarCarrito(carrito); renderCarrito(); actualizarBadgesCarrito();
+                });
+                fila.querySelector(".carrito-eliminar").addEventListener("click", function () {
+                    carrito = carrito.filter(function (x) { return x.id !== item.id; });
+                    guardarCarrito(carrito); renderCarrito(); actualizarBadgesCarrito();
+                });
+                lista.appendChild(fila);
+            });
+
+            if (subtotalEl) subtotalEl.textContent = precioTexto(subtotal);
+            if (totalEl) totalEl.textContent = precioTexto(subtotal);
+            if (finalizar) finalizar.disabled = false;
+        }
+
+        if (finalizar) {
+            finalizar.addEventListener("click", function () {
+                var carrito = obtenerCarrito();
+                if (!carrito.length) return;
+                var total = carrito.reduce(function (suma, item) { return suma + item.precio * item.cantidad; }, 0);
+                mostrarMensaje("Compra simulada realizada", "Tu pedido fue registrado correctamente. Total: " + precioTexto(total) + ".");
+                guardarCarrito([]);
+                renderCarrito();
+                actualizarBadgesCarrito();
+            });
+        }
+
+        renderCarrito();
+    }
 });
 
 /* ============================================================
