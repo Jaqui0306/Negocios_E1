@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechZone - Administrador</title>
+<link rel="icon" type="image/svg+xml" href="img/logo.svg">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header>
+<a href="inicio.html" class="logo"><img src="img/logo.svg" alt="TechZone" class="logo-img">TechZone</a>
+<nav id="nav-menu"></nav>
+</header>
+<main class="admin-layout">
+<aside class="admin-sidebar">
+<div class="admin-sidebar-header"><small>Área interna</small><strong>Administrador</strong></div>
+<nav class="admin-menu">
+<a href="admin.html" class="activo">▦ <span>Inicio</span></a>
+<a href="#productos">▣ <span>Productos</span></a>
+<a href="#pedidos">▤ <span>Pedidos</span></a>
+<a href="#promociones">◇ <span>Promociones</span></a>
+<a href="inicio.html" class="admin-volver">← <span>Volver a la tienda</span></a>
+</nav>
+</aside>
+<section class="admin-main">
+<div class="admin-encabezado"><div><h1>Panel de administrador</h1><p>Resumen general de la tienda TechZone.</p></div><span class="admin-fecha">MODO DEMOSTRACIÓN</span></div>
+<div class="admin-stats">
+<article class="admin-stat"><span>Productos</span><strong>12</strong><small>Productos registrados</small></article>
+<article class="admin-stat"><span>Pedidos</span><strong>5</strong><small>Pedidos simulados</small></article>
+<article class="admin-stat"><span>Promociones</span><strong>4</strong><small>Promociones activas</small></article>
+</div>
+<div class="admin-paneles">
+<article class="admin-panel" id="productos"><h2>Resumen de productos</h2><p>Información visual para el panel del administrador.</p><div class="admin-resumen-lista"><div class="admin-resumen-item"><span>Productos activos</span><strong>12</strong></div><div class="admin-resumen-item"><span>En oferta</span><strong>4</strong></div><div class="admin-resumen-item"><span>Stock bajo</span><strong>2</strong></div><div class="admin-resumen-item"><span>Categorías</span><strong>4</strong></div></div></article>
+<article class="admin-panel" id="pedidos"><h2>Accesos rápidos</h2><p>Secciones preparadas para los siguientes bloques.</p><div class="admin-accesos"><a class="admin-acceso" href="#productos">Gestionar productos <span>→</span></a><a class="admin-acceso" href="#pedidos">Consultar pedidos <span>→</span></a><a class="admin-acceso" href="#promociones">Ver promociones <span>→</span></a></div></article>
+</div>
+<article class="admin-panel" id="promociones" style="margin-top:18px"><h2>Estado de la tienda</h2><p>Los datos de este panel son demostrativos y no requieren una base de datos en este bloque.</p><div class="admin-resumen-lista"><div class="admin-resumen-item"><span>Catálogo</span><strong>Activo</strong></div><div class="admin-resumen-item"><span>Carrito</span><strong>Funcionando</strong></div><div class="admin-resumen-item"><span>Checkout</span><strong>Próximamente</strong></div></div></article>
+</section>
+</main>
+<script src="js/main.js"></script>
+</body>
+</html>
