@@ -3140,3 +3140,80 @@ button[type="submit"],.formulario-card .boton,.login-card .boton,.registro-card 
 .checkout-card h1{font-size:34px;color:#0b1e3e;margin-bottom:12px}.checkout-card p{color:#617187;max-width:540px;margin:0 auto 24px}
 @media(max-width:850px){.admin-layout{grid-template-columns:1fr}.admin-sidebar{position:static}.admin-menu{grid-template-columns:repeat(3,1fr)}.admin-menu .admin-volver{margin-top:0;border-top:0;padding-top:12px}.admin-paneles{grid-template-columns:1fr}}
 @media(max-width:600px){.admin-stats{grid-template-columns:1fr}.admin-menu{grid-template-columns:1fr}.admin-encabezado{display:block}.admin-fecha{display:inline-block;margin-top:12px}.checkout-card{padding:35px 22px}}
+
+
+/* ============================================================
+   BLOQUE 2 — ADMINISTRADOR Y CONFIRMACIÓN DE COMPRA
+   ============================================================ */
+.admin-panel-cabecera{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:20px}
+.admin-panel-cabecera h2{margin-bottom:6px}
+.admin-panel-cabecera p{margin:0}
+.admin-tabla-wrap{width:100%;overflow-x:auto;border:1px solid #e5e7eb;border-radius:14px}
+.admin-tabla{width:100%;border-collapse:collapse;min-width:720px;background:#fff}
+.admin-tabla th,.admin-tabla td{padding:14px 15px;text-align:left;border-bottom:1px solid #edf0f4}
+.admin-tabla th{font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;color:#667085;background:#f8fafc}
+.admin-tabla tr:last-child td{border-bottom:0}
+.admin-tabla td strong{color:#182230}
+.admin-acciones{display:flex;gap:8px;white-space:nowrap}
+.admin-btn{border:1px solid #d8dee8;background:#fff;border-radius:8px;padding:7px 11px;cursor:pointer;font-weight:600}
+.admin-btn:hover{transform:translateY(-1px)}
+.admin-btn.eliminar{color:#b42318;border-color:#f0b8b3}
+.admin-estado{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:.78rem;font-weight:700}
+.admin-estado.activo{background:#ecfdf3;color:#027a48}
+.admin-estado.agotado{background:#fff1f0;color:#b42318}
+.boton-secundario{background:#fff!important;color:#344054!important;border:1px solid #d0d5dd!important}
+.boton-peligro{background:#b42318!important;color:#fff!important}
+.tz-admin-modal,.tz-politica-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:9999;padding:20px}
+.tz-admin-modal.visible,.tz-politica-modal.visible{display:flex}
+.tz-admin-fondo,.tz-politica-fondo{position:absolute;inset:0;background:rgba(15,23,42,.58);backdrop-filter:blur(3px)}
+.tz-admin-caja,.tz-politica-caja{position:relative;width:min(680px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.22);z-index:1}
+.tz-admin-caja h2,.tz-politica-caja h2{margin-top:0;margin-bottom:7px}
+.tz-admin-caja>p{color:#667085;margin-top:0}
+.admin-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:20px}
+.admin-form-grid label{display:flex;flex-direction:column;gap:7px;font-weight:700;font-size:.9rem;color:#344054}
+.admin-form-grid input,.admin-form-grid select,.admin-form-grid textarea{font:inherit;padding:11px 12px;border:1px solid #d0d5dd;border-radius:10px;outline:none;background:#fff}
+.admin-form-grid textarea{resize:vertical}
+.admin-form-ancho{grid-column:1/-1}
+.admin-form-acciones{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}
+.admin-confirmacion{max-width:480px}
+.tz-politica-caja{width:min(620px,100%)}
+.tz-politica-icono{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#ecfdf3;color:#027a48;font-size:24px;font-weight:800;margin-bottom:12px}
+.tz-politica-intro{color:#475467}
+.tz-politica-lista{display:grid;gap:10px;margin:18px 0;padding:16px;border-radius:14px;background:#f8fafc;color:#475467;line-height:1.5}
+.tz-politica-check{display:flex;align-items:flex-start;gap:10px;padding:13px;border:1px solid #d0d5dd;border-radius:12px;cursor:pointer;line-height:1.45}
+.tz-politica-check input{margin-top:4px;width:17px;height:17px}
+.tz-politica-acciones{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+.tz-politica-acciones button:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:700px){
+ .admin-panel-cabecera{align-items:flex-start;flex-direction:column}
+ .admin-form-grid{grid-template-columns:1fr}
+ .admin-form-ancho{grid-column:auto}
+ .tz-politica-acciones,.admin-form-acciones{flex-direction:column}
+ .tz-politica-acciones .boton,.admin-form-acciones .boton{width:100%}
+}
+
+/* ============================================================
+   ADMIN — DISEÑO RENOVADO Y DATOS DINÁMICOS
+   ============================================================ */
+.admin-main{padding-bottom:30px}
+.admin-kicker,.admin-panel-num,.admin-seccion-titulo span{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#1268ff}
+.admin-encabezado h1{font-size:38px;letter-spacing:-.03em}
+.admin-dashboard,.admin-seccion{margin-bottom:28px}
+.admin-seccion-titulo{display:flex;justify-content:space-between;align-items:end;gap:20px;margin:0 0 14px;padding:0 4px}
+.admin-seccion-titulo>div{display:flex;align-items:center;gap:10px}.admin-seccion-titulo h2{margin:0;font-size:21px;color:#0b1e3e}.admin-seccion-titulo p{margin:0;color:#718196;font-size:13px}
+.admin-stats{grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:0}
+.admin-stat{min-height:142px;padding:20px 21px;border-radius:20px}
+.admin-stat b{position:absolute;right:20px;top:18px;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#f0f6ff;color:#1268ff;font-size:18px}
+.admin-stat-pedidos b{background:#fff7e9;color:#b96b00}.admin-stat-promos b{background:#f5efff;color:#7644b7}
+.admin-stat strong{font-size:30px}
+.admin-panel{border-radius:22px;padding:25px;box-shadow:0 15px 38px rgba(14,48,84,.07)}
+.admin-panel-destacado{border-top:4px solid #1268ff}
+.admin-panel-cabecera{margin-bottom:22px}.admin-panel-cabecera>div{position:relative;padding-left:44px}.admin-panel-num{position:absolute;left:0;top:2px}.admin-panel-cabecera h2{font-size:24px;margin:0 0 6px}.admin-panel-cabecera p{max-width:680px}
+.admin-producto-celda{display:flex;align-items:center;gap:11px}.admin-producto-celda img{width:46px;height:46px;object-fit:contain;border-radius:10px;background:#f6f8fb;border:1px solid #edf0f4}.admin-producto-celda small,.admin-tabla-sub{display:block;color:#8a98a9;font-size:11px;margin-top:3px}
+.admin-tabla td{vertical-align:middle}.admin-tabla th{white-space:nowrap}
+.admin-estado-boton{border:0;cursor:pointer;font:inherit}.admin-estado-boton.activo{background:#ecfdf3;color:#027a48}.admin-estado-boton.agotado{background:#fff1f0;color:#b42318}.admin-estado-boton:hover{filter:brightness(.97)}
+.admin-resumen-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.admin-resumen-item{min-height:68px}.admin-estado-tienda{border-top:3px solid #dbe7f2}
+.admin-form-grid{gap:16px}.admin-upload-label{background:#f8fafc;border:1px dashed #b8c5d3;border-radius:14px;padding:14px}.admin-upload-label input{background:#fff}.admin-imagen-preview{min-height:120px;margin-top:8px;border-radius:13px;border:1px dashed #cbd5e1;background:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;color:#94a3b8;overflow:hidden}.admin-imagen-preview img{width:100%;height:145px;object-fit:contain;background:#f8fafc}.admin-imagen-preview span{font-size:12px;color:#64748b}
+.catalogo-admin-dinamico{margin-top:28px}.producto-admin-card .producto-imagen img{max-width:100%;max-height:190px;object-fit:contain}.promo-card-admin{position:relative}.promo-admin-icon{height:130px;display:grid;place-items:center;font-size:54px;color:#1268ff;background:linear-gradient(135deg,#f2f7ff,#eef3fb)}
+@media(max-width:1050px){.admin-stats{grid-template-columns:repeat(2,1fr)}.admin-resumen-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.admin-stats,.admin-resumen-grid{grid-template-columns:1fr}.admin-seccion-titulo{display:block}.admin-seccion-titulo p{margin-top:6px}.admin-panel{padding:18px}.admin-encabezado h1{font-size:30px}}

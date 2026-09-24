@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (modal._tzTimer) clearTimeout(modal._tzTimer);
         modal._tzTimer = setTimeout(function () {
             modal.classList.remove("visible");
-        }, 5000);
+        }, 10000);
     }
 
     var PRODUCTOS = {
@@ -437,7 +437,8 @@ powerbank: {
             { href: "nosotros.html", texto: "Nosotros", id: "nosotros" },
             { href: "contacto.html", texto: "Contacto", id: "contacto" },
             { href: "perfil.html", texto: "Perfil", id: "perfil" },
-            { href: "#", texto: "🛒 Carrito", id: "carrito" }
+            { href: "#", texto: "🛒 Carrito", id: "carrito" },
+            { href: "admin.html", texto: "Administrador", id: "admin" }
         ];
         var enlaces = usuario ? enlacesCompletos : enlacesPublicos;
         var htmlMenu = "";
@@ -890,11 +891,57 @@ document.addEventListener("DOMContentLoaded", function () {
             finalizar.addEventListener("click", function () {
                 var carrito = obtenerCarrito();
                 if (!carrito.length) return;
-                var total = carrito.reduce(function (suma, item) { return suma + item.precio * item.cantidad; }, 0);
-                mostrarMensaje("Compra simulada realizada", "Tu pedido fue registrado correctamente. Total: " + precioTexto(total) + ".");
-                guardarCarrito([]);
-                renderCarrito();
-                actualizarBadgesCarrito();
+
+                var modal = document.getElementById("tz-politica-compra");
+                if (!modal) {
+                    modal = document.createElement("div");
+                    modal.id = "tz-politica-compra";
+                    modal.className = "tz-politica-modal";
+                    modal.innerHTML = `
+                        <div class="tz-politica-fondo"></div>
+                        <div class="tz-politica-caja" role="dialog" aria-modal="true" aria-labelledby="tz-politica-titulo">
+                            <button type="button" class="tz-modal-cerrar tz-politica-cerrar" aria-label="Cerrar">×</button>
+                            <div class="tz-politica-icono">✓</div>
+                            <h2 id="tz-politica-titulo">Antes de continuar</h2>
+                            <p class="tz-politica-intro">Revisa estas políticas y confirma que estás seguro de continuar con tu compra.</p>
+                            <div class="tz-politica-lista">
+                                <div><strong>Compra simulada:</strong> este sitio es un proyecto académico y no realiza cargos reales.</div>
+                                <div><strong>Productos:</strong> revisa que los productos y cantidades de tu carrito sean correctos.</div>
+                                <div><strong>Datos:</strong> la información mostrada se utiliza únicamente para esta demostración.</div>
+                                <div><strong>Servicios:</strong> el envío aparece como gratuito y el proceso de pago se mostrará posteriormente.</div>
+                            </div>
+                            <label class="tz-politica-check">
+                                <input type="checkbox" id="tz-politica-acepto">
+                                <span>Confirmo que revisé mi carrito y estoy seguro(a) de continuar.</span>
+                            </label>
+                            <div class="tz-politica-acciones">
+                                <button type="button" class="boton boton-secundario" id="tz-politica-cancelar">Regresar al carrito</button>
+                                <button type="button" class="boton" id="tz-politica-continuar" disabled>Continuar a pagar</button>
+                            </div>
+                        </div>`;
+                    document.body.appendChild(modal);
+
+                    var cerrarPolitica = function () {
+                        modal.classList.remove("visible");
+                    };
+                    modal.querySelector(".tz-politica-fondo").addEventListener("click", cerrarPolitica);
+                    modal.querySelector(".tz-politica-cerrar").addEventListener("click", cerrarPolitica);
+                    modal.querySelector("#tz-politica-cancelar").addEventListener("click", cerrarPolitica);
+                    var check = modal.querySelector("#tz-politica-acepto");
+                    var continuar = modal.querySelector("#tz-politica-continuar");
+                    check.addEventListener("change", function () {
+                        continuar.disabled = !check.checked;
+                    });
+                    continuar.addEventListener("click", function () {
+                        if (!check.checked) return;
+                        cerrarPolitica();
+                        window.location.href = "checkout.html";
+                    });
+                }
+
+                modal.querySelector("#tz-politica-acepto").checked = false;
+                modal.querySelector("#tz-politica-continuar").disabled = true;
+                modal.classList.add("visible");
             });
         }
 
@@ -932,4 +979,130 @@ document.addEventListener("DOMContentLoaded", function () {
         zoomImg.style.transformOrigin = "50% 50%";
         zoomImg.style.transform = "scale(1)";
     });
+});
+
+
+/* ============================================================
+   BLOQUE 2 — PRODUCTOS PERSONALIZADOS Y ADMINISTRADOR
+   ============================================================ */
+function obtenerProductosAdmin() {
+    try {
+        var datos = JSON.parse(localStorage.getItem("techzone_admin_productos"));
+        return Array.isArray(datos) ? datos : [];
+    } catch (e) { return []; }
+}
+
+function obtenerPromocionesAdmin() {
+    try {
+        var datos = JSON.parse(localStorage.getItem("techzone_admin_promociones"));
+        return Array.isArray(datos) ? datos : [];
+    } catch (e) { return []; }
+}
+
+/* Productos creados desde el panel: aparecen en el catálogo. */
+document.addEventListener("DOMContentLoaded", function () {
+    var zona = document.getElementById("productos-admin-catalogo");
+    if (!zona) return;
+    var productos = obtenerProductosAdmin();
+    if (!productos.length) return;
+    zona.innerHTML = "<h2 class=\"categoria-titulo\">✨ Productos agregados por administración</h2><div class=\"productos productos-admin-catalogo\"></div>";
+    var grid = zona.querySelector(".productos");
+    productos.filter(function(p){ return p.estado !== "Agotado"; }).forEach(function(p){
+        var img = p.imagen || "img/logo.svg";
+        var card = document.createElement("article");
+        card.className = "producto producto-admin-card";
+        card.setAttribute("data-categoria", p.categoria || "computo");
+        card.setAttribute("data-producto-id", p.id);
+        card.innerHTML = '<span class="producto-badge producto-badge-nuevo">'+escaparTexto(p.etiqueta || "Nuevo")+'</span>'+
+          '<div class="producto-imagen producto-imagen-'+escaparTexto(p.categoria || "computo")+'"><img src="'+img+'" alt="'+escaparTexto(p.nombre)+'"></div>'+
+          '<div class="producto-info"><span class="producto-etiqueta">'+escaparTexto(p.categoriaTexto || "Producto")+'</span><h3>'+escaparTexto(p.nombre)+'</h3><ul class="producto-specs"><li>'+(p.descripcion ? escaparTexto(p.descripcion).slice(0,90) : "Producto agregado por administración")+'</li></ul></div>'+
+          '<div class="producto-pie"><strong>'+precioTexto(p.precio)+'</strong><button type="button" class="boton admin-catalogo-agregar">Agregar</button></div>';
+        card.querySelector(".admin-catalogo-agregar").addEventListener("click", function(){
+            if (!obtenerUsuario()) { mostrarMensaje("Inicia sesión", "Debes iniciar sesión para agregar productos al carrito.", "info"); return; }
+            var carrito = obtenerCarrito(); var ex = carrito.find(function(x){return x.id===p.id;});
+            if(ex) ex.cantidad=Math.min(10,ex.cantidad+1); else carrito.push({id:p.id,nombre:p.nombre,precio:Number(p.precio)||0,imagen:img,cantidad:1});
+            guardarCarrito(carrito); actualizarBadgesCarrito(); mostrarMensaje("Producto agregado", p.nombre+" se agregó al carrito.");
+        });
+        grid.appendChild(card);
+    });
+});
+
+function escaparTexto(valor) {
+    return String(valor == null ? "" : valor).replace(/[&<>"']/g, function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});
+}
+
+/* Promociones creadas desde administración: se muestran en Inicio. */
+document.addEventListener("DOMContentLoaded", function(){
+    var lista = document.getElementById("promos-admin-dinamicas");
+    if(!lista) return;
+    var promos = obtenerPromocionesAdmin().filter(function(p){return p.estado === "Activa";});
+    promos.forEach(function(p){
+        var card=document.createElement("article"); card.className="promo-card promo-card-admin";
+        var etiqueta=p.tipo==="porcentaje" ? "Oferta · "+p.valor+"% OFF" : p.tipo==="fijo" ? "Oferta · $"+Number(p.valor||0).toLocaleString("es-MX")+" OFF" : "Envío gratis";
+        card.innerHTML='<span class="promo-etiqueta">'+escaparTexto(etiqueta)+'</span><div class="promo-admin-icon">◇</div><div class="promo-info"><h3>'+escaparTexto(p.nombre)+'</h3><span class="promo-precio">'+escaparTexto(p.descripcion||"Promoción especial TechZone")+'</span></div>';
+        lista.appendChild(card);
+    });
+});
+
+/* ============================================================
+   ADMIN — GESTIÓN DE PRODUCTOS Y PROMOCIONES SIMULADAS
+   ============================================================ */
+document.addEventListener("DOMContentLoaded", function () {
+    var listaAdmin = document.getElementById("admin-lista-productos");
+    if (!listaAdmin) return;
+
+    var CLAVE_ADMIN_PRODUCTOS = "techzone_admin_productos";
+    var CLAVE_ADMIN_PROMOS = "techzone_admin_promociones";
+    var productosIniciales = [
+        {id:"laptop",nombre:"Laptop Nimbus 14",categoria:"computo",precio:14999,stock:8,estado:"Activo",etiqueta:"Más vendido",descripcion:"Laptop para clases y trabajo.",especificaciones:"14 pulgadas Full HD, 16 GB RAM, 512 GB SSD",imagen:"img/laptop.png"},
+        {id:"mouse",nombre:"Mouse inalámbrico Glide",categoria:"computo",precio:429,stock:15,estado:"Activo",etiqueta:"Nuevo",descripcion:"Mouse inalámbrico ergonómico.",especificaciones:"Conexión inalámbrica y diseño ergonómico",imagen:"img/mouse2.png"},
+        {id:"teclado",nombre:"Teclado mecánico Type-X",categoria:"computo",precio:1299,stock:9,estado:"Activo",etiqueta:"Nuevo",descripcion:"Teclado mecánico con retroiluminación.",especificaciones:"Retroiluminación y switches mecánicos",imagen:"img/teclado.jpg"},
+        {id:"monitor",nombre:"Monitor UltraView 24",categoria:"computo",precio:3199,stock:6,estado:"Activo",etiqueta:"Oferta",descripcion:"Monitor IPS Full HD.",especificaciones:"24 pulgadas, IPS, Full HD",imagen:"img/monitor.png"},
+        {id:"teclado_gamer",nombre:"Teclado Gamer RGB Pro",categoria:"computo",precio:1799,stock:5,estado:"Activo",etiqueta:"Nuevo",descripcion:"Teclado para gaming.",especificaciones:"RGB y diseño gaming",imagen:"img/teclado1.3.png"},
+        {id:"webcam",nombre:"Webcam Vision HD",categoria:"computo",precio:699,stock:12,estado:"Activo",etiqueta:"Oferta",descripcion:"Webcam Full HD.",especificaciones:"Video Full HD para clases y reuniones",imagen:"img/webcam.png"},
+        {id:"audifonos",nombre:"Audífonos Pulse ANC",categoria:"audio",precio:1899,stock:7,estado:"Activo",etiqueta:"Oferta",descripcion:"Audífonos con cancelación de ruido.",especificaciones:"Cancelación activa de ruido",imagen:"img/audifonos.jpg"},
+        {id:"bocina",nombre:"Bocina portátil Boom Mini",categoria:"audio",precio:799,stock:10,estado:"Activo",etiqueta:"Nuevo",descripcion:"Bocina portátil.",especificaciones:"Bluetooth y batería recargable",imagen:"img/bocina.jpg"},
+        {id:"barra",nombre:"Barra de sonido SoundBar X",categoria:"audio",precio:1499,stock:4,estado:"Activo",etiqueta:"Oferta",descripcion:"Barra de sonido compacta.",especificaciones:"Sonido estéreo y conexión Bluetooth",imagen:"img/barra.png"},
+        {id:"foco",nombre:"Foco inteligente Orbit",categoria:"hogar",precio:349,stock:18,estado:"Activo",etiqueta:"Nuevo",descripcion:"Foco inteligente.",especificaciones:"Control inteligente y ahorro de energía",imagen:"img/foco.jpg"},
+        {id:"camara",nombre:"Cámara de seguridad SafeView",categoria:"hogar",precio:899,stock:11,estado:"Activo",etiqueta:"Oferta",descripcion:"Cámara para seguridad del hogar.",especificaciones:"Monitoreo y visión para interiores",imagen:"img/camara.jpg"},
+        {id:"reloj",nombre:"Reloj inteligente Orbit Fit",categoria:"movil",precio:2299,stock:6,estado:"Activo",etiqueta:"Nuevo",descripcion:"Reloj inteligente.",especificaciones:"Pantalla inteligente y seguimiento diario",imagen:"img/reloj.jpg"}
+    ];
+    var promocionesIniciales = [
+        {id:"promo_1",nombre:"Oferta de temporada",tipo:"porcentaje",valor:15,estado:"Activa",inicio:"",fin:"",descripcion:"Descuento especial en productos seleccionados."},
+        {id:"promo_2",nombre:"Descuento en audio",tipo:"porcentaje",valor:17,estado:"Activa",inicio:"",fin:"",descripcion:"Promoción en audífonos, bocinas y audio."},
+        {id:"promo_3",nombre:"Envío gratis",tipo:"envio",valor:0,estado:"Activa",inicio:"",fin:"",descripcion:"Envío gratis en compras seleccionadas."}
+    ];
+    function leer(clave, iniciales){try{var x=JSON.parse(localStorage.getItem(clave));return Array.isArray(x)?x:iniciales.slice();}catch(e){return iniciales.slice();}}
+    function guardar(clave, datos){localStorage.setItem(clave,JSON.stringify(datos));}
+    var productos=leer(CLAVE_ADMIN_PRODUCTOS,productosIniciales), promociones=leer(CLAVE_ADMIN_PROMOS,promocionesIniciales);
+    if(!localStorage.getItem(CLAVE_ADMIN_PRODUCTOS)) guardar(CLAVE_ADMIN_PRODUCTOS,productos);
+    if(!localStorage.getItem(CLAVE_ADMIN_PROMOS)) guardar(CLAVE_ADMIN_PROMOS,promociones);
+
+    var modalForm=document.getElementById("admin-producto-modal"), modalEliminar=document.getElementById("admin-eliminar-modal"), form=document.getElementById("admin-producto-form"), productoAEliminar=null;
+    var promoModal=document.getElementById("admin-promocion-modal"), promoEliminarModal=document.getElementById("admin-eliminar-promo-modal"), promoForm=document.getElementById("admin-promocion-form"), promoAEliminar=null;
+    function categoriaTexto(cat){return {computo:"Cómputo",audio:"Audio",hogar:"Hogar",movil:"Móvil"}[cat]||cat;}
+    function abrirModal(el){if(el){el.classList.add("visible");el.setAttribute("aria-hidden","false");}}
+    function cerrarModal(el){if(el){el.classList.remove("visible");el.setAttribute("aria-hidden","true");}}
+    function renderAdmin(){
+        listaAdmin.innerHTML="";
+        productos.forEach(function(p){var tr=document.createElement("tr");tr.innerHTML='<td><div class="admin-producto-celda">'+(p.imagen?'<img src="'+p.imagen+'" alt="">':'')+'<div><strong>'+escaparTexto(p.nombre)+'</strong><small>'+escaparTexto(p.etiqueta||"")+'</small></div></div></td><td>'+escaparTexto(categoriaTexto(p.categoria))+'</td><td>'+precioTexto(p.precio)+'</td><td>'+Number(p.stock||0)+'</td><td><span class="admin-estado '+(p.estado==="Activo"?"activo":"agotado")+'">'+escaparTexto(p.estado)+'</span></td><td class="admin-acciones"><button type="button" class="admin-btn editar">Editar</button><button type="button" class="admin-btn eliminar">Eliminar</button></td>';tr.querySelector(".editar").onclick=function(){abrirFormulario(p);};tr.querySelector(".eliminar").onclick=function(){confirmarEliminar(p);};listaAdmin.appendChild(tr);});
+        var total=document.getElementById("admin-total-productos");if(total)total.textContent=productos.length;
+        var tp=document.getElementById("admin-total-promociones");if(tp)tp.textContent=promociones.filter(function(x){return x.estado==="Activa";}).length;
+        renderPromociones();
+    }
+    function abrirFormulario(p){document.getElementById("admin-form-titulo").textContent=p?"Editar producto":"Agregar producto";document.getElementById("admin-producto-id").value=p?p.id:"";document.getElementById("admin-nombre").value=p?p.nombre:"";document.getElementById("admin-categoria").value=p?p.categoria:"computo";document.getElementById("admin-precio").value=p?p.precio:"";document.getElementById("admin-stock").value=p?(p.stock??10):10;document.getElementById("admin-estado").value=p?p.estado:"Activo";document.getElementById("admin-etiqueta").value=p?(p.etiqueta||""):"Nuevo";document.getElementById("admin-descripcion").value=p?(p.descripcion||""):"";document.getElementById("admin-especificaciones").value=p?(p.especificaciones||""):"";document.getElementById("admin-imagen").value="";var prev=document.getElementById("admin-imagen-preview");prev.innerHTML=p&&p.imagen?'<img src="'+p.imagen+'" alt="Vista previa"><span>Cambiar imagen</span>':'<span>Vista previa</span>';abrirModal(modalForm);}
+    function confirmarEliminar(p){productoAEliminar=p;document.getElementById("admin-eliminar-texto").textContent='¿Seguro que deseas eliminar "'+p.nombre+'"?';abrirModal(modalEliminar);}
+    document.getElementById("admin-agregar-producto").onclick=function(){abrirFormulario(null);};
+    document.getElementById("admin-cerrar-form").onclick=function(){cerrarModal(modalForm);};document.getElementById("admin-cancelar-form").onclick=function(){cerrarModal(modalForm);};modalForm.querySelector(".tz-admin-fondo").onclick=function(){cerrarModal(modalForm);};
+    var fileInput=document.getElementById("admin-imagen"), preview=document.getElementById("admin-imagen-preview");fileInput.addEventListener("change",function(){var f=this.files&&this.files[0];if(!f)return;if(f.size>3*1024*1024){this.value="";mostrarMensaje("Imagen demasiado grande","Selecciona una imagen de máximo 3 MB.","info");return;}var reader=new FileReader();reader.onload=function(e){preview.innerHTML='<img src="'+e.target.result+'" alt="Vista previa"><span>Nueva imagen</span>';};reader.readAsDataURL(f);});
+    form.addEventListener("submit",function(e){e.preventDefault();var id=document.getElementById("admin-producto-id").value.trim(), anterior=productos.find(function(p){return p.id===id;}), file=fileInput.files&&fileInput.files[0];function guardarProducto(imagen){var datos={id:id||("producto_"+Date.now()),nombre:document.getElementById("admin-nombre").value.trim(),categoria:document.getElementById("admin-categoria").value,precio:Number(document.getElementById("admin-precio").value)||0,stock:Number(document.getElementById("admin-stock").value)||0,estado:document.getElementById("admin-estado").value,etiqueta:document.getElementById("admin-etiqueta").value,descripcion:document.getElementById("admin-descripcion").value.trim(),especificaciones:document.getElementById("admin-especificaciones").value.trim(),imagen:imagen||(anterior&&anterior.imagen)||""};if(id){var i=productos.findIndex(function(p){return p.id===id;});if(i>=0)productos[i]=datos;}else productos.push(datos);guardar(CLAVE_ADMIN_PRODUCTOS,productos);renderAdmin();cerrarModal(modalForm);mostrarMensaje(id?"Producto actualizado":"Producto agregado",id?"Los datos se actualizaron correctamente.":"El producto se agregó con su imagen y detalles.");};if(file){var r=new FileReader();r.onload=function(e){guardarProducto(e.target.result);};r.readAsDataURL(file);}else guardarProducto("");});
+    document.getElementById("admin-no-eliminar").onclick=function(){cerrarModal(modalEliminar);};modalEliminar.querySelector(".tz-admin-fondo").onclick=function(){cerrarModal(modalEliminar);};document.getElementById("admin-si-eliminar").onclick=function(){if(!productoAEliminar)return;productos=productos.filter(function(p){return p.id!==productoAEliminar.id;});guardar(CLAVE_ADMIN_PRODUCTOS,productos);renderAdmin();cerrarModal(modalEliminar);mostrarMensaje("Producto eliminado","El producto fue eliminado de la lista simulada.");productoAEliminar=null;};
+
+    function promoTexto(p){return p.tipo==="porcentaje"?p.valor+"% OFF":p.tipo==="fijo"?"$"+Number(p.valor||0).toLocaleString("es-MX")+" OFF":"Envío gratis";}
+    function renderPromociones(){var lista=document.getElementById("admin-lista-promociones");if(!lista)return;lista.innerHTML="";promociones.forEach(function(p){var tr=document.createElement("tr");var vig=(p.inicio||p.fin)?(p.inicio||"Inicio")+" → "+(p.fin||"Sin fin"):"Sin fecha";tr.innerHTML='<td><strong>'+escaparTexto(p.nombre)+'</strong><small class="admin-tabla-sub">'+escaparTexto(p.descripcion||"")+'</small></td><td>'+escaparTexto(p.tipo==="porcentaje"?"Porcentaje":p.tipo==="fijo"?"Monto fijo":"Envío")+'</td><td>'+escaparTexto(promoTexto(p))+'</td><td>'+escaparTexto(vig)+'</td><td><button type="button" class="admin-estado-boton '+(p.estado==="Activa"?"activo":"agotado")+'">'+escaparTexto(p.estado)+'</button></td><td class="admin-acciones"><button type="button" class="admin-btn editar-promo">Editar</button><button type="button" class="admin-btn eliminar eliminar-promo">Eliminar</button></td>';tr.querySelector(".editar-promo").onclick=function(){abrirPromo(p);};tr.querySelector(".eliminar-promo").onclick=function(){promoAEliminar=p;document.getElementById("admin-eliminar-promo-texto").textContent='¿Seguro que deseas eliminar "'+p.nombre+'"?';abrirModal(promoEliminarModal);};tr.querySelector(".admin-estado-boton").onclick=function(){p.estado=p.estado==="Activa"?"Pausada":"Activa";guardar(CLAVE_ADMIN_PROMOS,promociones);renderAdmin();mostrarMensaje("Promoción actualizada","La promoción ahora está "+p.estado.toLowerCase()+".");};lista.appendChild(tr);});}
+    function abrirPromo(p){document.getElementById("admin-promo-titulo").textContent=p?"Editar promoción":"Nueva promoción";document.getElementById("admin-promocion-id").value=p?p.id:"";document.getElementById("admin-promo-nombre").value=p?p.nombre:"";document.getElementById("admin-promo-tipo").value=p?p.tipo:"porcentaje";document.getElementById("admin-promo-valor").value=p?p.valor:10;document.getElementById("admin-promo-estado").value=p?p.estado:"Activa";document.getElementById("admin-promo-inicio").value=p?(p.inicio||""):"";document.getElementById("admin-promo-fin").value=p?(p.fin||""):"";document.getElementById("admin-promo-descripcion").value=p?(p.descripcion||""):"";abrirModal(promoModal);}
+    document.getElementById("admin-agregar-promocion").onclick=function(){abrirPromo(null);};document.getElementById("admin-cerrar-promo").onclick=function(){cerrarModal(promoModal);};document.getElementById("admin-cancelar-promo").onclick=function(){cerrarModal(promoModal);};promoModal.querySelector(".tz-admin-fondo").onclick=function(){cerrarModal(promoModal);};
+    promoForm.addEventListener("submit",function(e){e.preventDefault();var id=document.getElementById("admin-promocion-id").value.trim(), datos={id:id||("promo_"+Date.now()),nombre:document.getElementById("admin-promo-nombre").value.trim(),tipo:document.getElementById("admin-promo-tipo").value,valor:Number(document.getElementById("admin-promo-valor").value)||0,estado:document.getElementById("admin-promo-estado").value,inicio:document.getElementById("admin-promo-inicio").value,fin:document.getElementById("admin-promo-fin").value,descripcion:document.getElementById("admin-promo-descripcion").value.trim()};if(id){var i=promociones.findIndex(function(p){return p.id===id;});if(i>=0)promociones[i]=datos;}else promociones.push(datos);guardar(CLAVE_ADMIN_PROMOS,promociones);renderAdmin();cerrarModal(promoModal);mostrarMensaje(id?"Promoción actualizada":"Promoción creada","La promoción quedó guardada correctamente.");});
+    document.getElementById("admin-no-eliminar-promo").onclick=function(){cerrarModal(promoEliminarModal);};promoEliminarModal.querySelector(".tz-admin-fondo").onclick=function(){cerrarModal(promoEliminarModal);};document.getElementById("admin-si-eliminar-promo").onclick=function(){if(!promoAEliminar)return;promociones=promociones.filter(function(p){return p.id!==promoAEliminar.id;});guardar(CLAVE_ADMIN_PROMOS,promociones);renderAdmin();cerrarModal(promoEliminarModal);mostrarMensaje("Promoción eliminada","La promoción fue eliminada.");promoAEliminar=null;};
+    renderAdmin();
 });

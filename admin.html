@@ -12,31 +12,159 @@
 <a href="inicio.html" class="logo"><img src="img/logo.svg" alt="TechZone" class="logo-img">TechZone</a>
 <nav id="nav-menu"></nav>
 </header>
+
 <main class="admin-layout">
 <aside class="admin-sidebar">
 <div class="admin-sidebar-header"><small>Área interna</small><strong>Administrador</strong></div>
 <nav class="admin-menu">
-<a href="admin.html" class="activo">▦ <span>Inicio</span></a>
-<a href="#productos">▣ <span>Productos</span></a>
-<a href="#pedidos">▤ <span>Pedidos</span></a>
-<a href="#promociones">◇ <span>Promociones</span></a>
+<a href="#inicio-admin" class="activo">▦ <span>Inicio</span></a>
+<a href="#productos-admin">▣ <span>Productos</span></a>
+<a href="#pedidos-admin">▤ <span>Pedidos</span></a>
+<a href="#promociones-admin">◇ <span>Promociones</span></a>
 <a href="inicio.html" class="admin-volver">← <span>Volver a la tienda</span></a>
 </nav>
 </aside>
+
 <section class="admin-main">
-<div class="admin-encabezado"><div><h1>Panel de administrador</h1><p>Resumen general de la tienda TechZone.</p></div><span class="admin-fecha">MODO DEMOSTRACIÓN</span></div>
-<div class="admin-stats">
-<article class="admin-stat"><span>Productos</span><strong>12</strong><small>Productos registrados</small></article>
-<article class="admin-stat"><span>Pedidos</span><strong>5</strong><small>Pedidos simulados</small></article>
-<article class="admin-stat"><span>Promociones</span><strong>4</strong><small>Promociones activas</small></article>
+<div class="admin-encabezado">
+  <div><span class="admin-kicker">TECHZONE / CONTROL</span><h1>Panel de administrador</h1><p>Gestiona productos, pedidos y promociones desde un solo lugar.</p></div>
+  <span class="admin-fecha">MODO DEMOSTRACIÓN</span>
 </div>
-<div class="admin-paneles">
-<article class="admin-panel" id="productos"><h2>Resumen de productos</h2><p>Información visual para el panel del administrador.</p><div class="admin-resumen-lista"><div class="admin-resumen-item"><span>Productos activos</span><strong>12</strong></div><div class="admin-resumen-item"><span>En oferta</span><strong>4</strong></div><div class="admin-resumen-item"><span>Stock bajo</span><strong>2</strong></div><div class="admin-resumen-item"><span>Categorías</span><strong>4</strong></div></div></article>
-<article class="admin-panel" id="pedidos"><h2>Accesos rápidos</h2><p>Secciones preparadas para los siguientes bloques.</p><div class="admin-accesos"><a class="admin-acceso" href="#productos">Gestionar productos <span>→</span></a><a class="admin-acceso" href="#pedidos">Consultar pedidos <span>→</span></a><a class="admin-acceso" href="#promociones">Ver promociones <span>→</span></a></div></article>
+
+<section class="admin-dashboard" id="inicio-admin">
+  <div class="admin-seccion-titulo"><div><span>01</span><h2>Resumen general</h2></div><p>Indicadores simulados de la tienda.</p></div>
+  <div class="admin-stats">
+    <article class="admin-stat admin-stat-productos"><span>Productos</span><strong id="admin-total-productos">12</strong><small>Registrados en catálogo</small><b>▣</b></article>
+    <article class="admin-stat admin-stat-pedidos"><span>Pedidos</span><strong>5</strong><small>Pedidos simulados</small><b>▤</b></article>
+<article class="admin-stat admin-stat-promos"><span>Promociones</span><strong id="admin-total-promociones">3</strong><small>Activas actualmente</small><b>◇</b></article>
+  </div>
+</section>
+
+<section class="admin-seccion" id="productos-admin">
+  <div class="admin-panel admin-panel-destacado">
+    <div class="admin-panel-cabecera">
+      <div><span class="admin-panel-num">02</span><h2>Gestión de productos</h2><p>Agrega productos con imagen, precio, descripción, stock y detalles. Los cambios se guardan en este navegador.</p></div>
+      <button type="button" class="boton" id="admin-agregar-producto">+ Agregar producto</button>
+    </div>
+    <div class="admin-tabla-wrap">
+      <table class="admin-tabla">
+        <thead><tr><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody id="admin-lista-productos"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="admin-seccion" id="pedidos-admin">
+  <div class="admin-panel">
+    <div class="admin-panel-cabecera"><div><span class="admin-panel-num">03</span><h2>Pedidos</h2><p>Consulta el resumen de pedidos simulados de la tienda.</p></div></div>
+    <div class="admin-resumen-grid">
+      <div class="admin-resumen-item"><span>Pedidos de hoy</span><strong>2</strong></div>
+      <div class="admin-resumen-item"><span>En preparación</span><strong>3</strong></div>
+      <div class="admin-resumen-item"><span>Entregados</span><strong>5</strong></div>
 </div>
-<article class="admin-panel" id="promociones" style="margin-top:18px"><h2>Estado de la tienda</h2><p>Los datos de este panel son demostrativos y no requieren una base de datos en este bloque.</p><div class="admin-resumen-lista"><div class="admin-resumen-item"><span>Catálogo</span><strong>Activo</strong></div><div class="admin-resumen-item"><span>Carrito</span><strong>Funcionando</strong></div><div class="admin-resumen-item"><span>Checkout</span><strong>Próximamente</strong></div></div></article>
+  </div>
+</section>
+
+<section class="admin-seccion" id="promociones-admin">
+  <div class="admin-panel admin-panel-destacado">
+    <div class="admin-panel-cabecera">
+      <div><span class="admin-panel-num">04</span><h2>Promociones</h2><p>Crea y administra promociones que pueden mostrarse en la página de inicio.</p></div>
+      <button type="button" class="boton" id="admin-agregar-promocion">+ Nueva promoción</button>
+    </div>
+    <div class="admin-tabla-wrap">
+      <table class="admin-tabla admin-tabla-promos">
+        <thead><tr><th>Promoción</th><th>Tipo</th><th>Descuento</th><th>Vigencia</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody id="admin-lista-promociones"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="admin-seccion">
+  <div class="admin-panel admin-estado-tienda">
+    <div class="admin-seccion-titulo"><div><span>05</span><h2>Estado de la tienda</h2></div><p>Funciones disponibles en esta demostración.</p></div>
+    <div class="admin-resumen-grid">
+      <div class="admin-resumen-item"><span>Catálogo</span><strong>Activo</strong></div>
+      <div class="admin-resumen-item"><span>Carrito</span><strong>Funcionando</strong></div>
+      <div class="admin-resumen-item"><span>Checkout</span><strong>Próximamente</strong></div>
+      <div class="admin-resumen-item"><span>Promociones</span><strong>Funcionando</strong></div>
+    </div>
+  </div>
+</section>
 </section>
 </main>
+
+<!-- Formulario reutilizable para agregar/editar -->
+<div class="tz-admin-modal" id="admin-producto-modal" aria-hidden="true">
+  <div class="tz-admin-fondo"></div>
+  <div class="tz-admin-caja">
+    <button type="button" class="tz-modal-cerrar" id="admin-cerrar-form" aria-label="Cerrar">×</button>
+    <h2 id="admin-form-titulo">Agregar producto</h2>
+    <p>Completa los datos del producto. Esta información es solo demostrativa.</p>
+    <form id="admin-producto-form">
+      <input type="hidden" id="admin-producto-id">
+      <div class="admin-form-grid">
+        <label>Nombre<input id="admin-nombre" required maxlength="60" placeholder="Ej. Audífonos Pro X"></label>
+        <label>Categoría<select id="admin-categoria" required><option value="computo">Cómputo</option><option value="audio">Audio</option><option value="hogar">Hogar</option><option value="movil">Móvil</option></select></label>
+        <label>Precio<input id="admin-precio" type="number" min="0" step="1" required placeholder="0"></label>
+        <label>Stock<input id="admin-stock" type="number" min="0" step="1" value="10" required></label>
+        <label>Estado<select id="admin-estado"><option value="Activo">Activo</option><option value="Agotado">Agotado</option></select></label>
+        <label>Etiqueta<select id="admin-etiqueta"><option value="Nuevo">Nuevo</option><option value="Oferta">Oferta</option><option value="Más vendido">Más vendido</option><option value="">Sin etiqueta</option></select></label>
+        <label class="admin-form-ancho">Descripción<textarea id="admin-descripcion" rows="3" placeholder="Describe el producto y sus beneficios..."></textarea></label>
+        <label class="admin-form-ancho">Detalles / especificaciones<textarea id="admin-especificaciones" rows="3" placeholder="Ej. 16 GB RAM, 512 GB SSD, pantalla Full HD"></textarea></label>
+        <label class="admin-form-ancho admin-upload-label">Imagen del producto
+          <input id="admin-imagen" type="file" accept="image/png,image/jpeg,image/webp">
+          <small>Selecciona una imagen desde tu computadora. Se guardará como parte del producto.</small>
+          <div class="admin-imagen-preview" id="admin-imagen-preview"><span>Vista previa</span></div>
+        </label>
+      </div>
+      <div class="admin-form-acciones">
+        <button type="button" class="boton boton-secundario" id="admin-cancelar-form">Cancelar</button>
+        <button type="submit" class="boton">Guardar producto</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="tz-admin-modal" id="admin-eliminar-modal" aria-hidden="true">
+  <div class="tz-admin-fondo"></div>
+  <div class="tz-admin-caja admin-confirmacion">
+    <h2>Eliminar producto</h2>
+    <p id="admin-eliminar-texto">¿Seguro que deseas eliminar este producto?</p>
+    <div class="admin-form-acciones">
+      <button type="button" class="boton boton-secundario" id="admin-no-eliminar">Cancelar</button>
+      <button type="button" class="boton boton-peligro" id="admin-si-eliminar">Sí, eliminar</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="tz-admin-modal" id="admin-promocion-modal" aria-hidden="true">
+  <div class="tz-admin-fondo"></div>
+  <div class="tz-admin-caja">
+    <button type="button" class="tz-modal-cerrar" id="admin-cerrar-promo" aria-label="Cerrar">×</button>
+    <h2 id="admin-promo-titulo">Nueva promoción</h2><p>La promoción se guardará y aparecerá en el apartado de promociones de la tienda.</p>
+    <form id="admin-promocion-form">
+      <input type="hidden" id="admin-promocion-id">
+      <div class="admin-form-grid">
+        <label>Nombre<input id="admin-promo-nombre" required maxlength="70" placeholder="Ej. Regreso a clases"></label>
+        <label>Tipo<select id="admin-promo-tipo"><option value="porcentaje">Descuento porcentual</option><option value="fijo">Descuento fijo</option><option value="envio">Envío gratis</option></select></label>
+        <label>Valor<input id="admin-promo-valor" type="number" min="0" step="1" value="10"></label>
+        <label>Estado<select id="admin-promo-estado"><option value="Activa">Activa</option><option value="Pausada">Pausada</option></select></label>
+        <label>Fecha de inicio<input id="admin-promo-inicio" type="date"></label>
+        <label>Fecha de fin<input id="admin-promo-fin" type="date"></label>
+        <label class="admin-form-ancho">Descripción<textarea id="admin-promo-descripcion" rows="3" placeholder="Explica brevemente la promoción..."></textarea></label>
+      </div>
+      <div class="admin-form-acciones"><button type="button" class="boton boton-secundario" id="admin-cancelar-promo">Cancelar</button><button type="submit" class="boton">Guardar promoción</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="tz-admin-modal" id="admin-eliminar-promo-modal" aria-hidden="true">
+  <div class="tz-admin-fondo"></div><div class="tz-admin-caja admin-confirmacion"><h2>Eliminar promoción</h2><p id="admin-eliminar-promo-texto">¿Seguro que deseas eliminar esta promoción?</p><div class="admin-form-acciones"><button type="button" class="boton boton-secundario" id="admin-no-eliminar-promo">Cancelar</button><button type="button" class="boton boton-peligro" id="admin-si-eliminar-promo">Sí, eliminar</button></div></div>
+</div>
+
 <script src="js/main.js"></script>
 </body>
 </html>
