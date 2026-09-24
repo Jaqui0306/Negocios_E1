@@ -401,7 +401,7 @@ powerbank: {
 
     function obtenerUsuario() {
         try {
-            var datos = localStorage.getItem(CLAVE_USUARIO);
+            var datos = sessionStorage.getItem(CLAVE_USUARIO);
             return datos ? JSON.parse(datos) : null;
         } catch (error) {
             return null;
@@ -409,11 +409,11 @@ powerbank: {
     }
 
     function guardarUsuario(usuario) {
-        localStorage.setItem(CLAVE_USUARIO, JSON.stringify(usuario));
+        sessionStorage.setItem(CLAVE_USUARIO, JSON.stringify(usuario));
     }
 
     function cerrarSesion() {
-        localStorage.removeItem(CLAVE_USUARIO);
+        sessionStorage.removeItem(CLAVE_USUARIO);
         mostrarMensaje("Sesión cerrada", "Cerraste sesión correctamente.");
         setTimeout(function () { window.location.href = "index.html"; }, 5000);
     }
@@ -999,34 +999,8 @@ function obtenerPromocionesAdmin() {
     } catch (e) { return []; }
 }
 
-/* Productos creados desde el panel: aparecen en el catálogo. */
-document.addEventListener("DOMContentLoaded", function () {
-    var zona = document.getElementById("productos-admin-catalogo");
-    if (!zona) return;
-    var productos = obtenerProductosAdmin();
-    if (!productos.length) return;
-    zona.innerHTML = "<h2 class=\"categoria-titulo\">✨ Productos agregados por administración</h2><div class=\"productos productos-admin-catalogo\"></div>";
-    var grid = zona.querySelector(".productos");
-    productos.filter(function(p){ return p.estado !== "Agotado"; }).forEach(function(p){
-        var img = p.imagen || "img/logo.svg";
-        var card = document.createElement("article");
-        card.className = "producto producto-admin-card";
-        card.setAttribute("data-categoria", p.categoria || "computo");
-        card.setAttribute("data-producto-id", p.id);
-        card.innerHTML = '<span class="producto-badge producto-badge-nuevo">'+escaparTexto(p.etiqueta || "Nuevo")+'</span>'+
-          '<div class="producto-imagen producto-imagen-'+escaparTexto(p.categoria || "computo")+'"><img src="'+img+'" alt="'+escaparTexto(p.nombre)+'"></div>'+
-          '<div class="producto-info"><span class="producto-etiqueta">'+escaparTexto(p.categoriaTexto || "Producto")+'</span><h3>'+escaparTexto(p.nombre)+'</h3><ul class="producto-specs"><li>'+(p.descripcion ? escaparTexto(p.descripcion).slice(0,90) : "Producto agregado por administración")+'</li></ul></div>'+
-          '<div class="producto-pie"><strong>'+precioTexto(p.precio)+'</strong><button type="button" class="boton admin-catalogo-agregar">Agregar</button></div>';
-        card.querySelector(".admin-catalogo-agregar").addEventListener("click", function(){
-            if (!obtenerUsuario()) { mostrarMensaje("Inicia sesión", "Debes iniciar sesión para agregar productos al carrito.", "info"); return; }
-            var carrito = obtenerCarrito(); var ex = carrito.find(function(x){return x.id===p.id;});
-            if(ex) ex.cantidad=Math.min(10,ex.cantidad+1); else carrito.push({id:p.id,nombre:p.nombre,precio:Number(p.precio)||0,imagen:img,cantidad:1});
-            guardarCarrito(carrito); actualizarBadgesCarrito(); mostrarMensaje("Producto agregado", p.nombre+" se agregó al carrito.");
-        });
-        grid.appendChild(card);
-    });
-});
-
+/* Los productos creados desde el panel de administración se gestionan desde el administrador.
+   No se muestran automáticamente como una sección adicional dentro del catálogo. */
 function escaparTexto(valor) {
     return String(valor == null ? "" : valor).replace(/[&<>"']/g, function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});
 }

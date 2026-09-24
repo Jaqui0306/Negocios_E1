@@ -3,70 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechZone - Tecnología para tu día a día</title>
+    <title>TechZone - Inicio</title>
     <link rel="icon" type="image/svg+xml" href="img/logo.svg">
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="landing-marker">
+<body>
 
     <header>
-        <a href="index.html" class="logo">
+        <a href="inicio.html" class="logo">
             <img src="img/logo.svg" alt="TechZone" class="logo-img">
             TechZone
         </a>
-        <nav>
+        <nav id="nav-menu">
+            <a href="inicio.html" class="activo">Inicio</a>
+            <a href="productos.html">Catálogo</a>
             <a href="nosotros.html">Nosotros</a>
             <a href="contacto.html">Contacto</a>
             <a href="login.html">Iniciar sesión</a>
+            <a href="perfil.html">Perfil</a>
+            <a href="#" class="carrito-nav" aria-label="Carrito de compras (próximamente)" onclick="return false;">🛒 <span>Carrito</span><b class="carrito-badge">0</b></a>
         </nav>
     </header>
 
-    <section class="inicio" id="inicio">
+    <section class="inicio">
         <div class="inicio-grid">
 
             <div class="inicio-contenido">
-                <h1>Tecnología para tu <em>día a día</em></h1>
-
+                <h1>Explora todo lo que <em>tenemos para ti</em></h1>
                 <p>
                     Cómputo, audio, hogar inteligente y accesorios,
-                    elegidos para que estudiar, trabajar y
-                    entretenerte sea más fácil. Todo en un mismo
-                    lugar, con envío a toda la ciudad.
+                    todos en un mismo lugar. Elige una categoría o
+                    revisa el catálogo completo.
                 </p>
-
                 <div class="inicio-acciones">
-                    <a href="login.html" class="boton">Iniciar sesión</a>
-                    <a href="productos.html" class="boton boton-secundario">Ver catálogo</a>
-                </div>
-
-                <div class="inicio-metricas">
-                    <div class="metrica">
-                        <span class="metrica-icono metrica-icono-verde">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#14171C" stroke-width="1.8"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg>
-                        </span>
-                        <div class="metrica-texto">
-                            <div class="valor">120+</div>
-                            <div class="etiqueta">productos activos</div>
-                        </div>
-                    </div>
-                    <div class="metrica">
-                        <span class="metrica-icono metrica-icono-azul">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#14171C" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-                        </span>
-                        <div class="metrica-texto">
-                            <div class="valor">4</div>
-                            <div class="etiqueta">categorías</div>
-                        </div>
-                    </div>
-                    <div class="metrica">
-                        <span class="metrica-icono metrica-icono-coral">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#14171C" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-                        </span>
-                        <div class="metrica-texto">
-                            <div class="valor">24h</div>
-                            <div class="etiqueta">tiempo de respuesta</div>
-                        </div>
-                    </div>
+                    <a href="productos.html" class="boton">Ver productos</a>
+                    <a href="perfil.html" class="boton boton-secundario">Mi perfil</a>
                 </div>
             </div>
 
@@ -81,19 +52,10 @@
                     <line x1="108" y1="200" x2="188" y2="200" stroke="#5B6472" stroke-width="2" stroke-linecap="round"/>
                     <line x1="108" y1="216" x2="200" y2="216" stroke="#5B6472" stroke-width="2" stroke-linecap="round"/>
                     <path d="M64 258 H276 L262 276 H78 Z" fill="#2B3038"/>
-                    <g transform="translate(38,50)">
-                        <path d="M2 46 a42 42 0 0 1 84 0" fill="none" stroke="#14171C" stroke-width="6" stroke-linecap="round"/>
-                        <rect x="-6" y="40" width="18" height="28" rx="8" fill="#6EC3FF"/>
-                        <rect x="74" y="40" width="18" height="28" rx="8" fill="#6EC3FF"/>
-                    </g>
                     <g transform="translate(258,120)">
                         <circle cx="0" cy="0" r="24" fill="#C8FF4D"/>
                         <path d="M-7 21 h14 v7 a7 7 0 0 1 -14 0 Z" fill="#14171C"/>
                         <line x1="-4" y1="-6" x2="4" y2="6" stroke="#14171C" stroke-width="2" stroke-linecap="round"/>
-                    </g>
-                    <g transform="translate(298,238)">
-                        <rect x="-18" y="-18" width="36" height="36" rx="10" fill="#FF8F70"/>
-                        <rect x="-10" y="-10" width="20" height="20" rx="5" fill="#14171C"/>
                     </g>
                 </svg>
             </div>
@@ -101,26 +63,76 @@
         </div>
     </section>
 
-    <section class="razones">
-        <div class="razones-cabecera">
-            <span class="landing-kicker">TECHZONE / COMPRA CON NOSOTROS</span>
-            <h2>Comprar con nosotros es encontrar tecnología para lo que realmente haces.</h2>
-            <p>Explora equipos para estudiar, trabajar, escuchar música, mejorar tu espacio y mantenerte conectado.</p>
+
+    <section class="publicidad-techzone">
+        <div class="publicidad-contenido">
+            <span class="publicidad-tag">TECHZONE / ESPECIAL</span>
+            <h2>Actualiza tu tecnología sin complicarte.</h2>
+            <p>Descubre equipos, accesorios y dispositivos pensados para estudiar, trabajar y disfrutar.</p>
+            <div class="publicidad-beneficios"><span>✓ Productos seleccionados</span><span>✓ Atención personalizada</span><span>✓ Catálogo actualizado</span></div>
+            <a href="productos.html" class="boton">Descubrir productos</a>
         </div>
-        <div class="razones-lista">
-            <div class="razon"><span class="razon-num">01</span><h3>Catálogo seleccionado</h3><p>Encuentra productos organizados por categorías para comparar de forma sencilla.</p></div>
-            <div class="razon"><span class="razon-num">02</span><h3>Atención cercana</h3><p>Resuelve tus dudas sobre características, usos y disponibilidad antes de decidir.</p></div>
-            <div class="razon"><span class="razon-num">03</span><h3>Promociones</h3><p>Consulta novedades, productos destacados y ofertas especiales de TechZone.</p></div>
-        </div>
-<a href="productos.html" class="boton boton-landing-cta">Ver catálogo completo <span>→</span></a></div>
+        <div class="publicidad-visual"><img src="img/laptop.png" alt="Tecnología TechZone"></div>
     </section>
-<section class="contacto-resumen" id="contacto">
-        <div class="contacto-resumen-envoltura">
-            <span class="visitanos-kicker">📍 ENCUÉNTRANOS EN AGUASCALIENTES</span><h2>Visítanos en TechZone</h2>
-            <p class="contacto-resumen-direccion">Av. Universidad 501, Aguascalientes, Ags.</p><p class="visitanos-horario">Lun a sáb · 10:00–19:00 · Atención personalizada</p>
-            <div class="visitanos-acciones"><a href="contacto.html" class="boton-resaltado">Ver ubicación</a><a href="contacto.html" class="visitanos-link">Más información →</a></div>
+
+    <section class="promos">
+        <div class="promos-cabecera">
+            <div><span class="seccion-kicker">TECHZONE / PROMOCIONES</span><h2>Ofertas destacadas</h2><p>Encuentra tecnología seleccionada con precios especiales y novedades para tu día a día.</p></div><a href="productos.html" class="promos-ver-todas">Ver promociones <span>→</span></a>
+        </div>
+        <div class="promos-lista" id="promos-admin-dinamicas">
+            <a href="detalle.html?id=laptop" class="promo-card">
+                <span class="promo-etiqueta">Más vendido</span>
+                <img src="img/laptop.png" alt="Laptop Nimbus 14 pulgadas">
+                <div class="promo-info">
+                    <h3>Laptop Nimbus 14"</h3>
+                    <span class="promo-precio">$14,999 MXN</span>
+                </div>
+            </a>
+            <a href="detalle.html?id=audifonos" class="promo-card">
+                <span class="promo-etiqueta">Oferta · 17% OFF</span>
+                <img src="img/audifonos.jpg" alt="Audífonos Pulse ANC">
+                <div class="promo-info">
+                    <h3>Audífonos Pulse ANC</h3>
+                    <span class="promo-precio-antes">$2,299 MXN</span>
+                    <span class="promo-precio">$1,899 MXN</span>
+                </div>
+            </a>
+            <a href="detalle.html?id=foco" class="promo-card">
+                <span class="promo-etiqueta">Nuevo</span>
+                <img src="img/foco.jpg" alt="Foco inteligente Orbit">
+                <div class="promo-info">
+                    <h3>Foco inteligente Orbit</h3>
+                    <span class="promo-precio">$349 MXN</span>
+                </div>
+            </a>
         </div>
     </section>
+
+    <section class="confianza-techzone">
+        <div class="confianza-titulo">
+            <span class="publicidad-tag">¿POR QUÉ TECHZONE?</span>
+            <h2>Todo lo que necesitas para llevar tu tecnología al siguiente nivel.</h2>
+            <p>Una experiencia de compra sencilla, moderna y pensada para estudiantes, profesionistas y amantes de la tecnología.</p>
+        </div>
+        <div class="confianza-grid">
+            <article class="confianza-card"><span class="confianza-num">01</span><div><h3>Selección inteligente</h3><p>Productos elegidos por su utilidad, calidad y relación precio-beneficio.</p></div></article>
+            <article class="confianza-card"><span class="confianza-num">02</span><div><h3>Atención cercana</h3><p>Te ayudamos a encontrar la opción adecuada para lo que realmente necesitas.</p></div></article>
+            <article class="confianza-card"><span class="confianza-num">03</span><div><h3>Ofertas especiales</h3><p>Descubre promociones y novedades destacadas directamente en nuestro catálogo.</p></div></article>
+        </div>
+    </section>
+
+    <section class="banner-oferta">
+        <div>
+            <span class="banner-oferta-tag">OFERTA DE TEMPORADA</span>
+            <h2>Renueva tu setup. Mejora tu experiencia.</h2>
+            <p>Encuentra laptops, audio, accesorios y tecnología inteligente en un solo lugar.</p>
+        </div>
+        <a href="productos.html" class="boton">Ver ofertas</a>
+    </section>
+
+
+
+
 
     <footer>
         <div class="footer-envoltura">
@@ -140,7 +152,7 @@
                 </a>
             </div>
         </div>
-        <p class="footer-copy">© 2026 TechZone — Tienda de dispositivos electrónicos</p>
+        <p class="footer-copy">© 2026 TechZone — Tienda de dispositivos electrónicos</p><span class="footer-demo">Sitio demostrativo · Sin base de datos</span>
     </footer>
 
     <script src="js/main.js"></script>
