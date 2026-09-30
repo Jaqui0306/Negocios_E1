@@ -420,6 +420,14 @@ powerbank: {
 
     var usuario = obtenerUsuario();
 
+    // ---- Protección del panel administrativo ----
+    var rutaActual = window.location.pathname.toLowerCase();
+    var esPaginaAdmin = rutaActual.endsWith("/admin.html") || rutaActual.endsWith("admin.html");
+    if (esPaginaAdmin && (!usuario || usuario.rol !== "admin")) {
+        window.location.href = "login.html?acceso=admin";
+        return;
+    }
+
     // ---- Menú dinámico: antes de iniciar sesión solo se muestran Nosotros y Contacto ----
     var navMenu = document.getElementById("nav-menu");
     if (navMenu) {
@@ -473,7 +481,7 @@ powerbank: {
             e.preventDefault();
             var nombre = document.getElementById("nombre").value.trim() || "Cliente TechZone";
             var correo = document.getElementById("correo").value.trim() || "correo@ejemplo.com";
-            guardarUsuario({ nombre: nombre, correo: correo });
+            guardarUsuario({ nombre: nombre, correo: correo, rol: "cliente" });
             mostrarMensaje("Registro exitoso", "Tu registro se realizó correctamente (simulado).");
             setTimeout(function () { window.location.href = "login.html"; }, 5000);
         });
@@ -488,10 +496,68 @@ powerbank: {
             var existente = obtenerUsuario();
             guardarUsuario({
                 nombre: existente ? existente.nombre : "Cliente TechZone",
-                correo: correo || (existente ? existente.correo : "correo@ejemplo.com")
+                correo: correo || (existente ? existente.correo : "correo@ejemplo.com"),
+                rol: "cliente"
             });
             mostrarMensaje("Inicio de sesión exitoso", "Has iniciado sesión correctamente (simulado).");
             setTimeout(function () { window.location.href = "perfil.html"; }, 5000);
+        });
+    }
+
+    // ---- Selector previo de tipo de acceso ----
+    var accesoEleccion = document.getElementById("acceso-eleccion");
+    var formCliente = document.getElementById("formulario-login");
+    var formAdmin = document.getElementById("formulario-admin-login");
+    var btnCliente = document.getElementById("btn-acceso-cliente");
+    var btnAdmin = document.getElementById("btn-acceso-admin");
+    var regresarCliente = document.getElementById("regresar-acceso-cliente");
+    var regresarAdmin = document.getElementById("regresar-acceso-admin");
+    var btnEntrarAdminDirecto = document.getElementById("btn-entrar-admin-directo");
+
+    function mostrarAcceso(tipo) {
+        if (!accesoEleccion || !formCliente || !formAdmin) return;
+        accesoEleccion.style.display = "none";
+        formCliente.classList.add("acceso-formulario-oculto");
+        formAdmin.classList.add("acceso-formulario-oculto");
+
+        if (tipo === "admin") {
+            formAdmin.classList.remove("acceso-formulario-oculto");
+        } else {
+            formCliente.classList.remove("acceso-formulario-oculto");
+        }
+    }
+
+    function volverAcceso() {
+        if (!accesoEleccion || !formCliente || !formAdmin) return;
+        accesoEleccion.style.display = "";
+        formCliente.classList.add("acceso-formulario-oculto");
+        formAdmin.classList.add("acceso-formulario-oculto");
+    }
+
+    if (btnCliente) btnCliente.addEventListener("click", function () { mostrarAcceso("cliente"); });
+    if (btnAdmin) btnAdmin.addEventListener("click", function () { mostrarAcceso("admin"); });
+    if (regresarCliente) regresarCliente.addEventListener("click", volverAcceso);
+    if (regresarAdmin) regresarAdmin.addEventListener("click", volverAcceso);
+
+    // Si se intenta entrar directamente a admin.html, se abre el acceso administrativo.
+    try {
+        var parametrosAcceso = new URLSearchParams(window.location.search);
+        if (parametrosAcceso.get("acceso") === "admin") mostrarAcceso("admin");
+    } catch (e) {}
+
+    // ---- Acceso administrativo directo (sin correo, contraseña ni required) ----
+    if (btnEntrarAdminDirecto) {
+        btnEntrarAdminDirecto.addEventListener("click", function () {
+            guardarUsuario({
+                nombre: "Administrador TechZone",
+                correo: "admin@techzone.com",
+                rol: "admin"
+            });
+
+            mostrarMensaje("Acceso administrativo", "Has entrado al panel de administrador correctamente.");
+            setTimeout(function () {
+                window.location.href = "admin.html";
+            }, 700);
         });
     }
 
@@ -1069,14 +1135,14 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("admin-agregar-producto").onclick=function(){abrirFormulario(null);};
     document.getElementById("admin-cerrar-form").onclick=function(){cerrarModal(modalForm);};document.getElementById("admin-cancelar-form").onclick=function(){cerrarModal(modalForm);};modalForm.querySelector(".tz-admin-fondo").onclick=function(){cerrarModal(modalForm);};
     var fileInput=document.getElementById("admin-imagen"), preview=document.getElementById("admin-imagen-preview");fileInput.addEventListener("change",function(){var f=this.files&&this.files[0];if(!f)return;if(f.size>3*1024*1024){this.value="";mostrarMensaje("Imagen demasiado grande","Selecciona una imagen de máximo 3 MB.","info");return;}var reader=new FileReader();reader.onload=function(e){preview.innerHTML='<img src="'+e.target.result+'" alt="Vista previa"><span>Nueva imagen</span>';};reader.readAsDataURL(f);});
-    form.addEventListener("submit",function(e){e.preventDefault();var id=document.getElementById("admin-producto-id").value.trim(), anterior=productos.find(function(p){return p.id===id;}), file=fileInput.files&&fileInput.files[0];function guardarProducto(imagen){var datos={id:id||("producto_"+Date.now()),nombre:document.getElementById("admin-nombre").value.trim(),categoria:document.getElementById("admin-categoria").value,precio:Number(document.getElementById("admin-precio").value)||0,stock:Number(document.getElementById("admin-stock").value)||0,estado:document.getElementById("admin-estado").value,etiqueta:document.getElementById("admin-etiqueta").value,descripcion:document.getElementById("admin-descripcion").value.trim(),especificaciones:document.getElementById("admin-especificaciones").value.trim(),imagen:imagen||(anterior&&anterior.imagen)||""};if(id){var i=productos.findIndex(function(p){return p.id===id;});if(i>=0)productos[i]=datos;}else productos.push(datos);guardar(CLAVE_ADMIN_PRODUCTOS,productos);renderAdmin();cerrarModal(modalForm);mostrarMensaje(id?"Producto actualizado":"Producto agregado",id?"Los datos se actualizaron correctamente.":"El producto se agregó con su imagen y detalles.");};if(file){var r=new FileReader();r.onload=function(e){guardarProducto(e.target.result);};r.readAsDataURL(file);}else guardarProducto("");});
+    form.addEventListener("submit",function(e){e.preventDefault();var id=document.getElementById("admin-producto-id").value.trim(), anterior=productos.find(function(p){return p.id===id;}), file=fileInput.files&&fileInput.files[0];function guardarProducto(imagen){var datos={id:id||("producto_"+Date.now()),nombre:document.getElementById("admin-nombre").value.trim(),categoria:document.getElementById("admin-categoria").value,precio:Number(document.getElementById("admin-precio").value)||0,stock:Number(document.getElementById("admin-stock").value)||0,estado:document.getElementById("admin-estado").value,etiqueta:document.getElementById("admin-etiqueta").value,descripcion:document.getElementById("admin-descripcion").value.trim(),especificaciones:document.getElementById("admin-especificaciones").value.trim(),imagen:imagen||(anterior&&anterior.imagen)||""};if(id){var i=productos.findIndex(function(p){return p.id===id;});if(i>=0)productos[i]=datos;}else productos.push(datos);guardar(CLAVE_ADMIN_PRODUCTOS,productos);renderAdmin();cerrarModal(modalForm);mostrarMensaje(id?"Producto actualizado exitosamente":"Producto agregado exitosamente",id?"Los datos del producto se actualizaron correctamente.":"El producto se agregó correctamente con sus datos e imagen.");};if(file){var r=new FileReader();r.onload=function(e){guardarProducto(e.target.result);};r.readAsDataURL(file);}else guardarProducto("");});
     document.getElementById("admin-no-eliminar").onclick=function(){cerrarModal(modalEliminar);};modalEliminar.querySelector(".tz-admin-fondo").onclick=function(){cerrarModal(modalEliminar);};document.getElementById("admin-si-eliminar").onclick=function(){if(!productoAEliminar)return;productos=productos.filter(function(p){return p.id!==productoAEliminar.id;});guardar(CLAVE_ADMIN_PRODUCTOS,productos);renderAdmin();cerrarModal(modalEliminar);mostrarMensaje("Producto eliminado","El producto fue eliminado de la lista simulada.");productoAEliminar=null;};
 
     function promoTexto(p){return p.tipo==="porcentaje"?p.valor+"% OFF":p.tipo==="fijo"?"$"+Number(p.valor||0).toLocaleString("es-MX")+" OFF":"Envío gratis";}
     function renderPromociones(){var lista=document.getElementById("admin-lista-promociones");if(!lista)return;lista.innerHTML="";promociones.forEach(function(p){var tr=document.createElement("tr");var vig=(p.inicio||p.fin)?(p.inicio||"Inicio")+" → "+(p.fin||"Sin fin"):"Sin fecha";tr.innerHTML='<td><strong>'+escaparTexto(p.nombre)+'</strong><small class="admin-tabla-sub">'+escaparTexto(p.descripcion||"")+'</small></td><td>'+escaparTexto(p.tipo==="porcentaje"?"Porcentaje":p.tipo==="fijo"?"Monto fijo":"Envío")+'</td><td>'+escaparTexto(promoTexto(p))+'</td><td>'+escaparTexto(vig)+'</td><td><button type="button" class="admin-estado-boton '+(p.estado==="Activa"?"activo":"agotado")+'">'+escaparTexto(p.estado)+'</button></td><td class="admin-acciones"><button type="button" class="admin-btn editar-promo">Editar</button><button type="button" class="admin-btn eliminar eliminar-promo">Eliminar</button></td>';tr.querySelector(".editar-promo").onclick=function(){abrirPromo(p);};tr.querySelector(".eliminar-promo").onclick=function(){promoAEliminar=p;document.getElementById("admin-eliminar-promo-texto").textContent='¿Seguro que deseas eliminar "'+p.nombre+'"?';abrirModal(promoEliminarModal);};tr.querySelector(".admin-estado-boton").onclick=function(){p.estado=p.estado==="Activa"?"Pausada":"Activa";guardar(CLAVE_ADMIN_PROMOS,promociones);renderAdmin();mostrarMensaje("Promoción actualizada","La promoción ahora está "+p.estado.toLowerCase()+".");};lista.appendChild(tr);});}
     function abrirPromo(p){document.getElementById("admin-promo-titulo").textContent=p?"Editar promoción":"Nueva promoción";document.getElementById("admin-promocion-id").value=p?p.id:"";document.getElementById("admin-promo-nombre").value=p?p.nombre:"";document.getElementById("admin-promo-tipo").value=p?p.tipo:"porcentaje";document.getElementById("admin-promo-valor").value=p?p.valor:10;document.getElementById("admin-promo-estado").value=p?p.estado:"Activa";document.getElementById("admin-promo-inicio").value=p?(p.inicio||""):"";document.getElementById("admin-promo-fin").value=p?(p.fin||""):"";document.getElementById("admin-promo-descripcion").value=p?(p.descripcion||""):"";abrirModal(promoModal);}
     document.getElementById("admin-agregar-promocion").onclick=function(){abrirPromo(null);};document.getElementById("admin-cerrar-promo").onclick=function(){cerrarModal(promoModal);};document.getElementById("admin-cancelar-promo").onclick=function(){cerrarModal(promoModal);};promoModal.querySelector(".tz-admin-fondo").onclick=function(){cerrarModal(promoModal);};
-    promoForm.addEventListener("submit",function(e){e.preventDefault();var id=document.getElementById("admin-promocion-id").value.trim(), datos={id:id||("promo_"+Date.now()),nombre:document.getElementById("admin-promo-nombre").value.trim(),tipo:document.getElementById("admin-promo-tipo").value,valor:Number(document.getElementById("admin-promo-valor").value)||0,estado:document.getElementById("admin-promo-estado").value,inicio:document.getElementById("admin-promo-inicio").value,fin:document.getElementById("admin-promo-fin").value,descripcion:document.getElementById("admin-promo-descripcion").value.trim()};if(id){var i=promociones.findIndex(function(p){return p.id===id;});if(i>=0)promociones[i]=datos;}else promociones.push(datos);guardar(CLAVE_ADMIN_PROMOS,promociones);renderAdmin();cerrarModal(promoModal);mostrarMensaje(id?"Promoción actualizada":"Promoción creada","La promoción quedó guardada correctamente.");});
+    promoForm.addEventListener("submit",function(e){e.preventDefault();var id=document.getElementById("admin-promocion-id").value.trim(), datos={id:id||("promo_"+Date.now()),nombre:document.getElementById("admin-promo-nombre").value.trim(),tipo:document.getElementById("admin-promo-tipo").value,valor:Number(document.getElementById("admin-promo-valor").value)||0,estado:document.getElementById("admin-promo-estado").value,inicio:document.getElementById("admin-promo-inicio").value,fin:document.getElementById("admin-promo-fin").value,descripcion:document.getElementById("admin-promo-descripcion").value.trim()};if(id){var i=promociones.findIndex(function(p){return p.id===id;});if(i>=0)promociones[i]=datos;}else promociones.push(datos);guardar(CLAVE_ADMIN_PROMOS,promociones);renderAdmin();cerrarModal(promoModal);mostrarMensaje(id?"Promoción actualizada exitosamente":"Promoción agregada exitosamente",id?"Los datos de la promoción se actualizaron correctamente.":"La promoción se agregó correctamente.");});
     document.getElementById("admin-no-eliminar-promo").onclick=function(){cerrarModal(promoEliminarModal);};promoEliminarModal.querySelector(".tz-admin-fondo").onclick=function(){cerrarModal(promoEliminarModal);};document.getElementById("admin-si-eliminar-promo").onclick=function(){if(!promoAEliminar)return;promociones=promociones.filter(function(p){return p.id!==promoAEliminar.id;});guardar(CLAVE_ADMIN_PROMOS,promociones);renderAdmin();cerrarModal(promoEliminarModal);mostrarMensaje("Promoción eliminada","La promoción fue eliminada.");promoAEliminar=null;};
     renderAdmin();
 });

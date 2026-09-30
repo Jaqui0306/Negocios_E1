@@ -105,10 +105,10 @@
     <form id="admin-producto-form">
       <input type="hidden" id="admin-producto-id">
       <div class="admin-form-grid">
-        <label>Nombre<input id="admin-nombre" required maxlength="60" placeholder="Ej. Audífonos Pro X"></label>
-        <label>Categoría<select id="admin-categoria" required><option value="computo">Cómputo</option><option value="audio">Audio</option><option value="hogar">Hogar</option><option value="movil">Móvil</option></select></label>
-        <label>Precio<input id="admin-precio" type="number" min="0" step="1" required placeholder="0"></label>
-        <label>Stock<input id="admin-stock" type="number" min="0" step="1" value="10" required></label>
+        <label>Nombre<input id="admin-nombre" maxlength="60" placeholder="Ej. Audífonos Pro X"></label>
+        <label>Categoría<select id="admin-categoria"><option value="computo">Cómputo</option><option value="audio">Audio</option><option value="hogar">Hogar</option><option value="movil">Móvil</option></select></label>
+        <label>Precio<input id="admin-precio" type="number" min="0" step="1" placeholder="0"></label>
+        <label>Stock<input id="admin-stock" type="number" min="0" step="1" value="10"></label>
         <label>Estado<select id="admin-estado"><option value="Activo">Activo</option><option value="Agotado">Agotado</option></select></label>
         <label>Etiqueta<select id="admin-etiqueta"><option value="Nuevo">Nuevo</option><option value="Oferta">Oferta</option><option value="Más vendido">Más vendido</option><option value="">Sin etiqueta</option></select></label>
         <label class="admin-form-ancho">Descripción<textarea id="admin-descripcion" rows="3" placeholder="Describe el producto y sus beneficios..."></textarea></label>
@@ -148,7 +148,7 @@
     <form id="admin-promocion-form">
       <input type="hidden" id="admin-promocion-id">
       <div class="admin-form-grid">
-        <label>Nombre<input id="admin-promo-nombre" required maxlength="70" placeholder="Ej. Regreso a clases"></label>
+        <label>Nombre<input id="admin-promo-nombre" maxlength="70" placeholder="Ej. Regreso a clases"></label>
         <label>Tipo<select id="admin-promo-tipo"><option value="porcentaje">Descuento porcentual</option><option value="fijo">Descuento fijo</option><option value="envio">Envío gratis</option></select></label>
         <label>Valor<input id="admin-promo-valor" type="number" min="0" step="1" value="10"></label>
         <label>Estado<select id="admin-promo-estado"><option value="Activa">Activa</option><option value="Pausada">Pausada</option></select></label>

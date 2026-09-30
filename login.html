@@ -36,9 +36,39 @@
                 </div>
             </div>
 
-            <form class="formulario" id="formulario-login">
+            <div class="acceso-eleccion" id="acceso-eleccion">
+                <div class="acceso-eleccion-cabecera">
+                    <span class="acceso-kicker">ACCESO TECHZONE</span>
+                    <h2>¿Cómo deseas ingresar?</h2>
+                    <p>Selecciona el tipo de acceso que necesitas antes de iniciar sesión.</p>
+                </div>
+
+                <div class="acceso-opciones">
+                    <button type="button" class="acceso-opcion" id="btn-acceso-cliente">
+                        <span class="acceso-opcion-icono">◉</span>
+                        <span>
+                            <strong>Cliente</strong>
+                            <small>Comprar productos, revisar tu perfil y consultar tu carrito.</small>
+                        </span>
+                        <b>→</b>
+                    </button>
+
+                    <button type="button" class="acceso-opcion acceso-opcion-admin" id="btn-acceso-admin">
+                        <span class="acceso-opcion-icono">▣</span>
+                        <span>
+                            <strong>Administrador</strong>
+                            <small>Acceder al panel para gestionar productos, pedidos y promociones.</small>
+                        </span>
+                        <b>→</b>
+                    </button>
+                </div>
+            </div>
+
+            <form class="formulario acceso-formulario-oculto" id="formulario-login">
+                <button type="button" class="acceso-regresar" id="regresar-acceso-cliente">← Cambiar tipo de acceso</button>
+                <span class="acceso-kicker">ACCESO CLIENTE</span>
                 <h2>Iniciar sesión</h2>
-                <p>Ingresa tus datos para continuar.</p>
+                <p>Ingresa tus datos para continuar como cliente.</p>
 
                 <div class="campo">
                     <label for="correo">Correo electrónico</label>
@@ -50,11 +80,24 @@
                     <input type="password" id="password" name="password" placeholder="Tu contraseña">
                 </div>
 
-                <button type="submit" class="boton boton-ancho">Entrar</button>
+                <button type="submit" class="boton boton-ancho">Entrar como cliente</button>
 
                 <p class="enlace-alterno">¿No tienes cuenta? <a href="registro.html">Regístrate</a></p>
             </form>
 
+            <div class="formulario acceso-formulario-oculto" id="formulario-admin-login">
+                <button type="button" class="acceso-regresar" id="regresar-acceso-admin">← Cambiar tipo de acceso</button>
+                <span class="acceso-kicker">ACCESO ADMINISTRATIVO</span>
+                <h2>Administrador</h2>
+                <p>Accede directamente al panel de administración.</p>
+
+                <div class="acceso-seguridad">
+                    <strong>Área de administración</strong>
+                    <span>No necesitas llenar ningún dato para entrar.</span>
+                </div>
+
+                <button type="button" class="boton boton-ancho" id="btn-entrar-admin-directo">Entrar como administrador</button>
+            </div>
         </div>
     </section>
 
