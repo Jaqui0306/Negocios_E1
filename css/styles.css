@@ -3363,3 +3363,99 @@ button[type="submit"],.formulario-card .boton,.login-card .boton,.registro-card 
         font-size: 26px;
     }
 }
+
+
+/* ============================================================
+   AJUSTE FINAL — LOGIN POR TIPO DE ACCESO + ADMINISTRADOR
+   ============================================================ */
+.acceso-eleccion{max-width:760px;padding:4px}
+.acceso-eleccion-cabecera{padding:4px 4px 20px}
+.acceso-eleccion-cabecera h2{font-size:34px;letter-spacing:-.035em;color:#071a2d}
+.acceso-eleccion-cabecera p{max-width:600px}
+.acceso-opciones{gap:18px}
+.acceso-opcion{min-height:185px;padding:25px;border:1px solid #dce6ef;border-radius:20px;background:linear-gradient(145deg,#fff,#f7fafc);grid-template-columns:54px 1fr 26px;box-shadow:0 12px 28px rgba(7,26,45,.07);position:relative;overflow:hidden}
+.acceso-opcion::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:#1268ff;opacity:.75}
+.acceso-opcion-admin::before{background:#6d4aff}
+.acceso-opcion:hover{transform:translateY(-5px);border-color:#1268ff;background:#fff;box-shadow:0 18px 38px rgba(7,26,45,.12)}
+.acceso-opcion-admin:hover{border-color:#6d4aff}
+.acceso-opcion-icono{width:54px;height:54px;border-radius:16px;background:#071a2d;color:#fff;font-size:20px;box-shadow:0 8px 18px rgba(7,26,45,.16)}
+.acceso-opcion-admin .acceso-opcion-icono{background:#6d4aff}
+.acceso-opcion strong{font-size:21px;color:#071a2d}
+.acceso-opcion small{font-size:13px;max-width:330px}
+.acceso-opcion b{font-size:24px;color:#1268ff;transition:transform .2s ease}
+.acceso-opcion:hover b{transform:translateX(4px)}
+.acceso-seguridad{border-left:0;border:1px solid #dce6ef;border-radius:14px;background:#f7faff;padding:15px 16px}
+.acceso-seguridad::before{content:"✓";display:inline-grid;place-items:center;width:28px;height:28px;margin-bottom:8px;border-radius:9px;background:#eaf4ff;color:#1268ff;font-weight:800}
+
+.admin-layout{max-width:1240px;margin:32px auto 70px;grid-template-columns:240px minmax(0,1fr);gap:28px}
+.admin-sidebar{background:linear-gradient(180deg,#071a2d,#0a2741);border-radius:22px;padding:20px;box-shadow:0 18px 45px rgba(7,26,45,.18)}
+.admin-sidebar-header strong{font-size:21px}
+.admin-menu a{padding:13px 14px;border:1px solid transparent}
+.admin-menu a:hover,.admin-menu a.activo{background:linear-gradient(90deg,#1268ff,#2d82ff);box-shadow:0 8px 18px rgba(18,104,255,.25)}
+.admin-main{padding-bottom:20px}
+.admin-encabezado{align-items:center;margin-bottom:30px;padding:24px 26px;border:1px solid #dce6ef;border-radius:22px;background:linear-gradient(135deg,#fff,#f5f9fd);box-shadow:0 12px 32px rgba(14,48,84,.06)}
+.admin-titulo-bloque h1{font-size:40px;margin:3px 0 7px}
+.admin-identidad{display:flex;align-items:center;gap:10px;padding:9px 10px 9px 9px;border:1px solid #dbe5ef;border-radius:15px;background:#fff;white-space:nowrap}
+.admin-identidad-icono{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#071a2d;color:#fff;font-weight:800}
+.admin-identidad small{display:block;color:#7a8999;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.admin-identidad strong{display:block;color:#0b1e3e;font-size:13px}
+.admin-identidad .admin-fecha{margin-left:6px}
+.admin-fecha{padding:7px 9px}
+.admin-dashboard,.admin-seccion{scroll-margin-top:100px}
+.admin-stats{gap:16px}
+.admin-stat{border-radius:20px;min-height:145px;transition:transform .18s ease,box-shadow .18s ease}
+.admin-stat:hover{transform:translateY(-3px);box-shadow:0 18px 38px rgba(14,48,84,.11)}
+.admin-panel{border-radius:22px;box-shadow:0 15px 38px rgba(14,48,84,.07)}
+.admin-panel-destacado{border-top:4px solid #1268ff}
+.admin-panel-cabecera .boton{white-space:nowrap;box-shadow:0 8px 18px rgba(18,104,255,.18)}
+.admin-tabla-wrap{border-radius:16px;overflow-x:auto;overflow-y:hidden;background:#fff;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.admin-tabla-ayuda{display:flex;align-items:center;gap:11px;padding:12px 15px;background:#f7fbff;border-bottom:1px solid #e4edf5}
+.admin-tabla-ayuda>span{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:#e8f2ff;color:#1268ff;font-weight:800}
+.admin-tabla-ayuda strong{display:block;color:#18314c;font-size:13px}
+.admin-tabla-ayuda small{display:block;color:#718196;margin-top:2px;font-size:11px}
+.admin-tabla th{background:#f6f9fc}
+.admin-tabla tbody tr{transition:background .15s ease}
+.admin-tabla tbody tr:hover{background:#fbfdff}
+
+/* La tabla de productos/promociones puede desplazarse horizontalmente para que las acciones
+   Editar/Eliminar siempre sean accesibles en pantallas pequeñas. */
+.admin-tabla-wrap::-webkit-scrollbar{height:10px}
+.admin-tabla-wrap::-webkit-scrollbar-track{background:#eef3f8;border-radius:10px}
+.admin-tabla-wrap::-webkit-scrollbar-thumb{background:#9fb0c2;border-radius:10px}
+.admin-tabla-wrap::-webkit-scrollbar-thumb:hover{background:#71839a}
+.admin-tabla{min-width:920px}
+.admin-tabla .admin-acciones{white-space:nowrap;min-width:170px}
+.admin-tabla .admin-btn{display:inline-flex;align-items:center;justify-content:center;min-width:76px}
+@media(max-width:700px){
+  .admin-tabla-wrap{overflow-x:auto;padding-bottom:4px}
+  .admin-tabla{min-width:920px}
+  .admin-tabla th,.admin-tabla td{padding:13px 12px}
+}
+.admin-btn{transition:.16s ease}
+.admin-btn:hover{border-color:#1268ff;color:#1268ff;background:#f5f9ff;transform:translateY(-1px)}
+.admin-btn.eliminar:hover{border-color:#d92d20;color:#b42318;background:#fff6f5}
+.admin-estado{padding:6px 10px}
+.tz-admin-caja{border:1px solid #dbe5ef;box-shadow:0 28px 80px rgba(7,26,45,.25)}
+.tz-admin-caja h2{color:#071a2d}
+.tz-admin-caja .boton{box-shadow:0 7px 16px rgba(18,104,255,.14)}
+
+/* Confirmaciones: visibles, claras y consistentes para cada acción del administrador. */
+.tz-modal-caja{border:1px solid #dbe7f0;box-shadow:0 30px 90px rgba(7,26,45,.28)}
+.tz-modal-icono.exito{background:#e7f8ef;color:#087443;border:1px solid #bcebd2}
+.tz-modal-icono.info{background:#eaf3ff;color:#1268ff;border:1px solid #c9ddff}
+.tz-modal-caja h3{color:#071a2d}
+.tz-modal-boton{background:#1268ff!important;color:#fff!important;border-radius:10px!important}
+
+@media(max-width:850px){
+  .admin-encabezado{align-items:flex-start}
+  .admin-identidad{margin-top:4px}
+}
+@media(max-width:650px){
+  .admin-layout{margin-top:20px;padding:0 4%;grid-template-columns:1fr}
+  .admin-sidebar{position:static}
+  .admin-encabezado{display:block;padding:20px}
+  .admin-titulo-bloque h1{font-size:32px}
+  .admin-identidad{margin-top:16px;width:max-content;max-width:100%;box-sizing:border-box}
+  .admin-identidad .admin-fecha{display:none}
+  .acceso-opcion{min-height:150px}
+}

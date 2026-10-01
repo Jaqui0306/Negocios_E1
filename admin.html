@@ -27,8 +27,8 @@
 
 <section class="admin-main">
 <div class="admin-encabezado">
-  <div><span class="admin-kicker">TECHZONE / CONTROL</span><h1>Panel de administrador</h1><p>Gestiona productos, pedidos y promociones desde un solo lugar.</p></div>
-  <span class="admin-fecha">MODO DEMOSTRACIÓN</span>
+  <div class="admin-titulo-bloque"><span class="admin-kicker">TECHZONE / CONTROL</span><h1>Panel de administrador</h1><p>Gestiona productos, pedidos y promociones desde un solo lugar.</p></div>
+  <div class="admin-identidad"><span class="admin-identidad-icono">A</span><div><small>Sesión activa</small><strong>Administrador</strong></div><span class="admin-fecha">MODO DEMO</span></div>
 </div>
 
 <section class="admin-dashboard" id="inicio-admin">
@@ -47,6 +47,7 @@
       <button type="button" class="boton" id="admin-agregar-producto">+ Agregar producto</button>
     </div>
     <div class="admin-tabla-wrap">
+      <div class="admin-tabla-ayuda"><span>✓</span><div><strong>Catálogo sincronizado</strong><small>Los cambios se guardan automáticamente en este navegador.</small></div></div>
       <table class="admin-tabla">
         <thead><tr><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Estado</th><th>Acciones</th></tr></thead>
         <tbody id="admin-lista-productos"></tbody>
@@ -73,6 +74,7 @@
       <button type="button" class="boton" id="admin-agregar-promocion">+ Nueva promoción</button>
     </div>
     <div class="admin-tabla-wrap">
+      <div class="admin-tabla-ayuda"><span>◇</span><div><strong>Promociones activas</strong><small>Agrega, edita o elimina campañas y verás la confirmación al terminar.</small></div></div>
       <table class="admin-tabla admin-tabla-promos">
         <thead><tr><th>Promoción</th><th>Tipo</th><th>Descuento</th><th>Vigencia</th><th>Estado</th><th>Acciones</th></tr></thead>
         <tbody id="admin-lista-promociones"></tbody>
