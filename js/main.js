@@ -448,7 +448,13 @@ powerbank: {
             { href: "#", texto: "🛒 Carrito", id: "carrito" },
             { href: "admin.html", texto: "Administrador", id: "admin" }
         ];
-        var enlaces = usuario ? enlacesCompletos : enlacesPublicos;
+        // El administrador no verá el menú principal de la tienda.
+        // En la barra superior solo se muestran Perfil y Administrador.
+        var enlacesAdmin = [
+            { href: "perfil.html", texto: "Perfil", id: "perfil" },
+            { href: "admin.html", texto: "Administrador", id: "admin" }
+        ];
+        var enlaces = usuario && usuario.rol === "admin" ? enlacesAdmin : (usuario ? enlacesCompletos : enlacesPublicos);
         var htmlMenu = "";
         enlaces.forEach(function (enlace) {
             var esActivo = (enlace.id === pagina || pagina.indexOf(enlace.id) >= 0) ? ' class="activo"' : "";
@@ -545,7 +551,7 @@ powerbank: {
         if (parametrosAcceso.get("acceso") === "admin") mostrarAcceso("admin");
     } catch (e) {}
 
-    // ---- Acceso administrativo directo (sin correo, contraseña ni required) ----
+    // ---- Acceso administrativo directo (sin correo, contraseña ni campos obligatorios) ----
     if (btnEntrarAdminDirecto) {
         btnEntrarAdminDirecto.addEventListener("click", function () {
             guardarUsuario({
@@ -1135,17 +1141,74 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("admin-agregar-producto").onclick=function(){abrirFormulario(null);};
     document.getElementById("admin-cerrar-form").onclick=function(){cerrarModal(modalForm);};document.getElementById("admin-cancelar-form").onclick=function(){cerrarModal(modalForm);};modalForm.querySelector(".tz-admin-fondo").onclick=function(){cerrarModal(modalForm);};
     var fileInput=document.getElementById("admin-imagen"), preview=document.getElementById("admin-imagen-preview");fileInput.addEventListener("change",function(){var f=this.files&&this.files[0];if(!f)return;if(f.size>3*1024*1024){this.value="";mostrarMensaje("Imagen demasiado grande","Selecciona una imagen de máximo 3 MB.","info");return;}var reader=new FileReader();reader.onload=function(e){preview.innerHTML='<img src="'+e.target.result+'" alt="Vista previa"><span>Nueva imagen</span>';};reader.readAsDataURL(f);});
-    form.addEventListener("submit",function(e){e.preventDefault();var id=document.getElementById("admin-producto-id").value.trim(), anterior=productos.find(function(p){return p.id===id;}), file=fileInput.files&&fileInput.files[0], nombre=document.getElementById("admin-nombre").value.trim(), precio=document.getElementById("admin-precio").value;
-        if(!nombre){mostrarMensaje("Falta el nombre","Escribe el nombre del producto antes de guardarlo.","info");document.getElementById("admin-nombre").focus();return;}
-        if(precio===""){mostrarMensaje("Falta el precio","Indica el precio del producto antes de guardarlo.","info");document.getElementById("admin-precio").focus();return;}
-        function guardarProducto(imagen){var datos={id:id||("producto_"+Date.now()),nombre:nombre,categoria:document.getElementById("admin-categoria").value,precio:Number(precio)||0,stock:Number(document.getElementById("admin-stock").value)||0,estado:document.getElementById("admin-estado").value,etiqueta:document.getElementById("admin-etiqueta").value,descripcion:document.getElementById("admin-descripcion").value.trim(),especificaciones:document.getElementById("admin-especificaciones").value.trim(),imagen:imagen||(anterior&&anterior.imagen)||""};if(id){var i=productos.findIndex(function(p){return p.id===id;});if(i>=0)productos[i]=datos;}else productos.push(datos);guardar(CLAVE_ADMIN_PRODUCTOS,productos);renderAdmin();cerrarModal(modalForm);mostrarMensaje(id?"Producto editado correctamente":"Producto agregado correctamente",id?"Los cambios del producto se guardaron correctamente.":"El nuevo producto se agregó correctamente al catálogo.");};if(file){var r=new FileReader();r.onload=function(e){guardarProducto(e.target.result);};r.readAsDataURL(file);}else guardarProducto("");});
+    form.addEventListener("submit",function(e){
+        e.preventDefault();
+        var id=document.getElementById("admin-producto-id").value.trim();
+        var anterior=productos.find(function(p){return p.id===id;});
+        var file=fileInput.files&&fileInput.files[0];
+        var nombre=document.getElementById("admin-nombre").value.trim();
+        var precio=document.getElementById("admin-precio").value;
+
+        // No se bloquea el guardado por campos vacíos. El administrador puede guardar
+        // exactamente lo que haya capturado, sin validaciones obligatorias.
+        function guardarProducto(imagen){
+            var datos={
+                id:id||("producto_"+Date.now()),
+                nombre:nombre,
+                categoria:document.getElementById("admin-categoria").value,
+                precio:precio==="" ? "" : Number(precio),
+                stock:document.getElementById("admin-stock").value==="" ? "" : Number(document.getElementById("admin-stock").value),
+                estado:document.getElementById("admin-estado").value,
+                etiqueta:document.getElementById("admin-etiqueta").value,
+                descripcion:document.getElementById("admin-descripcion").value.trim(),
+                especificaciones:document.getElementById("admin-especificaciones").value.trim(),
+                imagen:imagen||(anterior&&anterior.imagen)||""
+            };
+            if(id){
+                var i=productos.findIndex(function(p){return p.id===id;});
+                if(i>=0) productos[i]=datos;
+            }else productos.push(datos);
+            guardar(CLAVE_ADMIN_PRODUCTOS,productos);
+            renderAdmin();
+            cerrarModal(modalForm);
+            mostrarMensaje(id?"Producto editado correctamente":"Producto agregado correctamente",id?"Los cambios del producto se guardaron correctamente.":"El nuevo producto se agregó correctamente al catálogo.");
+        }
+        if(file){
+            var r=new FileReader();
+            r.onload=function(e){guardarProducto(e.target.result);};
+            r.readAsDataURL(file);
+        }else guardarProducto("");
+    });
     document.getElementById("admin-no-eliminar").onclick=function(){cerrarModal(modalEliminar);};modalEliminar.querySelector(".tz-admin-fondo").onclick=function(){cerrarModal(modalEliminar);};document.getElementById("admin-si-eliminar").onclick=function(){if(!productoAEliminar)return;productos=productos.filter(function(p){return p.id!==productoAEliminar.id;});guardar(CLAVE_ADMIN_PRODUCTOS,productos);renderAdmin();cerrarModal(modalEliminar);mostrarMensaje("Producto eliminado correctamente","El producto fue eliminado del catálogo.");productoAEliminar=null;};
 
     function promoTexto(p){return p.tipo==="porcentaje"?p.valor+"% OFF":p.tipo==="fijo"?"$"+Number(p.valor||0).toLocaleString("es-MX")+" OFF":"Envío gratis";}
     function renderPromociones(){var lista=document.getElementById("admin-lista-promociones");if(!lista)return;lista.innerHTML="";promociones.forEach(function(p){var tr=document.createElement("tr");var vig=(p.inicio||p.fin)?(p.inicio||"Inicio")+" → "+(p.fin||"Sin fin"):"Sin fecha";tr.innerHTML='<td><strong>'+escaparTexto(p.nombre)+'</strong><small class="admin-tabla-sub">'+escaparTexto(p.descripcion||"")+'</small></td><td>'+escaparTexto(p.tipo==="porcentaje"?"Porcentaje":p.tipo==="fijo"?"Monto fijo":"Envío")+'</td><td>'+escaparTexto(promoTexto(p))+'</td><td>'+escaparTexto(vig)+'</td><td><button type="button" class="admin-estado-boton '+(p.estado==="Activa"?"activo":"agotado")+'">'+escaparTexto(p.estado)+'</button></td><td class="admin-acciones"><button type="button" class="admin-btn editar-promo">Editar</button><button type="button" class="admin-btn eliminar eliminar-promo">Eliminar</button></td>';tr.querySelector(".editar-promo").onclick=function(){abrirPromo(p);};tr.querySelector(".eliminar-promo").onclick=function(){promoAEliminar=p;document.getElementById("admin-eliminar-promo-texto").textContent='¿Seguro que deseas eliminar "'+p.nombre+'"?';abrirModal(promoEliminarModal);};tr.querySelector(".admin-estado-boton").onclick=function(){p.estado=p.estado==="Activa"?"Pausada":"Activa";guardar(CLAVE_ADMIN_PROMOS,promociones);renderAdmin();mostrarMensaje("Promoción actualizada correctamente","La promoción ahora está "+p.estado.toLowerCase()+".");};lista.appendChild(tr);});}
     function abrirPromo(p){document.getElementById("admin-promo-titulo").textContent=p?"Editar promoción":"Nueva promoción";document.getElementById("admin-promocion-id").value=p?p.id:"";document.getElementById("admin-promo-nombre").value=p?p.nombre:"";document.getElementById("admin-promo-tipo").value=p?p.tipo:"porcentaje";document.getElementById("admin-promo-valor").value=p?p.valor:10;document.getElementById("admin-promo-estado").value=p?p.estado:"Activa";document.getElementById("admin-promo-inicio").value=p?(p.inicio||""):"";document.getElementById("admin-promo-fin").value=p?(p.fin||""):"";document.getElementById("admin-promo-descripcion").value=p?(p.descripcion||""):"";abrirModal(promoModal);}
     document.getElementById("admin-agregar-promocion").onclick=function(){abrirPromo(null);};document.getElementById("admin-cerrar-promo").onclick=function(){cerrarModal(promoModal);};document.getElementById("admin-cancelar-promo").onclick=function(){cerrarModal(promoModal);};promoModal.querySelector(".tz-admin-fondo").onclick=function(){cerrarModal(promoModal);};
-    promoForm.addEventListener("submit",function(e){e.preventDefault();var id=document.getElementById("admin-promocion-id").value.trim(), nombre=document.getElementById("admin-promo-nombre").value.trim();if(!nombre){mostrarMensaje("Falta el nombre","Escribe el nombre de la promoción antes de guardarla.","info");document.getElementById("admin-promo-nombre").focus();return;}var datos={id:id||("promo_"+Date.now()),nombre:nombre,tipo:document.getElementById("admin-promo-tipo").value,valor:Number(document.getElementById("admin-promo-valor").value)||0,estado:document.getElementById("admin-promo-estado").value,inicio:document.getElementById("admin-promo-inicio").value,fin:document.getElementById("admin-promo-fin").value,descripcion:document.getElementById("admin-promo-descripcion").value.trim()};if(id){var i=promociones.findIndex(function(p){return p.id===id;});if(i>=0)promociones[i]=datos;}else promociones.push(datos);guardar(CLAVE_ADMIN_PROMOS,promociones);renderAdmin();cerrarModal(promoModal);mostrarMensaje(id?"Promoción editada correctamente":"Promoción agregada correctamente",id?"Los cambios de la promoción se guardaron correctamente.":"La nueva promoción se agregó correctamente.");});
+    promoForm.addEventListener("submit",function(e){
+        e.preventDefault();
+        var id=document.getElementById("admin-promocion-id").value.trim();
+        var nombre=document.getElementById("admin-promo-nombre").value.trim();
+        var valor=document.getElementById("admin-promo-valor").value;
+        var datos={
+            id:id||("promo_"+Date.now()),
+            nombre:nombre,
+            tipo:document.getElementById("admin-promo-tipo").value,
+            valor:valor==="" ? "" : Number(valor),
+            estado:document.getElementById("admin-promo-estado").value,
+            inicio:document.getElementById("admin-promo-inicio").value,
+            fin:document.getElementById("admin-promo-fin").value,
+            descripcion:document.getElementById("admin-promo-descripcion").value.trim()
+        };
+        if(id){
+            var i=promociones.findIndex(function(p){return p.id===id;});
+            if(i>=0) promociones[i]=datos;
+        }else promociones.push(datos);
+        guardar(CLAVE_ADMIN_PROMOS,promociones);
+        renderAdmin();
+        cerrarModal(promoModal);
+        mostrarMensaje(id?"Promoción editada correctamente":"Promoción agregada correctamente",id?"Los cambios de la promoción se guardaron correctamente.":"La nueva promoción se agregó correctamente.");
+    });
     document.getElementById("admin-no-eliminar-promo").onclick=function(){cerrarModal(promoEliminarModal);};promoEliminarModal.querySelector(".tz-admin-fondo").onclick=function(){cerrarModal(promoEliminarModal);};document.getElementById("admin-si-eliminar-promo").onclick=function(){if(!promoAEliminar)return;promociones=promociones.filter(function(p){return p.id!==promoAEliminar.id;});guardar(CLAVE_ADMIN_PROMOS,promociones);renderAdmin();cerrarModal(promoEliminarModal);mostrarMensaje("Promoción eliminada correctamente","La promoción fue eliminada del listado.");promoAEliminar=null;};
     renderAdmin();
 });
