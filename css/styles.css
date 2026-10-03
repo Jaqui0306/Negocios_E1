@@ -3459,3 +3459,66 @@ button[type="submit"],.formulario-card .boton,.login-card .boton,.registro-card 
   .admin-identidad .admin-fecha{display:none}
   .acceso-opcion{min-height:150px}
 }
+
+
+/* ==========================================================
+   TECHZONE — PULIDO VISUAL GLOBAL Y ACCESO RESPONSIVO
+   Capa de diseño añadida sin alterar la lógica de la tienda.
+   ========================================================== */
+:root{
+ --tz-blue:#1268e8;--tz-blue-dark:#0a3e91;--tz-ink:#10213b;--tz-muted:#64748b;
+ --tz-bg:#f3f6fb;--tz-card:#fff;--tz-border:#e0e7f0;--tz-radius:18px;
+ --tz-shadow:0 14px 40px rgba(17,43,84,.09)
+}
+body{background:var(--tz-bg);color:var(--tz-ink)}
+header{background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid rgba(215,225,239,.9);box-shadow:0 4px 18px rgba(20,44,80,.035);padding-top:15px;padding-bottom:15px}
+.logo{font-weight:700;letter-spacing:-.04em;gap:11px}.logo-img{height:39px}
+nav a{font-weight:600;color:#52637b;transition:all .2s ease}nav a:hover,nav a.activo{color:var(--tz-blue);border-bottom-color:var(--tz-blue)}
+.boton{background:linear-gradient(135deg,#1976f5,#0d55c4);border:1px solid #1268e8;color:white;border-radius:11px;padding:13px 22px;box-shadow:0 7px 16px rgba(18,104,232,.16);transition:transform .2s,box-shadow .2s,filter .2s}
+.boton:hover{background:linear-gradient(135deg,#3488fa,#125ac8);transform:translateY(-1px);box-shadow:0 10px 22px rgba(18,104,232,.22)}
+.boton-secundario{background:#fff;color:var(--tz-ink);border:1px solid var(--tz-border);box-shadow:none}.boton-secundario:hover{background:#edf4ff;color:var(--tz-blue);border-color:#b8d2fb}
+.boton-contorno{border-radius:10px;border-color:#cad5e4}.boton-contorno:hover{background:#10213b;color:#fff}
+section:not(.inicio):not(.acceso){scroll-margin-top:90px}
+.titulo-seccion,h1,h2,h3{letter-spacing:-.035em}
+.inicio{background:radial-gradient(circle at 80% 18%,rgba(38,126,245,.18),transparent 28%),linear-gradient(135deg,#f7faff 0%,#eaf2ff 55%,#f6f9ff 100%);padding-top:76px;padding-bottom:76px}
+.inicio-grid{max-width:1240px}.inicio-contenido h1{font-size:clamp(2.7rem,5vw,4.6rem);line-height:1.04;color:#10213b}.inicio-contenido h1 em{color:var(--tz-blue);font-style:normal}.inicio-contenido>p{color:#5e6f87;font-size:17px;line-height:1.8;max-width:57ch}.inicio-ilustracion{filter:drop-shadow(0 22px 30px rgba(28,66,120,.10))}
+.inicio-metricas{gap:14px}.metrica{background:rgba(255,255,255,.82);border:1px solid #e1e9f5;border-radius:14px;padding:14px 16px;box-shadow:0 6px 20px rgba(26,56,99,.045)}
+main,.envoltura{max-width:1240px}
+.productos-grid,.catalogo-grid{gap:22px}
+.producto,.producto-card,.tarjeta-producto,.producto-item{border:1px solid var(--tz-border);border-radius:17px;background:#fff;overflow:hidden;box-shadow:0 5px 20px rgba(19,42,78,.045);transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.producto:hover,.producto-card:hover,.tarjeta-producto:hover,.producto-item:hover{transform:translateY(-4px);box-shadow:var(--tz-shadow);border-color:#c6d9f7}
+.producto img,.producto-card img,.tarjeta-producto img{transition:transform .35s ease}.producto:hover img,.producto-card:hover img,.tarjeta-producto:hover img{transform:scale(1.035)}
+input,select,textarea{border:1px solid #d6e0ed;border-radius:11px;background:#fff;color:var(--tz-ink);transition:border-color .2s,box-shadow .2s}input:focus,select:focus,textarea:focus{outline:none;border-color:#6aa4f7;box-shadow:0 0 0 4px rgba(18,104,232,.10)}
+footer{background:#0d1b30;color:#dce6f5}footer a{transition:color .2s}footer a:hover{color:#7db3ff}
+/* Login: dos columnas equilibradas, selección clara y sin desbordamientos */
+.acceso{padding:34px 22px 56px;background:radial-gradient(circle at 12% 12%,rgba(18,104,232,.08),transparent 25%),linear-gradient(180deg,#f5f8fd,#edf3fb)}
+.acceso-envoltura{width:min(1120px,100%);max-width:1120px;min-height:590px;margin:22px auto;grid-template-columns:minmax(280px,.82fr) minmax(0,1.18fr);border:1px solid #e0e8f3;border-radius:26px;overflow:hidden;background:#fff;box-shadow:0 24px 70px rgba(17,43,84,.13)}
+.acceso-panel{position:relative;isolation:isolate;overflow:hidden;padding:58px 44px;background:linear-gradient(145deg,#0c1c35 0%,#123b76 58%,#1268e8 130%);color:#fff}
+.acceso-panel:before,.acceso-panel:after{content:"";position:absolute;z-index:-1;border:1px solid rgba(255,255,255,.12);border-radius:50%;width:300px;height:300px;right:-150px;top:12%}
+.acceso-panel:after{width:210px;height:210px;right:-105px;top:22%;background:rgba(255,255,255,.035)}
+.acceso-panel h2{font-size:clamp(28px,3vw,39px);line-height:1.12;color:#fff;letter-spacing:-.045em;margin-bottom:18px}
+.acceso-panel p{font-size:15px;line-height:1.8;color:#d3e2f8}
+.acceso-panel-pie{color:#c5d8f3;border-color:rgba(255,255,255,.2);letter-spacing:.08em;text-transform:uppercase;font-size:10px}
+.acceso-eleccion{max-width:none;width:100%;padding:52px clamp(24px,4vw,54px);align-self:center}
+.acceso-eleccion-cabecera{margin-bottom:30px}.acceso-kicker{color:var(--tz-blue);font-size:10px;font-weight:800;letter-spacing:.16em;margin-bottom:12px}
+.acceso-eleccion-cabecera h2{font-size:clamp(27px,3vw,35px);line-height:1.13;margin-bottom:12px;color:#10213b}
+.acceso-eleccion-cabecera p{font-size:14px;line-height:1.7;color:#687991;max-width:42ch}
+.acceso-opciones{grid-template-columns:1fr;gap:14px}
+.acceso-opcion{min-height:112px;padding:20px 22px;border:1px solid #dce5f1;border-radius:16px;background:linear-gradient(135deg,#fff,#f9fbff);grid-template-columns:54px minmax(0,1fr) 24px;gap:17px;box-shadow:0 5px 16px rgba(17,43,84,.035)}
+.acceso-opcion:hover{transform:translateY(-3px);border-color:#8cb8f7;background:#f5f9ff;box-shadow:0 13px 26px rgba(18,104,232,.10)}
+.acceso-opcion-admin:hover{border-color:#7aa8ed}
+.acceso-opcion-icono{width:54px;height:54px;border-radius:15px;background:#eaf2ff;color:#1268e8;font-size:25px;font-weight:800;display:grid;place-items:center}
+.acceso-opcion-admin .acceso-opcion-icono{background:#e9eff8;color:#15355f}
+.acceso-opcion strong{display:block;font-size:17px;line-height:1.4;color:#10213b;margin-bottom:4px}.acceso-opcion small{display:block;font-size:12px;line-height:1.55;color:#687991}.acceso-opcion>b{font-size:24px;color:#7b8ba2;transition:transform .2s,color .2s}.acceso-opcion:hover>b{transform:translateX(4px);color:var(--tz-blue)}
+.formulario{border:0}.acceso .formulario{padding:46px clamp(24px,4vw,56px);background:#fff}.acceso .formulario h2{font-size:30px}.acceso-regresar{align-self:flex-start;border:0;background:#eef4fc;color:#345477;border-radius:9px;padding:9px 13px;margin-bottom:24px;font-weight:700;cursor:pointer}.acceso-regresar:hover{background:#e1edff;color:#125ac8}.acceso-seguridad{display:flex;flex-direction:column;gap:7px;background:#f1f6ff;border:1px solid #dce9fb;border-radius:13px;padding:17px;margin:0 0 24px}.acceso-seguridad strong{color:#15355f}.acceso-seguridad span{font-size:13px;color:#62758f}
+.acceso-formulario-oculto{display:none!important}
+/* Panel admin más consistente con el resto de la tienda */
+.admin-layout{max-width:1240px;gap:28px}.admin-sidebar{border-radius:20px;background:linear-gradient(160deg,#0b1b31,#123e79);box-shadow:0 18px 42px rgba(7,26,45,.16)}.admin-menu a{border-radius:11px}.admin-menu a:hover,.admin-menu a.activo{background:#2679ed}.admin-main{background:transparent}.admin-encabezado h1{letter-spacing:-.04em}.admin-main table{border-collapse:separate;border-spacing:0;background:#fff;border:1px solid #e0e7f0;border-radius:14px;overflow:hidden}.admin-main th{background:#f1f5fb;color:#425570}.admin-main td,.admin-main th{padding:13px 15px;border-bottom:1px solid #e8edf4}.admin-main tr:last-child td{border-bottom:0}
+/* Formularios, avisos y ventanas emergentes */
+.formulario,.modal-contenido,.tz-modal-caja{border-radius:18px}.tz-modal-caja{box-shadow:0 25px 80px rgba(8,25,52,.28);border:1px solid #e0e8f3}.tz-modal-icono{box-shadow:0 6px 16px rgba(18,104,232,.13)}
+@media(max-width:800px){
+ header{padding:13px 5%;gap:14px;flex-wrap:wrap}nav{width:100%;overflow-x:auto;padding:3px 0 5px;gap:18px}nav a{margin:0;white-space:nowrap;font-size:13px}
+ .acceso{padding:20px 14px 36px}.acceso-envoltura{grid-template-columns:1fr;margin:10px auto;min-height:0;border-radius:20px}.acceso-panel{padding:30px 26px;min-height:210px}.acceso-panel-pie{margin-top:26px}.acceso-eleccion{padding:32px 24px}.acceso-opcion{min-height:100px;padding:16px;grid-template-columns:46px minmax(0,1fr) 18px;gap:12px}.acceso-opcion-icono{width:46px;height:46px}.acceso-opcion small{font-size:11px}
+ .admin-layout{grid-template-columns:1fr;padding:0 4%;gap:18px}.admin-sidebar{position:static}.admin-menu{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:480px){.acceso-opcion strong{font-size:15px}.acceso-eleccion-cabecera h2{font-size:27px}.acceso .formulario{padding:30px 22px}.inicio{padding-top:48px;padding-bottom:48px}}
