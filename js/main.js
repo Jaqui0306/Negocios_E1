@@ -518,7 +518,6 @@ powerbank: {
     var btnAdmin = document.getElementById("btn-acceso-admin");
     var regresarCliente = document.getElementById("regresar-acceso-cliente");
     var regresarAdmin = document.getElementById("regresar-acceso-admin");
-    var btnEntrarAdminDirecto = document.getElementById("btn-entrar-admin-directo");
 
     function mostrarAcceso(tipo) {
         if (!accesoEleccion || !formCliente || !formAdmin) return;
@@ -551,16 +550,25 @@ powerbank: {
         if (parametrosAcceso.get("acceso") === "admin") mostrarAcceso("admin");
     } catch (e) {}
 
-    // ---- Acceso administrativo directo (sin correo, contraseña ni campos obligatorios) ----
-    if (btnEntrarAdminDirecto) {
-        btnEntrarAdminDirecto.addEventListener("click", function () {
+    // ---- Inicio de sesión del administrador con su cuenta ----
+    var btnEntrarAdminCuenta = document.getElementById("btn-entrar-admin-cuenta");
+    if (btnEntrarAdminCuenta) {
+        btnEntrarAdminCuenta.addEventListener("click", function () {
+            var correoAdmin = document.getElementById("admin-correo").value.trim();
+            var passwordAdmin = document.getElementById("admin-password").value;
+
+            // Si el administrador escribe sus datos, se conserva el correo como su cuenta.
             guardarUsuario({
                 nombre: "Administrador TechZone",
-                correo: "admin@techzone.com",
+                correo: correoAdmin || "admin@techzone.com",
                 rol: "admin"
             });
 
-            mostrarMensaje("Acceso administrativo", "Has entrado al panel de administrador correctamente.");
+            mostrarMensaje(
+                "Inicio de sesión de administrador",
+                "Has iniciado sesión como administrador con tu cuenta."
+            );
+
             setTimeout(function () {
                 window.location.href = "admin.html";
             }, 700);
@@ -948,8 +956,52 @@ document.addEventListener("DOMContentLoaded", function () {
                     guardarCarrito(carrito); renderCarrito(); actualizarBadgesCarrito();
                 });
                 fila.querySelector(".carrito-eliminar").addEventListener("click", function () {
-                    carrito = carrito.filter(function (x) { return x.id !== item.id; });
-                    guardarCarrito(carrito); renderCarrito(); actualizarBadgesCarrito();
+                    // Confirmación antes de eliminar el producto del carrito.
+                    var modalEliminar = document.getElementById("tz-confirmar-eliminar-carrito");
+                    if (!modalEliminar) {
+                        modalEliminar = document.createElement("div");
+                        modalEliminar.id = "tz-confirmar-eliminar-carrito";
+                        modalEliminar.className = "tz-modal";
+                        modalEliminar.innerHTML = `
+                            <div class="tz-modal-fondo"></div>
+                            <div class="tz-modal-caja" role="dialog" aria-modal="true" aria-labelledby="tz-confirmar-eliminar-titulo">
+                                <button type="button" class="tz-modal-cerrar" aria-label="Cerrar">×</button>
+                                <div class="tz-modal-icono info">?</div>
+                                <h3 id="tz-confirmar-eliminar-titulo">¿Estás seguro de eliminar este producto?</h3>
+                                <p id="tz-confirmar-eliminar-mensaje"></p>
+                                <div class="tz-confirmar-acciones">
+                                    <button type="button" class="boton boton-secundario" id="tz-confirmar-eliminar-cancelar">Cancelar</button>
+                                    <button type="button" class="boton tz-modal-boton" id="tz-confirmar-eliminar-aceptar">Sí, eliminar</button>
+                                </div>
+                            </div>`;
+                        document.body.appendChild(modalEliminar);
+
+                        var cerrarEliminar = function () {
+                            modalEliminar.classList.remove("visible");
+                        };
+                        modalEliminar.querySelector(".tz-modal-fondo").addEventListener("click", cerrarEliminar);
+                        modalEliminar.querySelector(".tz-modal-cerrar").addEventListener("click", cerrarEliminar);
+                        modalEliminar.querySelector("#tz-confirmar-eliminar-cancelar").addEventListener("click", cerrarEliminar);
+                    }
+
+                    modalEliminar.querySelector("#tz-confirmar-eliminar-mensaje").textContent =
+                        '¿Quieres eliminar "' + item.nombre + '" de tu carrito?';
+
+                    var aceptarEliminar = modalEliminar.querySelector("#tz-confirmar-eliminar-aceptar");
+                    // Se reemplaza el botón para evitar acumular eventos al abrir la ventana varias veces.
+                    var nuevoAceptar = aceptarEliminar.cloneNode(true);
+                    aceptarEliminar.parentNode.replaceChild(nuevoAceptar, aceptarEliminar);
+                    nuevoAceptar.addEventListener("click", function () {
+                        var carritoActual = obtenerCarrito();
+                        carritoActual = carritoActual.filter(function (x) { return x.id !== item.id; });
+                        guardarCarrito(carritoActual);
+                        modalEliminar.classList.remove("visible");
+                        renderCarrito();
+                        actualizarBadgesCarrito();
+                        mostrarMensaje("Producto eliminado", '"' + item.nombre + '" fue eliminado de tu carrito.', "info");
+                    });
+
+                    modalEliminar.classList.add("visible");
                 });
                 lista.appendChild(fila);
             });
@@ -1131,8 +1183,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function cerrarModal(el){if(el){el.classList.remove("visible");el.setAttribute("aria-hidden","true");}}
     function renderAdmin(){
         listaAdmin.innerHTML="";
-        productos.forEach(function(p){var tr=document.createElement("tr");tr.innerHTML='<td><div class="admin-producto-celda">'+(p.imagen?'<img src="'+p.imagen+'" alt="">':'')+'<div><strong>'+escaparTexto(p.nombre)+'</strong><small>'+escaparTexto(p.etiqueta||"")+'</small></div></div></td><td>'+escaparTexto(categoriaTexto(p.categoria))+'</td><td>'+precioTexto(p.precio)+'</td><td>'+Number(p.stock||0)+'</td><td><span class="admin-estado '+(p.estado==="Activo"?"activo":"agotado")+'">'+escaparTexto(p.estado)+'</span></td><td class="admin-acciones"><button type="button" class="admin-btn editar">Editar</button><button type="button" class="admin-btn eliminar">Eliminar</button></td>';tr.querySelector(".editar").onclick=function(){abrirFormulario(p);};tr.querySelector(".eliminar").onclick=function(){confirmarEliminar(p);};listaAdmin.appendChild(tr);});
-        var total=document.getElementById("admin-total-productos");if(total)total.textContent=productos.length;
+        productos.filter(function(p){return p.mostrarEnLista !== false;}).forEach(function(p){var tr=document.createElement("tr");tr.innerHTML='<td><div class="admin-producto-celda">'+(p.imagen?'<img src="'+p.imagen+'" alt="">':'')+'<div><strong>'+escaparTexto(p.nombre)+'</strong><small>'+escaparTexto(p.etiqueta||"")+'</small></div></div></td><td>'+escaparTexto(categoriaTexto(p.categoria))+'</td><td>'+precioTexto(p.precio)+'</td><td>'+Number(p.stock||0)+'</td><td><span class="admin-estado '+(p.estado==="Activo"?"activo":"agotado")+'">'+escaparTexto(p.estado)+'</span></td><td class="admin-acciones"><button type="button" class="admin-btn editar">Editar</button><button type="button" class="admin-btn eliminar">Eliminar</button></td>';tr.querySelector(".editar").onclick=function(){abrirFormulario(p);};tr.querySelector(".eliminar").onclick=function(){confirmarEliminar(p);};listaAdmin.appendChild(tr);});
+        var total=document.getElementById("admin-total-productos");if(total)total.textContent=productos.filter(function(p){return p.mostrarEnLista !== false;}).length;
         var tp=document.getElementById("admin-total-promociones");if(tp)tp.textContent=promociones.filter(function(x){return x.estado==="Activa";}).length;
         renderPromociones();
     }
@@ -1162,7 +1214,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 etiqueta:document.getElementById("admin-etiqueta").value,
                 descripcion:document.getElementById("admin-descripcion").value.trim(),
                 especificaciones:document.getElementById("admin-especificaciones").value.trim(),
-                imagen:imagen||(anterior&&anterior.imagen)||""
+                imagen:imagen||(anterior&&anterior.imagen)||"",
+                mostrarEnLista: id ? (anterior ? anterior.mostrarEnLista !== false : true) : false
             };
             if(id){
                 var i=productos.findIndex(function(p){return p.id===id;});

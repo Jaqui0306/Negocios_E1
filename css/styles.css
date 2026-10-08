@@ -2819,6 +2819,26 @@ button[type="submit"],.formulario-card .boton,.login-card .boton,.registro-card 
     cursor: pointer;
 }
 
+.tz-confirmar-acciones {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.tz-confirmar-acciones .boton {
+    min-width: 135px;
+}
+
+@media (max-width: 480px) {
+    .tz-confirmar-acciones {
+        flex-direction: column-reverse;
+    }
+    .tz-confirmar-acciones .boton {
+        width: 100%;
+    }
+}
+
 @media (max-width: 480px) {
     .tz-modal-caja {
         padding: 30px 20px 24px;
@@ -3089,10 +3109,6 @@ button[type="submit"],.formulario-card .boton,.login-card .boton,.registro-card 
     .filtros-categorias { grid-template-columns: 1fr; }
 }
 
-
-
-
-
 /* Cuando se filtra, solo se muestra la categoría elegida. */
 .categoria-titulo.oculta-categoria,
 .productos.oculta-categoria {
@@ -3300,11 +3316,6 @@ button[type="submit"],.formulario-card .boton,.login-card .boton,.registro-card 
     font-family: var(--font-mono);
     font-size: 18px;
 }
-
-
-
-
-
 
 .acceso-opcion strong {
     display: block;
@@ -3531,3 +3542,24 @@ footer{background:#0d1b30;color:#dce6f5}footer a{transition:color .2s}footer a:h
  .admin-layout{grid-template-columns:1fr;padding:0 4%;gap:18px}.admin-sidebar{position:static}.admin-menu{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:480px){.acceso-opcion strong{font-size:15px}.acceso-eleccion-cabecera h2{font-size:27px}.acceso .formulario{padding:30px 22px}.inicio{padding-top:48px;padding-bottom:48px}}
+
+
+/* Acceso de administrador: cuenta normal o entrada directa */
+.acceso-separador {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 18px 0;
+    color: #8b94a7;
+    font-size: 13px;
+}
+.acceso-separador::before,
+.acceso-separador::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(0,0,0,.10);
+}
+.acceso-boton-directo {
+    margin-top: 10px;
+}
