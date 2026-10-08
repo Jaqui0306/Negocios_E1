@@ -3089,6 +3089,10 @@ button[type="submit"],.formulario-card .boton,.login-card .boton,.registro-card 
     .filtros-categorias { grid-template-columns: 1fr; }
 }
 
+
+
+
+
 /* Cuando se filtra, solo se muestra la categoría elegida. */
 .categoria-titulo.oculta-categoria,
 .productos.oculta-categoria {
@@ -3296,6 +3300,11 @@ button[type="submit"],.formulario-card .boton,.login-card .boton,.registro-card 
     font-family: var(--font-mono);
     font-size: 18px;
 }
+
+
+
+
+
 
 .acceso-opcion strong {
     display: block;
