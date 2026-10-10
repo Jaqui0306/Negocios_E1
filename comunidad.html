@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Comunidad | TechZone</title>
+        <link rel="icon" type="image/svg+xml" href="img/logo.svg">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+<header>
+    <a href="inicio.html" class="logo">
+        <img src="img/logo.svg" alt="TechZone" class="logo-img">TechZone
+    </a>
+        <nav id="nav-menu">
+            <a href="inicio.html">Inicio</a>
+            <a href="productos.html">Catálogo</a>
+            <a href="promociones.html">Promociones</a>
+            <a href="campana.html">Campaña</a>
+            <a class="activo" href="comunidad.html">Comunidad</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="contacto.html">Contacto</a>
+        </nav>
+</header>
+<main class="marketing-wrap">
+    <span class="marketing-kicker">TECHZONE / COMUNIDAD</span>
+    <h1 class="marketing-heading">Tu experiencia también forma parte de la tecnología.</h1>
+    <p class="marketing-lead">Comparte una opinión, recomienda un producto o cuéntanos 
+        cómo la tecnología mejora tu día. Los comentarios se guardan en este navegador 
+        para esta demostración.</p>
+        <div class="community-layout">
+            <section class="marketing-card community-form">
+                <h2>Deja tu comentario</h2>
+                <form id="form-comentario">
+                    <label for="nombre-comentario">Tu nombre</label>
+                    <input id="nombre-comentario" maxlength="45" placeholder="¿Cómo te llamas?" required>
+                    <label for="texto-comentario">Comentario</label>
+                    <textarea id="texto-comentario" maxlength="500" placeholder="Comparte tu experiencia..." required></textarea>
+                    <button class="marketing-button" style="margin-top:16px" type="submit">Publicar comentario</button>
+                    <p class="marketing-status" id="estado-comentario" role="status" aria-live="polite"></p>
+                </form>
+            </section>
+            <section>
+                <h2 style="margin-top:4px;color:#10213b">Lo que comparte la comunidad</h2>
+                <p style="color:#687991;line-height:1.7">Opiniones de ejemplo y comentarios publicados por visitantes.</p>
+                <div class="community-list" id="lista-comentarios"><article class="community-comment">
+                    <div class="stars">★★★★★</div>
+                    <strong>Valeria</strong>
+                    <p>Me gusta que el catálogo esté organizado por categorías; 
+                        fue fácil encontrar accesorios.</p>
+                        <small>Comentario de ejemplo</small>
+                    </article>
+                    <article class="community-comment">
+                        <div class="stars">★★★★★</div>
+                        <strong>Emilio</strong>
+                        <p>La campaña me dio ideas para mejorar mi espacio de estudio.</p>
+                        <small>Comentario de ejemplo</small>
+                    </article>
+                    <article class="community-comment">
+                        <div class="stars">★★★★☆</div>
+                        <strong>Sofía</strong>
+                        <p>Las promociones hacen más sencillo descubrir productos nuevos.</p>
+                        <small>Comentario de ejemplo</small>
+                    </article>
+                </div>
+            </section>
+        </div>
+        <div class="marketing-nav">
+            <a href="campana.html">Volver a la campaña →</a>
+            <a href="promociones.html">Ver promociones →</a>
+        </div>
+</main>
+<footer>
+    <div class="footer-envoltura">
+        <div class="footer-marca">
+            <img src="img/logo.svg" alt="">TechZone
+        </div>
+        </div>
+        <p class="footer-copy">© 2026 TechZone — Comunidad demostrativa</p>
+    </footer>
+<script>document.addEventListener('DOMContentLoaded',
+function(){var form=document.getElementById('form-comentario'),
+lista=document.getElementById('lista-comentarios'),
+estado=document.getElementById('estado-comentario'),
+clave='techzone_comentarios_marketing';function crearComentario(nombre,comentario,fecha){var card=document.createElement('article');
+card.className='community-comment';var estrellas=document.createElement('div');
+estrellas.className='stars';estrellas.textContent='★★★★★';
+var autor=document.createElement('strong');
+autor.textContent=nombre;var texto=document.createElement('p');
+texto.textContent=comentario;var small=document.createElement('small');
+small.textContent=fecha||'Publicado ahora · Comentario simulado';card.append(estrellas,autor,texto,small);
+return card;}try{var guardados=JSON.parse(localStorage.getItem(clave)||'[]');
+guardados.forEach(function(c){lista.prepend(crearComentario(c.nombre,c.texto,c.fecha));});}catch(e){}
+form.addEventListener('submit',function(e){e.preventDefault();
+var nombre=document.getElementById('nombre-comentario').value.trim(),
+comentario=document.getElementById('texto-comentario').value.trim();if(!nombre||!comentario)return;var item={nombre:nombre,texto:comentario,fecha:'Publicado ahora · Comentario simulado'};lista.prepend(crearComentario(item.nombre,item.texto,item.fecha));try{var guardados=JSON.parse(localStorage.getItem(clave)||'[]');guardados.unshift(item);localStorage.setItem(clave,JSON.stringify(guardados.slice(0,30)));}catch(e){}form.reset();estado.textContent='✓ Tu comentario se publicó correctamente (simulado).';});});
+</script>
+</body>
+</html>
