@@ -95,5 +95,9 @@ form.addEventListener('submit',function(e){e.preventDefault();
 var nombre=document.getElementById('nombre-comentario').value.trim(),
 comentario=document.getElementById('texto-comentario').value.trim();if(!nombre||!comentario)return;var item={nombre:nombre,texto:comentario,fecha:'Publicado ahora · Comentario simulado'};lista.prepend(crearComentario(item.nombre,item.texto,item.fecha));try{var guardados=JSON.parse(localStorage.getItem(clave)||'[]');guardados.unshift(item);localStorage.setItem(clave,JSON.stringify(guardados.slice(0,30)));}catch(e){}form.reset();estado.textContent='✓ Tu comentario se publicó correctamente (simulado).';});});
 </script>
+
+
+
+
 </body>
 </html>
