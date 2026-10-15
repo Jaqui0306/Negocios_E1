@@ -18,6 +18,7 @@
             <a href="promociones.html">Promociones</a>
             <a href="campana.html">Campaña</a>
             <a class="activo" href="comunidad.html">Comunidad</a>
+            <a href="publicar.html">Publicar</a>
             <a href="nosotros.html">Nosotros</a>
             <a href="contacto.html">Contacto</a>
         </nav>
@@ -33,9 +34,9 @@
                 <h2>Deja tu comentario</h2>
                 <form id="form-comentario">
                     <label for="nombre-comentario">Tu nombre</label>
-                    <input id="nombre-comentario" maxlength="45" placeholder="¿Cómo te llamas?" required>
+                    <input id="nombre-comentario" maxlength="45" placeholder="¿Cómo te llamas?">
                     <label for="texto-comentario">Comentario</label>
-                    <textarea id="texto-comentario" maxlength="500" placeholder="Comparte tu experiencia..." required></textarea>
+                    <textarea id="texto-comentario" maxlength="500" placeholder="Comparte tu experiencia..." ></textarea>
                     <button class="marketing-button" style="margin-top:16px" type="submit">Publicar comentario</button>
                     <p class="marketing-status" id="estado-comentario" role="status" aria-live="polite"></p>
                 </form>
@@ -95,9 +96,5 @@ form.addEventListener('submit',function(e){e.preventDefault();
 var nombre=document.getElementById('nombre-comentario').value.trim(),
 comentario=document.getElementById('texto-comentario').value.trim();if(!nombre||!comentario)return;var item={nombre:nombre,texto:comentario,fecha:'Publicado ahora · Comentario simulado'};lista.prepend(crearComentario(item.nombre,item.texto,item.fecha));try{var guardados=JSON.parse(localStorage.getItem(clave)||'[]');guardados.unshift(item);localStorage.setItem(clave,JSON.stringify(guardados.slice(0,30)));}catch(e){}form.reset();estado.textContent='✓ Tu comentario se publicó correctamente (simulado).';});});
 </script>
-
-
-
-
 </body>
 </html>

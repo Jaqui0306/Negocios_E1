@@ -435,6 +435,10 @@ powerbank: {
         var enlacesPublicos = [
             { href: "inicio.html", texto: "Inicio", id: "inicio" },
             { href: "productos.html", texto: "Catálogo", id: "productos" },
+            { href: "promociones.html", texto: "Promociones", id: "promociones" },
+            { href: "campana.html", texto: "Campaña", id: "campana" },
+            { href: "comunidad.html", texto: "Comunidad", id: "comunidad" },
+            { href: "publicar.html", texto: "Publicar", id: "publicar" },
             { href: "nosotros.html", texto: "Nosotros", id: "nosotros" },
             { href: "contacto.html", texto: "Contacto", id: "contacto" },
             { href: "login.html", texto: "Iniciar sesión", id: "login" }
@@ -442,6 +446,10 @@ powerbank: {
         var enlacesCompletos = [
             { href: "inicio.html", texto: "Inicio", id: "inicio" },
             { href: "productos.html", texto: "Catálogo", id: "productos" },
+            { href: "promociones.html", texto: "Promociones", id: "promociones" },
+            { href: "campana.html", texto: "Campaña", id: "campana" },
+            { href: "comunidad.html", texto: "Comunidad", id: "comunidad" },
+            { href: "publicar.html", texto: "Publicar", id: "publicar" },
             { href: "nosotros.html", texto: "Nosotros", id: "nosotros" },
             { href: "contacto.html", texto: "Contacto", id: "contacto" },
             { href: "perfil.html", texto: "Perfil", id: "perfil" },
@@ -1006,8 +1014,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 lista.appendChild(fila);
             });
 
+            var pct = parseFloat(localStorage.getItem("techzone_descuento_porcentaje") || "0") || 0;
+            var codigoActivo = localStorage.getItem("techzone_codigo_descuento") || "";
+            var descuentoMonto = Math.round(subtotal * (pct / 100));
+            var totalFinal = Math.max(0, subtotal - descuentoMonto);
+
             if (subtotalEl) subtotalEl.textContent = precioTexto(subtotal);
-            if (totalEl) totalEl.textContent = precioTexto(subtotal);
+
+            var filaDesc = document.getElementById("fila-descuento");
+            var descEl = document.getElementById("carrito-descuento");
+            var etiq = document.getElementById("etiqueta-codigo");
+            if (filaDesc && descEl) {
+                if (pct > 0 && descuentoMonto > 0) {
+                    filaDesc.style.display = "";
+                    descEl.textContent = "−" + precioTexto(descuentoMonto);
+                    if (etiq) etiq.textContent = codigoActivo ? "(" + codigoActivo + " · " + pct + "%)" : "(" + pct + "%)";
+                } else {
+                    filaDesc.style.display = "none";
+                }
+            }
+
+            if (totalEl) totalEl.textContent = precioTexto(totalFinal);
             if (finalizar) finalizar.disabled = false;
         }
 
@@ -1067,6 +1094,37 @@ document.addEventListener("DOMContentLoaded", function () {
                 modal.querySelector("#tz-politica-continuar").disabled = true;
                 modal.classList.add("visible");
             });
+        }
+
+
+        // Aplicar código de descuento desde el carrito
+        var formCodigo = document.getElementById("form-codigo-carrito");
+        if (formCodigo) {
+            formCodigo.addEventListener("submit", function (e) {
+                e.preventDefault();
+                var input = document.getElementById("codigo-carrito");
+                var estado = document.getElementById("estado-codigo-carrito");
+                var codigo = (input && input.value || "").trim().toUpperCase();
+                if (codigo === "TECH10" || codigo === "BIENVENIDO") {
+                    localStorage.setItem("techzone_codigo_descuento", codigo);
+                    localStorage.setItem("techzone_descuento_porcentaje", "10");
+                    if (estado) estado.textContent = "✓ Descuento aplicado (simulado). Código " + codigo + " · 10% OFF.";
+                    renderCarrito();
+                } else if (codigo === "") {
+                    localStorage.removeItem("techzone_codigo_descuento");
+                    localStorage.removeItem("techzone_descuento_porcentaje");
+                    if (estado) estado.textContent = "Código eliminado.";
+                    renderCarrito();
+                } else {
+                    if (estado) estado.textContent = "Código no válido. Prueba TECH10 o BIENVENIDO.";
+                }
+            });
+            // mostrar estado actual
+            var actual = localStorage.getItem("techzone_codigo_descuento");
+            var estadoIni = document.getElementById("estado-codigo-carrito");
+            if (actual && estadoIni) {
+                estadoIni.textContent = "Código activo: " + actual + " (10% OFF)";
+            }
         }
 
         renderCarrito();

@@ -56,6 +56,13 @@
                 </div>
             </div>
 
+            <p class="perfil-seccion-titulo">Mis publicaciones (C2C)</p>
+            <div id="perfil-publicaciones" class="community-list" style="margin-bottom:20px;">
+                <div class="mis-compras-vacio" id="perfil-sin-pubs">
+                    Aún no has publicado productos. <a href="publicar.html">Publica tu primer artículo →</a>
+                </div>
+            </div>
+
             <p class="perfil-seccion-titulo">Mis compras (próximamente)</p>
             <div class="mis-compras-vacio">
                 Aún no tienes compras registradas. Esta función estará disponible más adelante.
@@ -110,5 +117,29 @@
     </footer>
 
     <script src="js/main.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var cont = document.getElementById("perfil-publicaciones");
+  var sin = document.getElementById("perfil-sin-pubs");
+  if (!cont) return;
+  var items = [];
+  try { items = JSON.parse(localStorage.getItem("techzone_publicaciones_c2c") || "[]"); } catch(e) {}
+  if (!items.length) return;
+  if (sin) sin.style.display = "none";
+  items.forEach(function (item) {
+    var art = document.createElement("article");
+    art.className = "community-comment";
+    art.style.display = "grid";
+    art.style.gridTemplateColumns = "70px 1fr";
+    art.style.gap = "12px";
+    art.innerHTML = '<img src="' + (item.foto || "img/teclado.jpg") + '" alt="" style="width:70px;height:70px;object-fit:contain;background:#f4f7fc;border-radius:10px;" onerror="this.src=\'img/teclado.jpg\'">' +
+      "<div><strong>" + item.nombre + "</strong><p style=\"margin:4px 0;font-weight:800;color:#1268e8;\">$" + Number(item.precio).toLocaleString("es-MX") + " MXN</p>" +
+      "<p style=\"margin:0;color:#52647c;\">" + item.descripcion + "</p><small>" + (item.fecha || "") + "</small></div>";
+    cont.appendChild(art);
+  });
+});
+</script>
+
 </body>
 </html>

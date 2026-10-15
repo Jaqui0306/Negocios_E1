@@ -47,8 +47,16 @@
                 <aside class="carrito-resumen">
                     <h2>Resumen</h2>
                     <div class="carrito-resumen-fila"><span>Subtotal</span><strong id="carrito-subtotal">$0 MXN</strong></div>
+                    <div class="carrito-resumen-fila" id="fila-descuento" style="display:none;"><span>Descuento <small id="etiqueta-codigo"></small></span><strong id="carrito-descuento" style="color:#167647;">−$0 MXN</strong></div>
                     <div class="carrito-resumen-fila"><span>Envío</span><strong>Gratis</strong></div>
                     <div class="carrito-resumen-total"><span>Total</span><strong id="carrito-total">$0 MXN</strong></div>
+                    <div style="margin-top:12px;">
+                        <form id="form-codigo-carrito" style="display:flex;gap:8px;flex-wrap:wrap;">
+                            <input id="codigo-carrito" placeholder="Código (TECH10)" maxlength="20" style="flex:1;min-width:120px;padding:10px 12px;border:1px solid #d0d9e6;border-radius:10px;">
+                            <button type="submit" class="boton" style="padding:10px 14px;">Aplicar</button>
+                        </form>
+                        <p id="estado-codigo-carrito" style="min-height:20px;font-size:13px;margin-top:8px;color:#167647;"></p>
+                    </div>
                     <button type="button" id="boton-finalizar-compra" class="boton" disabled>Ir a pagar</button>
                 </aside>
             </div>
@@ -68,9 +76,6 @@
         <span class="footer-demo">Sitio demostrativo · Compra simulada</span>
     </footer>
 
-
-
-    
     <script src="js/main.js"></script>
 </body>
 </html>
