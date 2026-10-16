@@ -19,6 +19,7 @@
         <a href="campana.html">Campaña</a>
         <a href="comunidad.html">Comunidad</a>
         <a class="activo" href="publicar.html">Publicar</a>
+<a href="subasta.html">Subasta</a>
         <a href="nosotros.html">Nosotros</a>
         <a href="contacto.html">Contacto</a>
     </nav>
@@ -38,13 +39,13 @@
             <h2>Publica tu producto</h2>
             <form id="form-publicar">
                 <label for="pub-nombre">Nombre del producto</label>
-                <input id="pub-nombre" maxlength="80" placeholder="Ej. Teclado mecánico RGB" required>
+                <input id="pub-nombre" maxlength="80" placeholder="Ej. Teclado mecánico RGB">
 
                 <label for="pub-precio">Precio (MXN)</label>
-                <input id="pub-precio" type="number" min="1" step="1" placeholder="Ej. 899" required>
+                <input id="pub-precio" type="number" min="1" step="1" placeholder="Ej. 899">
 
                 <label for="pub-descripcion">Descripción</label>
-                <textarea id="pub-descripcion" maxlength="600" placeholder="Describe estado, características y por qué lo vendes..." required></textarea>
+                <textarea id="pub-descripcion" maxlength="600" placeholder="Describe estado, características y por qué lo vendes..."></textarea>
 
                 <label for="pub-foto">Foto (URL o deja la de ejemplo)</label>
                 <input id="pub-foto" type="text" placeholder="img/teclado.jpg o https://...">
@@ -89,6 +90,14 @@ document.addEventListener('DOMContentLoaded', function () {
     var sin = document.getElementById('sin-publicaciones');
     var estado = document.getElementById('estado-publicar');
     var clave = 'techzone_publicaciones_c2c';
+    var editandoId = null;
+
+    function getItems() {
+        try { return JSON.parse(localStorage.getItem(clave) || '[]'); } catch (e) { return []; }
+    }
+    function saveItems(items) {
+        localStorage.setItem(clave, JSON.stringify(items.slice(0, 40)));
+    }
 
     function crearCard(item) {
         var art = document.createElement('article');
@@ -97,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
         art.style.gridTemplateColumns = '90px 1fr';
         art.style.gap = '14px';
         art.style.alignItems = 'start';
+        art.dataset.id = item.id;
 
         var img = document.createElement('img');
         img.src = item.foto || 'img/teclado.jpg';
@@ -121,18 +131,56 @@ document.addEventListener('DOMContentLoaded', function () {
         desc.textContent = item.descripcion;
         var small = document.createElement('small');
         small.textContent = item.fecha || 'Publicado ahora · Simulado';
-        info.append(strong, precio, desc, small);
 
+        var acciones = document.createElement('div');
+        acciones.style.marginTop = '10px';
+        acciones.style.display = 'flex';
+        acciones.style.gap = '8px';
+        acciones.style.flexWrap = 'wrap';
+
+        var btnEditar = document.createElement('button');
+        btnEditar.type = 'button';
+        btnEditar.className = 'marketing-button';
+        btnEditar.style.padding = '8px 14px';
+        btnEditar.style.fontSize = '13px';
+        btnEditar.style.background = '#10213b';
+        btnEditar.textContent = 'Editar';
+        btnEditar.addEventListener('click', function () {
+            document.getElementById('pub-nombre').value = item.nombre;
+            document.getElementById('pub-precio').value = item.precio;
+            document.getElementById('pub-descripcion').value = item.descripcion;
+            document.getElementById('pub-foto').value = item.foto || '';
+            editandoId = item.id;
+            estado.textContent = 'Editando «' + item.nombre + '». Guarda con el botón Publicar.';
+            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        var btnEliminar = document.createElement('button');
+        btnEliminar.type = 'button';
+        btnEliminar.className = 'marketing-button';
+        btnEliminar.style.padding = '8px 14px';
+        btnEliminar.style.fontSize = '13px';
+        btnEliminar.style.background = '#c0392b';
+        btnEliminar.textContent = 'Eliminar';
+        btnEliminar.addEventListener('click', function () {
+            var items = getItems().filter(function (it) { return it.id !== item.id; });
+            saveItems(items);
+            estado.textContent = '✓ Publicación eliminada (simulado).';
+            if (editandoId === item.id) {
+                editandoId = null;
+                form.reset();
+            }
+            render();
+        });
+
+        acciones.append(btnEditar, btnEliminar);
+        info.append(strong, precio, desc, small, acciones);
         art.append(img, info);
         return art;
     }
 
     function render() {
-        var items = [];
-        try {
-            items = JSON.parse(localStorage.getItem(clave) || '[]');
-        } catch (e) {}
-        // limpiar excepto el mensaje vacío
+        var items = getItems();
         Array.from(lista.querySelectorAll('.community-comment')).forEach(function (n) { n.remove(); });
         if (!items.length) {
             if (sin) sin.style.display = 'block';
@@ -151,31 +199,50 @@ document.addEventListener('DOMContentLoaded', function () {
         var descripcion = document.getElementById('pub-descripcion').value.trim();
         var foto = document.getElementById('pub-foto').value.trim() || 'img/teclado.jpg';
 
-        if (!nombre || !precio || !descripcion) return;
+        // Sin validación obligatoria: se acepta aunque falten datos (valores por defecto)
+        if (!nombre) nombre = 'Producto sin nombre';
+        if (!precio) precio = 0;
+        if (!descripcion) descripcion = 'Sin descripción';
 
-        var item = {
-            id: 'c2c_' + Date.now(),
-            nombre: nombre,
-            precio: Number(precio),
-            descripcion: descripcion,
-            foto: foto,
-            fecha: 'Publicado ahora · Simulado'
-        };
+        var items = getItems();
 
-        var items = [];
-        try {
-            items = JSON.parse(localStorage.getItem(clave) || '[]');
-        } catch (e) {}
-        items.unshift(item);
-        localStorage.setItem(clave, JSON.stringify(items.slice(0, 40)));
+        if (editandoId) {
+            items = items.map(function (it) {
+                if (it.id === editandoId) {
+                    return {
+                        id: it.id,
+                        nombre: nombre,
+                        precio: Number(precio),
+                        descripcion: descripcion,
+                        foto: foto,
+                        fecha: 'Editado ahora · Simulado'
+                    };
+                }
+                return it;
+            });
+            estado.textContent = '✓ Publicación actualizada (simulado).';
+            editandoId = null;
+        } else {
+            var item = {
+                id: 'c2c_' + Date.now(),
+                nombre: nombre,
+                precio: Number(precio),
+                descripcion: descripcion,
+                foto: foto,
+                fecha: 'Publicado ahora · Simulado'
+            };
+            items.unshift(item);
+            estado.textContent = '✓ Publicado (simulado). Ya aparece en Mis publicaciones.';
+        }
 
+        saveItems(items);
         form.reset();
-        estado.textContent = '✓ Publicado (simulado). Ya aparece en Mis publicaciones.';
         render();
     });
 
     render();
 });
 </script>
+
 </body>
 </html>

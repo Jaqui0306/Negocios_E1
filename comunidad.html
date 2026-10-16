@@ -19,6 +19,7 @@
             <a href="campana.html">Campaña</a>
             <a class="activo" href="comunidad.html">Comunidad</a>
             <a href="publicar.html">Publicar</a>
+<a href="subasta.html">Subasta</a>
             <a href="nosotros.html">Nosotros</a>
             <a href="contacto.html">Contacto</a>
         </nav>
@@ -93,8 +94,8 @@ small.textContent=fecha||'Publicado ahora · Comentario simulado';card.append(es
 return card;}try{var guardados=JSON.parse(localStorage.getItem(clave)||'[]');
 guardados.forEach(function(c){lista.prepend(crearComentario(c.nombre,c.texto,c.fecha));});}catch(e){}
 form.addEventListener('submit',function(e){e.preventDefault();
-var nombre=document.getElementById('nombre-comentario').value.trim(),
-comentario=document.getElementById('texto-comentario').value.trim();if(!nombre||!comentario)return;var item={nombre:nombre,texto:comentario,fecha:'Publicado ahora · Comentario simulado'};lista.prepend(crearComentario(item.nombre,item.texto,item.fecha));try{var guardados=JSON.parse(localStorage.getItem(clave)||'[]');guardados.unshift(item);localStorage.setItem(clave,JSON.stringify(guardados.slice(0,30)));}catch(e){}form.reset();estado.textContent='✓ Tu comentario se publicó correctamente (simulado).';});});
+var nombre=document.getElementById('nombre-comentario').value.trim()||'Anónimo',
+comentario=document.getElementById('texto-comentario').value.trim()||'Sin comentario';var item={nombre:nombre,texto:comentario,fecha:'Publicado ahora · Comentario simulado'};lista.prepend(crearComentario(item.nombre,item.texto,item.fecha));try{var guardados=JSON.parse(localStorage.getItem(clave)||'[]');guardados.unshift(item);localStorage.setItem(clave,JSON.stringify(guardados.slice(0,30)));}catch(e){}form.reset();estado.textContent='✓ Tu comentario se publicó correctamente (simulado).';});});
 </script>
 </body>
 </html>

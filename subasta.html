@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subasta | TechZone</title>
+<link rel="icon" type="image/svg+xml" href="img/logo.svg">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+.subasta-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:start}
+.subasta-timer{display:inline-flex;align-items:center;gap:10px;background:#0d1b30;color:#c8ff4d;padding:12px 18px;border-radius:999px;font-weight:900;font-size:18px;letter-spacing:.06em;margin:14px 0 20px}
+.subasta-timer span{color:#fff;font-size:13px;font-weight:700;letter-spacing:0;opacity:.85}
+.subasta-precio{font-size:32px;font-weight:900;color:#1268e8;margin:8px 0 4px}
+.subasta-ofertas{display:grid;gap:10px;max-height:340px;overflow:auto;padding-right:4px}
+.subasta-oferta{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border:1px solid #e1e8f2;border-radius:12px;background:#fff}
+.subasta-oferta strong{color:#10213b}
+.subasta-oferta span{color:#1268e8;font-weight:800}
+.subasta-oferta small{color:#8090a5;display:block;margin-top:2px}
+@media(max-width:800px){.subasta-layout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<a href="inicio.html" class="logo"><img src="img/logo.svg" alt="TechZone" class="logo-img">TechZone</a>
+<nav id="nav-menu">
+<a href="inicio.html">Inicio</a>
+<a href="productos.html">Catálogo</a>
+<a href="promociones.html">Promociones</a>
+<a href="campana.html">Campaña</a>
+<a href="comunidad.html">Comunidad</a>
+<a href="publicar.html">Publicar</a>
+<a class="activo" href="subasta.html">Subasta</a>
+<a href="nosotros.html">Nosotros</a>
+<a href="contacto.html">Contacto</a>
+</nav>
+</header>
+
+<main class="marketing-wrap">
+<span class="marketing-kicker">TECHZONE / SUBASTA SIMULADA</span>
+<h1 class="marketing-heading">Puja por el producto destacado.</h1>
+<p class="marketing-lead">Subasta demostrativa con temporizador visual, campo de oferta y lista de pujas. Todo es simulado: las ofertas se guardan en tu navegador.</p>
+
+<div class="subasta-layout">
+<section class="marketing-card">
+<span class="marketing-tag">EN VIVO · SIMULADO</span>
+<h2 style="margin-top:12px;">Bocina Portátil BoomBox Pro</h2>
+<img src="img/bocina.jpg" alt="Bocina Portátil" style="width:100%;max-height:220px;object-fit:contain;background:#f4f7fc;border-radius:16px;padding:16px;margin:14px 0;">
+<p style="color:#65758c;line-height:1.7;">Sonido potente, batería de 12 h y resistente al agua. Ideal para llevar a cualquier lado.</p>
+<div class="subasta-timer" id="timer-subasta">
+<span>Tiempo restante</span>
+<strong id="timer-texto">00:15:00</strong>
+</div>
+<p style="margin:0;color:#687991;font-size:14px;">Precio base</p>
+<p class="subasta-precio" id="precio-actual">$899 MXN</p>
+<p style="color:#8090a5;font-size:13px;margin-bottom:18px;">Oferta mínima actual: <strong id="minima">$900</strong></p>
+
+<form class="marketing-form" id="form-oferta" style="flex-direction:column;align-items:stretch;">
+<label for="monto-oferta" style="font-weight:700;color:#203755;">Hacer oferta (MXN)</label>
+<input id="monto-oferta" type="number" min="1" step="1" placeholder="Ej. 950" style="width:100%;padding:13px 14px;">
+<label for="nombre-oferta" style="font-weight:700;color:#203755;margin-top:8px;">Tu nombre (opcional)</label>
+<input id="nombre-oferta" type="text" maxlength="40" placeholder="Ej. Ana" style="width:100%;padding:13px 14px;">
+<button class="marketing-button" type="submit" style="margin-top:12px;width:100%;">Ofertar</button>
+<p class="marketing-status" id="estado-oferta" role="status" aria-live="polite"></p>
+</form>
+</section>
+
+<section>
+<h2 style="color:#10213b;margin:4px 0 8px;">Ofertas registradas</h2>
+<p style="color:#687991;margin-bottom:16px;">Lista de pujas de ejemplo y las que tú registres en esta sesión.</p>
+<div class="subasta-ofertas" id="lista-ofertas">
+<!-- se llena por JS -->
+</div>
+<div class="marketing-nav" style="margin-top:20px;">
+<a href="publicar.html">Publicar producto →</a>
+<a href="promociones.html">Ver promociones →</a>
+<a href="productos.html">Ir al catálogo →</a>
+</div>
+</section>
+</div>
+</main>
+
+<footer>
+<div class="footer-envoltura"><div class="footer-marca"><img src="img/logo.svg" alt="">TechZone</div></div>
+<p class="footer-copy">© 2026 TechZone — Subasta demostrativa</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var claveOfertas = 'techzone_subasta_ofertas';
+  var precioBase = 899;
+  var lista = document.getElementById('lista-ofertas');
+  var estado = document.getElementById('estado-oferta');
+  var precioEl = document.getElementById('precio-actual');
+  var minimaEl = document.getElementById('minima');
+  var timerTexto = document.getElementById('timer-texto');
+
+  // Temporizador visual (15 minutos simulados, se reinicia al cargar)
+  var segundos = 15 * 60;
+  function actualizarTimer() {
+    if (segundos <= 0) {
+      timerTexto.textContent = '00:00:00';
+      return;
+    }
+    var h = Math.floor(segundos / 3600);
+    var m = Math.floor((segundos % 3600) / 60);
+    var s = segundos % 60;
+    timerTexto.textContent =
+      String(h).padStart(2, '0') + ':' +
+      String(m).padStart(2, '0') + ':' +
+      String(s).padStart(2, '0');
+    segundos--;
+  }
+  actualizarTimer();
+  setInterval(actualizarTimer, 1000);
+
+  function getOfertas() {
+    try { return JSON.parse(localStorage.getItem(claveOfertas) || '[]'); } catch (e) { return []; }
+  }
+  function saveOfertas(arr) {
+    localStorage.setItem(claveOfertas, JSON.stringify(arr.slice(0, 50)));
+  }
+
+  // Ofertas de ejemplo iniciales (solo si no hay nada guardado)
+  if (!getOfertas().length) {
+    saveOfertas([
+      { nombre: 'Carlos R.', monto: 920, fecha: 'Hace 8 min · Ejemplo' },
+      { nombre: 'Valeria M.', monto: 950, fecha: 'Hace 5 min · Ejemplo' },
+      { nombre: 'Sofía L.', monto: 980, fecha: 'Hace 2 min · Ejemplo' }
+    ]);
+  }
+
+  function maxMonto() {
+    var ofs = getOfertas();
+    var max = precioBase;
+    ofs.forEach(function (o) { if (Number(o.monto) > max) max = Number(o.monto); });
+    return max;
+  }
+
+  function render() {
+    var ofs = getOfertas().slice().sort(function (a, b) { return Number(b.monto) - Number(a.monto); });
+    lista.innerHTML = '';
+    if (!ofs.length) {
+      lista.innerHTML = '<p style="color:#8090a5;padding:16px;border:1px dashed #d0d9e6;border-radius:12px;">Aún no hay ofertas. Sé el primero en pujar.</p>';
+      return;
+    }
+    ofs.forEach(function (o) {
+      var div = document.createElement('div');
+      div.className = 'subasta-oferta';
+      div.innerHTML =
+        '<div><strong>' + (o.nombre || 'Anónimo') + '</strong><small>' + (o.fecha || '') + '</small></div>' +
+        '<span>$' + Number(o.monto).toLocaleString('es-MX') + '</span>';
+      lista.appendChild(div);
+    });
+    var max = maxMonto();
+    precioEl.textContent = '$' + max.toLocaleString('es-MX') + ' MXN';
+    minimaEl.textContent = '$' + (max + 1).toLocaleString('es-MX');
+  }
+
+  document.getElementById('form-oferta').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var monto = document.getElementById('monto-oferta').value;
+    var nombre = document.getElementById('nombre-oferta').value.trim() || 'Anónimo';
+    // Sin validación estricta: si no hay monto, se usa un valor por defecto
+    if (!monto) monto = maxMonto() + 10;
+    monto = Number(monto);
+
+    var ofs = getOfertas();
+    ofs.unshift({
+      nombre: nombre,
+      monto: monto,
+      fecha: 'Ahora · Oferta simulada'
+    });
+    saveOfertas(ofs);
+    document.getElementById('monto-oferta').value = '';
+    document.getElementById('nombre-oferta').value = '';
+    estado.textContent = '✓ Oferta registrada (simulado): $' + monto.toLocaleString('es-MX') + ' por ' + nombre;
+    render();
+  });
+
+  render();
+});
+</script>
+</body>
+</html>
