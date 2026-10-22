@@ -1174,6 +1174,10 @@ function obtenerProductosAdmin() {
     } catch (e) { return []; }
 }
 
+
+
+
+
 function obtenerPromocionesAdmin() {
     try {
         var datos = JSON.parse(localStorage.getItem("techzone_admin_promociones"));
