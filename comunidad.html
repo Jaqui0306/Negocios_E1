@@ -84,26 +84,54 @@
         </div>
         <p class="footer-copy">© 2026 TechZone — Comunidad demostrativa</p>
     </footer>
-<script>document.addEventListener('DOMContentLoaded',
-function(){var form=document.getElementById('form-comentario'),
-lista=document.getElementById('lista-comentarios'),
-estado=document.getElementById('estado-comentario'),
-clave='techzone_comentarios_marketing';function crearComentario(nombre,comentario,fecha){var card=document.createElement('article');
-card.className='community-comment';var estrellas=document.createElement('div');
-estrellas.className='stars';estrellas.textContent='★★★★★';
-var autor=document.createElement('strong');
-autor.textContent=nombre;var texto=document.createElement('p');
-texto.textContent=comentario;var small=document.createElement('small');
-small.textContent=fecha||'Publicado ahora · Comentario simulado';card.append(estrellas,autor,texto,small);
-return card;}try{var guardados=JSON.parse(localStorage.getItem(clave)||'[]');
-guardados.forEach(function(c){lista.prepend(crearComentario(c.nombre,c.texto,c.fecha));});}catch(e){}
-form.addEventListener('submit',function(e){e.preventDefault();
-var nombre=document.getElementById('nombre-comentario').value.trim()||'Anónimo',
-comentario=document.getElementById('texto-comentario').value.trim()||'Sin comentario';var item={nombre:nombre,texto:comentario,fecha:'Publicado ahora · Comentario simulado'};lista.prepend(crearComentario(item.nombre,item.texto,item.fecha));try{var guardados=JSON.parse(localStorage.getItem(clave)||'[]');guardados.unshift(item);localStorage.setItem(clave,JSON.stringify(guardados.slice(0,30)));}catch(e){}form.reset();estado.textContent='✓ Tu comentario se publicó correctamente (simulado).';});});
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var form = document.getElementById('form-comentario');
+  var lista = document.getElementById('lista-comentarios');
+  var estado = document.getElementById('estado-comentario');
+  var clave = 'techzone_comentarios_marketing';
+  var usuario = null;
+  try { usuario = JSON.parse(localStorage.getItem('techzone_usuario') || 'null'); } catch (e) {}
+  var campoNombre = document.getElementById('nombre-comentario');
+  if (usuario && usuario.nombre && campoNombre) campoNombre.value = usuario.nombre;
 
-
-
-
+  function leerComentarios() {
+    try { return JSON.parse(localStorage.getItem(clave) || '[]'); } catch (e) { return []; }
+  }
+  function crearComentario(item) {
+    var card = document.createElement('article');
+    card.className = 'community-comment';
+    var estrellas = document.createElement('div'); estrellas.className = 'stars'; estrellas.textContent = '★★★★★';
+    var autor = document.createElement('strong'); autor.textContent = item.nombre || 'Anónimo';
+    var texto = document.createElement('p'); texto.textContent = item.texto || 'Sin comentario';
+    var small = document.createElement('small'); small.textContent = item.fecha || 'Publicado ahora · Comentario simulado';
+    card.append(estrellas, autor, texto, small);
+    return card;
+  }
+  leerComentarios().forEach(function (item) { lista.prepend(crearComentario(item)); });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var nombre = campoNombre.value.trim() || (usuario && usuario.nombre) || 'Anónimo';
+    var comentario = document.getElementById('texto-comentario').value.trim();
+    if (!comentario) {
+      estado.textContent = 'Escribe un comentario antes de publicarlo.';
+      return;
+    }
+    var item = {
+      id: 'comentario_' + Date.now(),
+      nombre: nombre,
+      texto: comentario,
+      correo: usuario && usuario.correo ? usuario.correo.toLowerCase() : '',
+      fecha: 'Publicado ahora · Comentario simulado'
+    };
+    var guardados = leerComentarios();
+    guardados.unshift(item);
+    try { localStorage.setItem(clave, JSON.stringify(guardados.slice(0, 100))); } catch (err) {}
+    lista.prepend(crearComentario(item));
+    document.getElementById('texto-comentario').value = '';
+    estado.textContent = '✓ Tu comentario se publicó correctamente (simulado) y aparece en tu perfil.';
+  });
+});
 </script>
 </body>
 </html>

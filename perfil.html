@@ -63,6 +63,13 @@
                 </div>
             </div>
 
+            <p class="perfil-seccion-titulo">Mis comentarios</p>
+            <div id="perfil-comentarios" class="community-list" style="margin-bottom:20px;">
+                <div class="mis-compras-vacio" id="perfil-sin-comentarios">
+                    Aún no has publicado comentarios. <a href="comunidad.html">Comparte tu primera opinión →</a>
+                </div>
+            </div>
+
             <p class="perfil-seccion-titulo">Mis compras (próximamente)</p>
             <div class="mis-compras-vacio">
                 Aún no tienes compras registradas. Esta función estará disponible más adelante.
@@ -120,23 +127,46 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+  function leer(clave) { try { return JSON.parse(localStorage.getItem(clave) || "[]"); } catch(e) { return []; } }
+  var usuario = null;
+  try { usuario = JSON.parse(localStorage.getItem("techzone_usuario") || "null"); } catch(e) {}
+  var correo = usuario && usuario.correo ? usuario.correo.toLowerCase() : "";
+  var nombre = usuario && usuario.nombre ? usuario.nombre.toLowerCase().trim() : "";
+
   var cont = document.getElementById("perfil-publicaciones");
   var sin = document.getElementById("perfil-sin-pubs");
-  if (!cont) return;
-  var items = [];
-  try { items = JSON.parse(localStorage.getItem("techzone_publicaciones_c2c") || "[]"); } catch(e) {}
-  if (!items.length) return;
-  if (sin) sin.style.display = "none";
-  items.forEach(function (item) {
-    var art = document.createElement("article");
-    art.className = "community-comment";
-    art.style.display = "grid";
-    art.style.gridTemplateColumns = "70px 1fr";
-    art.style.gap = "12px";
-    art.innerHTML = '<img src="' + (item.foto || "img/teclado.jpg") + '" alt="" style="width:70px;height:70px;object-fit:contain;background:#f4f7fc;border-radius:10px;" onerror="this.src=\'img/teclado.jpg\'">' +
-      "<div><strong>" + item.nombre + "</strong><p style=\"margin:4px 0;font-weight:800;color:#1268e8;\">$" + Number(item.precio).toLocaleString("es-MX") + " MXN</p>" +
-      "<p style=\"margin:0;color:#52647c;\">" + item.descripcion + "</p><small>" + (item.fecha || "") + "</small></div>";
-    cont.appendChild(art);
+  var publicaciones = leer("techzone_publicaciones_c2c");
+  if (cont && publicaciones.length) {
+    if (sin) sin.style.display = "none";
+    publicaciones.forEach(function (item) {
+      var art = document.createElement("article"); art.className = "community-comment";
+      art.style.display = "grid"; art.style.gridTemplateColumns = "70px 1fr"; art.style.gap = "12px";
+      var img = document.createElement("img"); img.src = item.foto || "img/teclado.jpg"; img.alt = item.nombre || "Producto publicado";
+      img.style.cssText = "width:70px;height:70px;object-fit:contain;background:#f4f7fc;border-radius:10px;";
+      img.onerror = function(){ this.src = "img/teclado.jpg"; };
+      var info = document.createElement("div"); var titulo = document.createElement("strong"); titulo.textContent = item.nombre || "Producto sin nombre";
+      var precio = document.createElement("p"); precio.style.cssText = "margin:4px 0;font-weight:800;color:#1268e8;"; precio.textContent = "$" + Number(item.precio || 0).toLocaleString("es-MX") + " MXN";
+      var desc = document.createElement("p"); desc.style.cssText = "margin:0;color:#52647c;"; desc.textContent = item.descripcion || "Sin descripción";
+      var fecha = document.createElement("small"); fecha.textContent = item.fecha || "Publicación simulada";
+      info.append(titulo, precio, desc, fecha); art.append(img, info); cont.appendChild(art);
+    });
+  }
+
+  var comentariosCont = document.getElementById("perfil-comentarios");
+  var sinComentarios = document.getElementById("perfil-sin-comentarios");
+  if (!comentariosCont) return;
+  var comentarios = leer("techzone_comentarios_marketing").filter(function(c) {
+    if (correo && c.correo) return c.correo.toLowerCase() === correo;
+    return nombre && (c.nombre || "").toLowerCase().trim() === nombre;
+  });
+  if (!comentarios.length) return;
+  if (sinComentarios) sinComentarios.style.display = "none";
+  comentarios.forEach(function(c) {
+    var art = document.createElement("article"); art.className = "community-comment";
+    var autor = document.createElement("strong"); autor.textContent = c.nombre || "Tú";
+    var texto = document.createElement("p"); texto.textContent = c.texto || "Sin comentario";
+    var fecha = document.createElement("small"); fecha.textContent = c.fecha || "Comentario simulado";
+    art.append(autor, texto, fecha); comentariosCont.appendChild(art);
   });
 });
 </script>
