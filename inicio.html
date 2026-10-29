@@ -14,20 +14,21 @@
             <img src="img/logo.svg" alt="TechZone" class="logo-img">
             TechZone
         </a>
-        <nav id="nav-menu">
-            <a href="inicio.html" class="activo">Inicio</a>
-            <a href="productos.html">Catálogo</a>
-            <a href="promociones.html">Promociones</a>
-            <a href="campana.html">Campaña</a>
-            <a href="comunidad.html">Comunidad</a>
-            <a href="publicar.html">Publicar</a>
+        <nav id="nav-menu" aria-label="Navegación principal"><details class="menu-desplegable"><summary aria-label="Abrir menú de navegación">☰ Menú</summary><div class="menu-opciones">
+<a href="inicio.html">Inicio</a>
+<a href="productos.html">Catálogo</a>
+<a href="promociones.html">Promociones</a>
+<a href="campana.html">Campaña</a>
+<a href="comunidad.html">Comunidad y comentarios</a>
+<a href="publicar.html">Publicar producto / Mis publicaciones</a>
 <a href="subasta.html">Subasta</a>
-            <a href="nosotros.html">Nosotros</a>
-            <a href="contacto.html">Contacto</a>
-            <a href="login.html">Iniciar sesión</a>
-            <a href="perfil.html">Perfil</a>
-            <a href="#" class="carrito-nav" aria-label="Carrito de compras (próximamente)" onclick="return false;">🛒 <span>Carrito</span><b class="carrito-badge">0</b></a>
-        </nav>
+<a href="carrito.html">Carrito de compras</a>
+<a href="nosotros.html">Nosotros</a>
+<a href="contacto.html">Contacto</a>
+<a href="admin.html" class="menu-admin">Panel del administrador</a>
+<a href="login.html" class="menu-login">Iniciar sesión</a>
+<a href="perfil.html" class="menu-perfil" hidden>Perfil</a>
+</div></details></nav>
     </header>
 
     <section class="inicio">
@@ -112,6 +113,27 @@
             </a>
         </div>
     </section>
+
+
+    <section class="marketplace-inicio" id="marketplace-inicio">
+      <div class="promos-cabecera"><div><span class="seccion-kicker">TECHZONE / MARKETPLACE</span><h2>Productos publicados por la comunidad</h2><p>Descubre artículos que otros usuarios ponen a la venta. Las nuevas publicaciones aparecen aquí automáticamente.</p></div><a href="publicar.html" class="promos-ver-todas">Publicar producto →</a></div>
+      <div id="marketplace-lista" class="marketplace-grid"><p class="marketplace-vacio">Todavía no hay productos publicados. ¡Sé la primera persona en publicar uno!</p></div>
+    </section>
+    <script>
+    document.addEventListener('DOMContentLoaded',function(){
+      var cont=document.getElementById('marketplace-lista'); var key='techzone_publicaciones_c2c';
+      var items=[]; try{items=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){}
+      cont.innerHTML='';
+      if(!items.length){cont.innerHTML='<p class="marketplace-vacio">Todavía no hay productos publicados. ¡Sé la primera persona en <a href="publicar.html">publicar uno</a>!</p>';return;}
+      items.forEach(function(item){var card=document.createElement('article');card.className='marketplace-producto';
+        var img=document.createElement('img');img.src=item.foto||'img/teclado.jpg';img.alt=item.nombre||'Producto publicado';img.onerror=function(){this.src='img/teclado.jpg'};
+        var body=document.createElement('div');body.className='marketplace-producto-info';var h=document.createElement('h3');h.textContent=item.nombre||'Producto sin nombre';
+        var price=document.createElement('strong');price.textContent='$'+Number(item.precio||0).toLocaleString('es-MX')+' MXN';
+        var desc=document.createElement('p');desc.textContent=item.descripcion||'Sin descripción';var link=document.createElement('a');link.href='publicar.html';link.className='boton';link.textContent='Ver publicación';
+        body.append(h,price,desc,link);card.append(img,body);cont.appendChild(card);
+      });
+    });
+    </script>
 
     <section class="confianza-techzone">
         <div class="confianza-titulo">

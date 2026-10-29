@@ -12,17 +12,21 @@
     <a href="inicio.html" class="logo">
         <img src="img/logo.svg" alt="TechZone" class="logo-img">TechZone
     </a>
-    <nav id="nav-menu">
-        <a href="inicio.html">Inicio</a>
-        <a href="productos.html">Catálogo</a>
-        <a href="promociones.html">Promociones</a>
-        <a class="activo" href="campana.html">Campaña</a>
-        <a href="comunidad.html">Comunidad</a>
-        <a href="publicar.html">Publicar</a>
+    <nav id="nav-menu" aria-label="Navegación principal"><details class="menu-desplegable"><summary aria-label="Abrir menú de navegación">☰ Menú</summary><div class="menu-opciones">
+<a href="inicio.html">Inicio</a>
+<a href="productos.html">Catálogo</a>
+<a href="promociones.html">Promociones</a>
+<a href="campana.html">Campaña</a>
+<a href="comunidad.html">Comunidad y comentarios</a>
+<a href="publicar.html">Publicar producto / Mis publicaciones</a>
 <a href="subasta.html">Subasta</a>
-        <a href="nosotros.html">Nosotros</a>
-        <a href="contacto.html">Contacto</a>
-    </nav>
+<a href="carrito.html">Carrito de compras</a>
+<a href="nosotros.html">Nosotros</a>
+<a href="contacto.html">Contacto</a>
+<a href="admin.html" class="menu-admin">Panel del administrador</a>
+<a href="login.html" class="menu-login">Iniciar sesión</a>
+<a href="perfil.html" class="menu-perfil" hidden>Perfil</a>
+</div></details></nav>
 </header>
 
 <main class="marketing-wrap">
@@ -87,6 +91,25 @@
         </article>
     </div>
 
+    <section class="marketing-card campaign-reviews">
+      <h2>Califica la campaña y deja tu comentario</h2>
+      <p>Selecciona de 1 a 5 estrellas y cuéntanos qué te pareció. Tu opinión aparecerá en esta página y en tu perfil.</p>
+      <form id="form-resena-campana">
+        <label>¿Cuántas estrellas le das?</label>
+        <div class="rating-selector" role="radiogroup" aria-label="Calificación de una a cinco estrellas">
+          <input type="radio" name="calificacion" id="star1" value="1"><label for="star1" title="1 estrella">★</label>
+          <input type="radio" name="calificacion" id="star2" value="2"><label for="star2" title="2 estrellas">★</label>
+          <input type="radio" name="calificacion" id="star3" value="3"><label for="star3" title="3 estrellas">★</label>
+          <input type="radio" name="calificacion" id="star4" value="4"><label for="star4" title="4 estrellas">★</label>
+          <input type="radio" name="calificacion" id="star5" value="5" checked><label for="star5" title="5 estrellas">★</label>
+        </div>
+        <label for="resena-nombre">Tu nombre</label><input id="resena-nombre" maxlength="45" placeholder="Nombre (opcional)">
+        <label for="resena-texto">Tu comentario</label><textarea id="resena-texto" maxlength="500" placeholder="Escribe tu opinión sobre la campaña..." required></textarea>
+        <button class="marketing-button" type="submit">Publicar calificación</button><p id="estado-resena" class="marketing-status" role="status" aria-live="polite"></p>
+      </form>
+      <h3>Opiniones de los usuarios</h3><div id="resenas-campana-lista" class="community-list"></div>
+    </section>
+
     <section class="marketing-card" style="text-align:center;">
         <h2>¿Listo para actualizar?</h2>
         <p>Aplica el código <strong>TECH10</strong> en promociones o directamente en el carrito y finaliza tu compra simulada.</p>
@@ -111,5 +134,18 @@
     </div>
     <p class="footer-copy">© 2026 TechZone — Campaña demostrativa</p>
 </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+ const key='techzone_resenas_campana'; const form=document.getElementById('form-resena-campana'); const list=document.getElementById('resenas-campana-lista'); const status=document.getElementById('estado-resena');
+ function read(){try{return JSON.parse(localStorage.getItem(key)||'[]')}catch(e){return []}}
+ function render(){list.innerHTML='';const arr=read();if(!arr.length){list.innerHTML='<p class="marketplace-vacio">Todavía no hay reseñas de usuarios. ¡Puedes publicar la primera!</p>';return;}arr.forEach(function(r){const card=document.createElement('article');card.className='community-comment';const stars=document.createElement('div');stars.className='stars';stars.textContent='★'.repeat(Number(r.estrellas)||5)+'☆'.repeat(5-(Number(r.estrellas)||5));const name=document.createElement('strong');name.textContent=r.nombre||'Usuario';const txt=document.createElement('p');txt.textContent=r.texto;const date=document.createElement('small');date.textContent=r.fecha||'Publicado recientemente';card.append(stars,name,txt,date);list.appendChild(card);});}
+ form.addEventListener('submit',function(e){e.preventDefault();const texto=document.getElementById('resena-texto').value.trim();if(!texto){status.textContent='Escribe un comentario antes de publicar.';return;}const estrellas=Number((form.querySelector('input[name="calificacion"]:checked')||{}).value||5);const nombre=document.getElementById('resena-nombre').value.trim()||localStorage.getItem('techzone_usuario_nombre')||'Usuario';const all=read();all.unshift({id:'resena_'+Date.now(),nombre:nombre,texto:texto,estrellas:estrellas,fecha:new Date().toLocaleDateString('es-MX'),tipo:'campana'});localStorage.setItem(key,JSON.stringify(all.slice(0,50)));
+ // Keep campaign reviews in the same comment collection used by the profile.
+ const ck='techzone_comentarios_marketing';let comments=[];try{comments=JSON.parse(localStorage.getItem(ck)||'[]')}catch(e){}comments.unshift({id:'campana_'+Date.now(),nombre:nombre,texto:texto,estrellas:estrellas,fecha:new Date().toLocaleDateString('es-MX'),tipo:'campana'});localStorage.setItem(ck,JSON.stringify(comments.slice(0,100)));
+ form.reset();document.getElementById('star5').checked=true;status.textContent='✓ Calificación y comentario publicados (simulado).';render();});render();
+});
+</script>
+
 </body>
 </html>

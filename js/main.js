@@ -2,6 +2,62 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var CLAVE_USUARIO = "techzone_usuario";
 
+    // Menú global: sin duplicar Marketplace (Inicio ya contiene esa sección).
+    // El acceso de administrador permanece visible; login/perfil dependen de la sesión.
+    (function configurarMenuGlobal() {
+        var nav = document.getElementById("nav-menu");
+        if (!nav) return;
+        var menu = nav.querySelector(".menu-opciones");
+        if (!menu) return;
+        var marketplace = menu.querySelectorAll('a[href*="#marketplace"]');
+        marketplace.forEach(function (a) { a.remove(); });
+        var registro = menu.querySelectorAll('a[href="registro.html"]');
+        registro.forEach(function (a) { a.remove(); });
+        var login = menu.querySelector('.menu-login, a[href="login.html"]');
+        var perfil = menu.querySelector('.menu-perfil, a[href="perfil.html"]');
+        var admin = menu.querySelector('.menu-admin, a[href="admin.html"], a[href="login.html#admin"]');
+        if (!admin) {
+            admin = document.createElement('a');
+            admin.href = 'admin.html';
+            admin.className = 'menu-admin';
+            admin.textContent = 'Panel del administrador';
+            menu.appendChild(admin);
+        } else {
+            admin.href = 'admin.html';
+            admin.textContent = 'Panel del administrador';
+            admin.classList.add('menu-admin');
+        }
+        // La sesión se toma del mismo sessionStorage que usa el login.
+        // Perfil solo se muestra cuando existe una sesión válida de CLIENTE.
+        var usuarioMenu = null;
+        try {
+            var datoSesion = sessionStorage.getItem(CLAVE_USUARIO);
+            usuarioMenu = datoSesion ? JSON.parse(datoSesion) : null;
+        } catch (e) { usuarioMenu = null; }
+        var sesionActiva = !!(usuarioMenu && typeof usuarioMenu === "object" && usuarioMenu.rol);
+        var clienteActivo = !!(sesionActiva && usuarioMenu.rol === "cliente");
+        if (login) login.hidden = sesionActiva;
+        if (perfil) perfil.hidden = !clienteActivo;
+        if (perfil) menu.appendChild(perfil); // Perfil siempre es la última opción cuando corresponde.
+    })();
+
+    // Las acciones que modifican datos requieren sesión de cliente.
+    // Se permite navegar y consultar páginas; se bloquea el envío de acciones sin sesión.
+    document.addEventListener('submit', function (ev) {
+        var form = ev.target;
+        if (!form || !form.matches) return;
+        var protectedForm = form.matches('#form-publicar, #form-oferta, #form-comentario, #form-resena, #form-resena-campana, form[data-requiere-sesion]') ||
+            !!form.closest('#marketplace-lista');
+        if (!protectedForm) return;
+        var activa = false;
+        try { activa = !!sessionStorage.getItem(CLAVE_USUARIO); } catch (e) {}
+        if (!activa) {
+            ev.preventDefault(); ev.stopImmediatePropagation();
+            if (window.mostrarMensaje) window.mostrarMensaje('Inicia sesión', 'Para realizar esta acción, primero inicia sesión.', 'info');
+            setTimeout(function () { window.location.href = 'login.html'; }, 1200);
+        }
+    }, true);
+
     // Ventana de mensajes integrada a la tienda (reemplaza alert())
     window.mostrarMensaje = function (titulo, mensaje, tipo) {
         var modal = document.getElementById("tz-mensaje-modal");
@@ -428,65 +484,7 @@ powerbank: {
         return;
     }
 
-    // ---- Menú dinámico: antes de iniciar sesión solo se muestran Nosotros y Contacto ----
-    var navMenu = document.getElementById("nav-menu");
-    if (navMenu) {
-        var pagina = navMenu.getAttribute("data-pagina") || window.location.pathname.split("/").pop().toLowerCase();
-        var enlacesPublicos = [
-            { href: "inicio.html", texto: "Inicio", id: "inicio" },
-            { href: "productos.html", texto: "Catálogo", id: "productos" },
-            { href: "promociones.html", texto: "Promociones", id: "promociones" },
-            { href: "campana.html", texto: "Campaña", id: "campana" },
-            { href: "comunidad.html", texto: "Comunidad", id: "comunidad" },
-            { href: "publicar.html", texto: "Publicar", id: "publicar" },
-            { href: "nosotros.html", texto: "Nosotros", id: "nosotros" },
-            { href: "contacto.html", texto: "Contacto", id: "contacto" },
-            { href: "login.html", texto: "Iniciar sesión", id: "login" }
-        ];
-        var enlacesCompletos = [
-            { href: "inicio.html", texto: "Inicio", id: "inicio" },
-            { href: "productos.html", texto: "Catálogo", id: "productos" },
-            { href: "promociones.html", texto: "Promociones", id: "promociones" },
-            { href: "campana.html", texto: "Campaña", id: "campana" },
-            { href: "comunidad.html", texto: "Comunidad", id: "comunidad" },
-            { href: "publicar.html", texto: "Publicar", id: "publicar" },
-            { href: "nosotros.html", texto: "Nosotros", id: "nosotros" },
-            { href: "contacto.html", texto: "Contacto", id: "contacto" },
-            { href: "perfil.html", texto: "Perfil", id: "perfil" },
-            { href: "#", texto: "🛒 Carrito", id: "carrito" },
-            { href: "admin.html", texto: "Administrador", id: "admin" }
-        ];
-        // El administrador no verá el menú principal de la tienda.
-        // En la barra superior solo se muestran Perfil y Administrador.
-        var enlacesAdmin = [
-            { href: "perfil.html", texto: "Perfil", id: "perfil" },
-            { href: "admin.html", texto: "Administrador", id: "admin" }
-        ];
-        var enlaces = usuario && usuario.rol === "admin" ? enlacesAdmin : (usuario ? enlacesCompletos : enlacesPublicos);
-        var htmlMenu = "";
-        enlaces.forEach(function (enlace) {
-            var esActivo = (enlace.id === pagina || pagina.indexOf(enlace.id) >= 0) ? ' class="activo"' : "";
-            if (enlace.id === "carrito") {
-                htmlMenu += '<a href="carrito.html" class="carrito-nav" aria-label="Carrito de compras">🛒 <span>Carrito</span><b class="carrito-badge">0</b></a>';
-            } else {
-                htmlMenu += '<a href="' + enlace.href + '"' + esActivo + '>' + enlace.texto + '</a>';
-            }
-        });
-        navMenu.innerHTML = htmlMenu;
-    }
-
-    // ---- Mostrar/ocultar enlaces del menú fijo (inicio.html, perfil.html) según haya sesión ----
-    var enlacePerfil = document.querySelector('nav a[href="perfil.html"]');
-    var enlaceRegistro = document.querySelector('nav a[href="registro.html"]');
-    var enlaceLogin = document.querySelector('nav a[href="login.html"]');
-
-    if (usuario) {
-        if (enlacePerfil) enlacePerfil.style.display = "";
-        if (enlaceRegistro) enlaceRegistro.style.display = "none";
-        if (enlaceLogin) enlaceLogin.style.display = "none";
-    } else {
-        if (enlacePerfil) enlacePerfil.style.display = "none";
-    }
+    // La navegación es fija y uniforme en todas las páginas, haya sesión o no.
 
     // ---- Formulario de registro (sin exigir llenar campos) ----
     var formRegistro = document.getElementById("formulario-registro");
