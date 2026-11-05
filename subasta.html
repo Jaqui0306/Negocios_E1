@@ -28,7 +28,8 @@
 <a href="promociones.html">Promociones</a>
 <a href="campana.html">Campaña</a>
 <a href="comunidad.html">Comunidad y comentarios</a>
-<a href="publicar.html">Publicar producto / Mis publicaciones</a>
+<a href="publicar.html">Publicar producto</a>
+<a href="mis-publicaciones.html">Mis publicaciones</a>
 <a href="subasta.html">Subasta</a>
 <a href="carrito.html">Carrito de compras</a>
 <a href="nosotros.html">Nosotros</a>
@@ -106,6 +107,8 @@ document.addEventListener('DOMContentLoaded', function () {
   function actualizarTimer() {
     if (segundos <= 0) {
       timerTexto.textContent = '00:00:00';
+      estado.textContent = 'Subasta finalizada.';
+      formOferta.querySelector('button[type=submit]').disabled = true;
       return;
     }
     var h = Math.floor(segundos / 3600);
@@ -153,9 +156,9 @@ document.addEventListener('DOMContentLoaded', function () {
     ofs.forEach(function (o) {
       var div = document.createElement('div');
       div.className = 'subasta-oferta';
-      div.innerHTML =
-        '<div><strong>' + (o.nombre || 'Anónimo') + '</strong><small>' + (o.fecha || '') + '</small></div>' +
-        '<span>$' + Number(o.monto).toLocaleString('es-MX') + '</span>';
+      var w = document.createElement('div'), st = document.createElement('strong'), sm = document.createElement('small'), sp = document.createElement('span');
+      st.textContent = o.nombre || 'Anónimo'; sm.textContent = o.fecha || ''; sp.textContent = '$' + Number(o.monto).toLocaleString('es-MX');
+      w.append(st, sm); div.append(w, sp);
       lista.appendChild(div);
     });
     var max = maxMonto();
@@ -165,33 +168,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-  document.getElementById('form-oferta').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var monto = document.getElementById('monto-oferta').value;
-    var nombre = document.getElementById('nombre-oferta').value.trim() || 'Anónimo';
-    // Sin validación estricta: si no hay monto, se usa un valor por defecto
-    if (!monto) monto = maxMonto() + 10;
-    monto = Number(monto);
+  var formOferta = document.getElementById('form-oferta');
+  var u0 = window.TZ ? TZ.usuario() : null;
+  if (u0 && u0.nombre) document.getElementById('nombre-oferta').value = u0.nombre;
 
+  formOferta.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (segundos <= 0) { estado.style.color = '#c0392b'; estado.textContent = 'La subasta ya terminó.'; return; }
+    var monto = Number(document.getElementById('monto-oferta').value);
+    var nombre = document.getElementById('nombre-oferta').value.trim() || (TZ.usuario() || {}).nombre || 'Anónimo';
+    var min = maxMonto() + 1;
+    if (!monto || monto < min) {
+      estado.style.color = '#c0392b';
+      estado.textContent = 'Tu oferta debe ser de al menos $' + min.toLocaleString('es-MX') + ' MXN.';
+      return;
+    }
+    estado.style.color = '';
     var ofs = getOfertas();
-    ofs.unshift({
-      nombre: nombre,
-      monto: monto,
-      fecha: 'Ahora · Oferta simulada'
-    });
+    ofs.unshift({ nombre: nombre, monto: monto, fecha: 'Ahora · Oferta simulada' });
     saveOfertas(ofs);
     document.getElementById('monto-oferta').value = '';
-    document.getElementById('nombre-oferta').value = '';
     estado.textContent = '✓ Oferta registrada (simulado): $' + monto.toLocaleString('es-MX') + ' por ' + nombre;
     render();
   });
 
-
-
-
-
   render();
 });
 </script>
+<script src="js/main.js"></script>
 </body>
 </html>

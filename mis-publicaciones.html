@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis publicaciones | TechZone C2C</title>
+    <link rel="icon" type="image/svg+xml" href="img/logo.svg">
+    <link rel="stylesheet" href="css/styles.css">
+<style>
+.pub-card{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:start}
+.pub-card img{width:96px;height:96px;object-fit:contain;background:#f4f7fc;border-radius:12px}
+.pub-precio{margin:6px 0;font-weight:800;color:#1268e8}
+.pub-acciones{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.pub-acciones .marketing-button{padding:8px 14px;font-size:13px}
+.pub-preview{display:none;width:120px;height:120px;object-fit:contain;background:#f4f7fc;border-radius:12px;margin-top:10px}
+.pub-vacio{color:#8090a5;padding:20px;border:1px dashed #d0d9e6;border-radius:14px}
+</style>
+</head>
+<body>
+<header>
+    <a href="inicio.html" class="logo">
+        <img src="img/logo.svg" alt="TechZone" class="logo-img">TechZone
+    </a>
+    <nav id="nav-menu" aria-label="Navegación principal"><details class="menu-desplegable"><summary aria-label="Abrir menú de navegación">☰ Menú</summary><div class="menu-opciones">
+<a href="inicio.html">Inicio</a>
+<a href="productos.html">Catálogo</a>
+<a href="promociones.html">Promociones</a>
+<a href="campana.html">Campaña</a>
+<a href="comunidad.html">Comunidad y comentarios</a>
+<a href="publicar.html">Publicar producto</a>
+<a href="mis-publicaciones.html">Mis publicaciones</a>
+<a href="subasta.html">Subasta</a>
+<a href="carrito.html">Carrito de compras</a>
+<a href="nosotros.html">Nosotros</a>
+<a href="contacto.html">Contacto</a>
+<a href="admin.html" class="menu-admin">Panel del administrador</a>
+<a href="login.html" class="menu-login">Iniciar sesión</a>
+<a href="perfil.html" class="menu-perfil" hidden>Perfil</a>
+</div></details></nav>
+</header>
+
+<main class="marketing-wrap">
+    <span class="marketing-kicker">TECHZONE / MODELO C2C</span>
+    <h1 class="marketing-heading">Mis publicaciones</h1>
+    <p class="marketing-lead">Los productos que has publicado. Puedes editarlos o eliminarlos (simulado).</p>
+    <div class="community-layout">
+        <section>
+            <div id="lista" class="community-list"></div>
+            <div class="marketing-nav"><a href="publicar.html">+ Publicar otro producto</a><a href="perfil.html">Ver mi perfil →</a></div>
+        </section>
+        <section class="marketing-card community-form" id="panel-edicion" style="display:none">
+            <h2>Editar publicación</h2>
+            <form id="form-edicion" novalidate>
+                <label for="ed-nombre">Nombre</label><input id="ed-nombre" maxlength="80">
+                <label for="ed-precio">Precio (MXN)</label><input id="ed-precio" type="number" min="1" step="1">
+                <label for="ed-cantidad">Cantidad disponible</label><input id="ed-cantidad" type="number" min="1" step="1">
+                <label for="ed-desc">Descripción</label><textarea id="ed-desc" maxlength="600"></textarea>
+                <label for="ed-foto">Cambiar foto (opcional)</label><input id="ed-foto" type="file" accept="image/*">
+                <div style="display:flex;gap:10px;margin-top:18px">
+                    <button class="marketing-button" type="submit" style="flex:1">Guardar cambios</button>
+                    <button class="marketing-button" type="button" id="ed-cancelar" style="background:#10213b">Cancelar</button>
+                </div>
+                <p class="marketing-status" id="estado-edicion" role="status" aria-live="polite"></p>
+            </form>
+        </section>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-envoltura">
+        <div class="footer-marca">
+            <img src="img/logo.svg" alt="">TechZone
+        </div>
+    </div>
+    <p class="footer-copy">© 2026 TechZone — Publicación C2C demostrativa</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var u = TZ.usuario();
+    var lista = document.getElementById('lista'), panel = document.getElementById('panel-edicion');
+    var estado = document.getElementById('estado-edicion'), editId = null, nuevaFoto = null;
+    if (!u) { lista.innerHTML = '<p class="pub-vacio">Inicia sesión para ver tus publicaciones…</p>'; TZ.requiereSesion('Para ver «Mis publicaciones» primero inicia sesión.'); return; }
+    var yo = (u.correo || '').toLowerCase();
+    function todos() { try { return JSON.parse(localStorage.getItem('techzone_publicaciones_c2c') || '[]'); } catch (e) { return []; } }
+    function guardar(a) { try { localStorage.setItem('techzone_publicaciones_c2c', JSON.stringify(a.slice(0, 40))); return true; } catch (e) { return false; } }
+    function render() {
+        lista.innerHTML = '';
+        var mios = todos().filter(function (x) { return x.sid && x.sid === u.sid; });
+        if (!mios.length) { lista.innerHTML = '<p class="pub-vacio">Aún no has publicado ningún producto. <a href="publicar.html">Publica el primero →</a></p>'; return; }
+        mios.forEach(function (it) {
+            var art = document.createElement('article'); art.className = 'community-comment pub-card';
+            var img = document.createElement('img'); img.src = it.foto || 'img/teclado.jpg'; img.alt = it.nombre; img.onerror = function () { this.src = 'img/teclado.jpg'; };
+            var info = document.createElement('div');
+            var n = document.createElement('strong'); n.textContent = it.nombre;
+            var p = document.createElement('p'); p.className = 'pub-precio'; p.textContent = '$' + Number(it.precio).toLocaleString('es-MX') + ' MXN · ' + (Number(it.stock) || 1) + ' disponible(s)';
+            var d = document.createElement('p'); d.style.margin = '0'; d.textContent = it.descripcion;
+            var f = document.createElement('small'); f.textContent = it.fecha || '';
+            var ac = document.createElement('div'); ac.className = 'pub-acciones';
+            var be = document.createElement('button'); be.type = 'button'; be.className = 'marketing-button'; be.style.background = '#10213b'; be.textContent = 'Editar';
+            be.onclick = function () {
+                editId = it.id; nuevaFoto = null; estado.textContent = '';
+                document.getElementById('ed-nombre').value = it.nombre; document.getElementById('ed-precio').value = it.precio;
+                document.getElementById('ed-desc').value = it.descripcion; document.getElementById('ed-cantidad').value = Number(it.stock) || 1; document.getElementById('ed-foto').value = '';
+                panel.style.display = 'block'; panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            };
+            var bd = document.createElement('button'); bd.type = 'button'; bd.className = 'marketing-button'; bd.style.background = '#c0392b'; bd.textContent = 'Eliminar';
+            bd.onclick = function () {
+                TZ.confirmar('¿Estás seguro de eliminar este producto?', '«' + it.nombre + '» se eliminará de tus publicaciones.', function () {
+                    guardar(todos().filter(function (x) { return x.id !== it.id; }));
+                    mostrarMensaje('Producto eliminado', '«' + it.nombre + '» se eliminó de tus publicaciones (simulado).');
+                    if (editId === it.id) { editId = null; panel.style.display = 'none'; }
+                    render();
+                });
+            };
+            var bv = document.createElement('button'); bv.type = 'button'; bv.className = 'marketing-button'; bv.textContent = 'Ver detalles'; bv.onclick = function () { TZ.detalleProducto(it); };
+            img.style.cursor = 'pointer'; img.onclick = bv.onclick;
+            ac.append(bv, be, bd); info.append(n, p, d, f, ac); art.append(img, info); lista.appendChild(art);
+        });
+    }
+    document.getElementById('ed-foto').addEventListener('change', function () {
+        nuevaFoto = null; var fl = this.files[0]; if (fl) TZ.leerImagen(fl, function (d) { nuevaFoto = d; });
+    });
+    document.getElementById('ed-cancelar').onclick = function () { editId = null; panel.style.display = 'none'; };
+    document.getElementById('form-edicion').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var nombre = document.getElementById('ed-nombre').value.trim() || 'Producto sin nombre', precio = Number(document.getElementById('ed-precio').value) || 0, desc = document.getElementById('ed-desc').value.trim() || 'Sin descripción';
+        var arr = todos().map(function (x) {
+            if (x.id !== editId) return x;
+            x.nombre = nombre; x.precio = precio; x.stock = Math.max(1, Math.floor(Number(document.getElementById('ed-cantidad').value) || 1)); x.descripcion = desc; if (nuevaFoto) x.foto = nuevaFoto; x.fecha = 'Editado ' + new Date().toLocaleDateString('es-MX') + ' · Simulado'; return x;
+        });
+        if (!guardar(arr)) { mostrarMensaje('No se pudo guardar', 'La imagen es muy pesada. Prueba con otra foto.', 'info'); return; }
+        panel.style.display = 'none'; editId = null; render();
+        mostrarMensaje('Producto actualizado', 'Los cambios de tu publicación se guardaron (simulado).');
+    });
+    render();
+});
+</script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -18,7 +18,8 @@
 <a href="promociones.html">Promociones</a>
 <a href="campana.html">Campaña</a>
 <a href="comunidad.html">Comunidad y comentarios</a>
-<a href="publicar.html">Publicar producto / Mis publicaciones</a>
+<a href="publicar.html">Publicar producto</a>
+<a href="mis-publicaciones.html">Mis publicaciones</a>
 <a href="subasta.html">Subasta</a>
 <a href="carrito.html">Carrito de compras</a>
 <a href="nosotros.html">Nosotros</a>
@@ -95,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var estado = document.getElementById('estado-comentario');
   var clave = 'techzone_comentarios_marketing';
   var usuario = null;
-  try { usuario = JSON.parse(localStorage.getItem('techzone_usuario') || 'null'); } catch (e) {}
+  usuario = window.TZ ? TZ.usuario() : null;
   var campoNombre = document.getElementById('nombre-comentario');
   if (usuario && usuario.nombre && campoNombre) campoNombre.value = usuario.nombre;
 
@@ -105,22 +106,29 @@ document.addEventListener('DOMContentLoaded', function () {
   function crearComentario(item) {
     var card = document.createElement('article');
     card.className = 'community-comment';
-    var estrellas = document.createElement('div'); estrellas.className = 'stars'; estrellas.textContent = '★★★★★';
+    var estrellas = document.createElement('div'); estrellas.className = 'stars'; estrellas.textContent = item.estrellas ? '★'.repeat(Number(item.estrellas)) + '☆'.repeat(5 - Number(item.estrellas)) : '★★★★★';
     var autor = document.createElement('strong'); autor.textContent = item.nombre || 'Anónimo';
     var texto = document.createElement('p'); texto.textContent = item.texto || 'Sin comentario';
     var small = document.createElement('small'); small.textContent = item.fecha || 'Publicado ahora · Comentario simulado';
     card.append(estrellas, autor, texto, small);
+    var propio = !!(usuario && item.correo && item.correo === (usuario.correo || '').toLowerCase());
+    TZ.hilo(card, item.id, { puedeEliminar: propio, etiqueta: 'comentario', eliminar: function () {
+      TZ.borrarOpinion(item.id); card.remove(); mostrarMensaje('Comentario eliminado', 'Tu comentario se eliminó correctamente.');
+    } });
     return card;
   }
+  Array.from(lista.querySelectorAll('.community-comment')).forEach(function (c, i) {
+    var id = 'seed_com_' + i;
+    if (TZ.seedOculto(id)) { c.remove(); return; }
+    TZ.hilo(c, id, { puedeEliminar: true, etiqueta: 'comentario', eliminar: function () {
+      TZ.ocultarSeed(id); c.remove(); mostrarMensaje('Comentario eliminado', 'El comentario se eliminó correctamente.');
+    } });
+  });
   leerComentarios().forEach(function (item) { lista.prepend(crearComentario(item)); });
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var nombre = campoNombre.value.trim() || (usuario && usuario.nombre) || 'Anónimo';
-    var comentario = document.getElementById('texto-comentario').value.trim();
-    if (!comentario) {
-      estado.textContent = 'Escribe un comentario antes de publicarlo.';
-      return;
-    }
+    var comentario = document.getElementById('texto-comentario').value.trim() || 'Sin comentario';
     var item = {
       id: 'comentario_' + Date.now(),
       nombre: nombre,
@@ -133,9 +141,11 @@ document.addEventListener('DOMContentLoaded', function () {
     try { localStorage.setItem(clave, JSON.stringify(guardados.slice(0, 100))); } catch (err) {}
     lista.prepend(crearComentario(item));
     document.getElementById('texto-comentario').value = '';
-    estado.textContent = '✓ Tu comentario se publicó correctamente (simulado) y aparece en tu perfil.';
+    estado.textContent = '';
+    mostrarMensaje('Comentario agregado', 'Tu comentario se agregó correctamente (simulado). Puedes verlo y eliminarlo en tu perfil.');
   });
 });
 </script>
+<script src="js/main.js"></script>
 </body>
 </html>

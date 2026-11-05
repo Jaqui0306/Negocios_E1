@@ -6,6 +6,13 @@
     <title>Campaña | TechZone</title>
     <link rel="icon" type="image/svg+xml" href="img/logo.svg">
     <link rel="stylesheet" href="css/styles.css">
+<style>
+.estrellas-sel{display:flex;align-items:center;gap:4px;margin:0 0 8px}
+.estrellas-sel button{background:none;border:0;padding:0 2px;font-size:38px;line-height:1;color:#cbd5e1;cursor:pointer;transition:transform .12s,color .12s}
+.estrellas-sel button.on{color:#f5a400}
+.estrellas-sel button:hover{transform:scale(1.15)}
+.estrellas-sel span{margin-left:10px;color:#687991;font-weight:700;font-size:14px}
+</style>
 </head>
 <body>
 <header>
@@ -18,7 +25,8 @@
 <a href="promociones.html">Promociones</a>
 <a href="campana.html">Campaña</a>
 <a href="comunidad.html">Comunidad y comentarios</a>
-<a href="publicar.html">Publicar producto / Mis publicaciones</a>
+<a href="publicar.html">Publicar producto</a>
+<a href="mis-publicaciones.html">Mis publicaciones</a>
 <a href="subasta.html">Subasta</a>
 <a href="carrito.html">Carrito de compras</a>
 <a href="nosotros.html">Nosotros</a>
@@ -90,20 +98,21 @@
             <strong>— Sofía L.</strong>
         </article>
     </div>
+
+
+
+    
     <section class="marketing-card campaign-reviews">
       <h2>Califica la campaña y deja tu comentario</h2>
       <p>Selecciona de 1 a 5 estrellas y cuéntanos qué te pareció. Tu opinión aparecerá en esta página y en tu perfil.</p>
       <form id="form-resena-campana">
         <label>¿Cuántas estrellas le das?</label>
-        <div class="rating-selector" role="radiogroup" aria-label="Calificación de una a cinco estrellas">
-          <input type="radio" name="calificacion" id="star1" value="1"><label for="star1" title="1 estrella">★</label>
-          <input type="radio" name="calificacion" id="star2" value="2"><label for="star2" title="2 estrellas">★</label>
-          <input type="radio" name="calificacion" id="star3" value="3"><label for="star3" title="3 estrellas">★</label>
-          <input type="radio" name="calificacion" id="star4" value="4"><label for="star4" title="4 estrellas">★</label>
-          <input type="radio" name="calificacion" id="star5" value="5" checked><label for="star5" title="5 estrellas">★</label>
+        <div id="estrellas" class="estrellas-sel" role="radiogroup" aria-label="Calificación de una a cinco estrellas">
+          <button type="button" data-v="1" aria-label="1 estrella">★</button><button type="button" data-v="2" aria-label="2 estrellas">★</button><button type="button" data-v="3" aria-label="3 estrellas">★</button><button type="button" data-v="4" aria-label="4 estrellas">★</button><button type="button" data-v="5" aria-label="5 estrellas">★</button>
+          <span id="estrellas-txt">5 de 5</span>
         </div>
         <label for="resena-nombre">Tu nombre</label><input id="resena-nombre" maxlength="45" placeholder="Nombre (opcional)">
-        <label for="resena-texto">Tu comentario</label><textarea id="resena-texto" maxlength="500" placeholder="Escribe tu opinión sobre la campaña..." required></textarea>
+        <label for="resena-texto">Tu comentario</label><textarea id="resena-texto" maxlength="500" placeholder="Escribe tu opinión sobre la campaña..."></textarea>
         <button class="marketing-button" type="submit">Publicar calificación</button><p id="estado-resena" class="marketing-status" role="status" aria-live="polite"></p>
       </form>
       <h3>Opiniones de los usuarios</h3><div id="resenas-campana-lista" class="community-list"></div>
@@ -136,15 +145,56 @@
 
 <script>
 document.addEventListener('DOMContentLoaded',function(){
- const key='techzone_resenas_campana'; const form=document.getElementById('form-resena-campana'); const list=document.getElementById('resenas-campana-lista'); const status=document.getElementById('estado-resena');
+ var key='techzone_resenas_campana', ck='techzone_comentarios_marketing';
+ var form=document.getElementById('form-resena-campana'), list=document.getElementById('resenas-campana-lista'), status=document.getElementById('estado-resena');
+ var valor=5, btns=Array.from(document.querySelectorAll('#estrellas button')), txt=document.getElementById('estrellas-txt');
+ function pintar(n){btns.forEach(function(b){b.classList.toggle('on',Number(b.dataset.v)<=n);});}
+ function fijar(n){valor=n;pintar(n);txt.textContent=n+' de 5';}
+ btns.forEach(function(b){
+  b.addEventListener('click',function(){fijar(Number(b.dataset.v));});
+  b.addEventListener('mouseenter',function(){pintar(Number(b.dataset.v));});
+ });
+ document.getElementById('estrellas').addEventListener('mouseleave',function(){pintar(valor);});
+ fijar(5);
  function read(){try{return JSON.parse(localStorage.getItem(key)||'[]')}catch(e){return []}}
- function render(){list.innerHTML='';const arr=read();if(!arr.length){list.innerHTML='<p class="marketplace-vacio">Todavía no hay reseñas de usuarios. ¡Puedes publicar la primera!</p>';return;}arr.forEach(function(r){const card=document.createElement('article');card.className='community-comment';const stars=document.createElement('div');stars.className='stars';stars.textContent='★'.repeat(Number(r.estrellas)||5)+'☆'.repeat(5-(Number(r.estrellas)||5));const name=document.createElement('strong');name.textContent=r.nombre||'Usuario';const txt=document.createElement('p');txt.textContent=r.texto;const date=document.createElement('small');date.textContent=r.fecha||'Publicado recientemente';card.append(stars,name,txt,date);list.appendChild(card);});}
- form.addEventListener('submit',function(e){e.preventDefault();const texto=document.getElementById('resena-texto').value.trim();if(!texto){status.textContent='Escribe un comentario antes de publicar.';return;}const estrellas=Number((form.querySelector('input[name="calificacion"]:checked')||{}).value||5);const nombre=document.getElementById('resena-nombre').value.trim()||localStorage.getItem('techzone_usuario_nombre')||'Usuario';const all=read();all.unshift({id:'resena_'+Date.now(),nombre:nombre,texto:texto,estrellas:estrellas,fecha:new Date().toLocaleDateString('es-MX'),tipo:'campana'});localStorage.setItem(key,JSON.stringify(all.slice(0,50)));
- // Keep campaign reviews in the same comment collection used by the profile.
- const ck='techzone_comentarios_marketing';let comments=[];try{comments=JSON.parse(localStorage.getItem(ck)||'[]')}catch(e){}comments.unshift({id:'campana_'+Date.now(),nombre:nombre,texto:texto,estrellas:estrellas,fecha:new Date().toLocaleDateString('es-MX'),tipo:'campana'});localStorage.setItem(ck,JSON.stringify(comments.slice(0,100)));
- form.reset();document.getElementById('star5').checked=true;status.textContent='✓ Calificación y comentario publicados (simulado).';render();});render();
+ function yo(){var u=window.TZ&&TZ.usuario();return u?(u.correo||'').toLowerCase():null;}
+ function render(){
+  list.innerHTML='';var arr=read();
+  if(!arr.length){list.innerHTML='<p class="marketplace-vacio">Todavía no hay reseñas de usuarios. ¡Puedes publicar la primera!</p>';return;}
+  arr.forEach(function(r){
+   var card=document.createElement('article');card.className='community-comment';
+   var stars=document.createElement('div');stars.className='stars';stars.style.color='#e5a000';
+   var n=Math.min(5,Math.max(1,Number(r.estrellas)||5));stars.textContent='★'.repeat(n)+'☆'.repeat(5-n);
+   var name=document.createElement('strong');name.textContent=r.nombre||'Usuario';
+   var txtp=document.createElement('p');txtp.textContent=r.texto;
+   var date=document.createElement('small');date.textContent=r.fecha||'Publicado recientemente';
+   card.append(stars,name,txtp,date);
+   TZ.hilo(card,r.id,{puedeEliminar:!!(yo()&&r.correo===yo()),etiqueta:'reseña',eliminar:function(){TZ.borrarOpinion(r.id);render();mostrarMensaje('Reseña eliminada','Tu reseña se eliminó correctamente.');}});
+   list.appendChild(card);
+  });
+ }
+ form.addEventListener('submit',function(e){
+  e.preventDefault();
+  var texto=document.getElementById('resena-texto').value.trim()||'Sin comentario (solo calificación)';
+  status.style.color='';
+  var u=TZ.usuario()||{};
+  var nombre=document.getElementById('resena-nombre').value.trim()||u.nombre||'Usuario';
+  var item={id:'resena_'+Date.now(),correo:(u.correo||'').toLowerCase(),nombre:nombre,texto:texto,estrellas:valor,fecha:new Date().toLocaleDateString('es-MX'),tipo:'campana'};
+  var all=read();all.unshift(item);localStorage.setItem(key,JSON.stringify(all.slice(0,50)));
+  var comments=[];try{comments=JSON.parse(localStorage.getItem(ck)||'[]')}catch(x){}
+  comments.unshift(item);localStorage.setItem(ck,JSON.stringify(comments.slice(0,100)));
+  form.reset();fijar(5);
+  status.textContent='';mostrarMensaje('Reseña agregada','Tu reseña se agregó correctamente (simulado). Puedes verla y eliminarla en tu perfil.');
+  render();
+ });
+ render();
+ document.querySelectorAll('.testimonial-grid .testimonial').forEach(function(t,i){
+  var id='seed_test_'+i; if(TZ.seedOculto(id)){t.remove();return;}
+  TZ.hilo(t,id,{puedeEliminar:true,etiqueta:'reseña',eliminar:function(){TZ.ocultarSeed(id);t.remove();mostrarMensaje('Reseña eliminada','La reseña se eliminó correctamente.');}});
+ });
 });
 </script>
 
+<script src="js/main.js"></script>
 </body>
 </html>

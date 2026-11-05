@@ -1,3 +1,200 @@
+/* ===== Sesión compartida (TZ) ===== */
+window.TZ = (function () {
+    var K = "techzone_usuario";
+    function usuario() {
+        try {
+            var d = sessionStorage.getItem(K); var u = d ? JSON.parse(d) : null;
+            if (!(u && u.rol)) return null;
+            if (!u.sid) { u.sid = "ses_" + Date.now() + "_" + Math.floor(Math.random() * 1e6); sessionStorage.setItem(K, JSON.stringify(u)); }
+            return u;
+        } catch (e) { return null; }
+    }
+    function irALogin() {
+        try { sessionStorage.setItem("techzone_volver", location.pathname.split("/").pop() + location.search); } catch (e) {}
+        setTimeout(function () { window.location.href = "login.html"; }, 1600);
+    }
+    // Devuelve true si hay sesión; si no, avisa y manda al login (y regresa después).
+    function requiereSesion(texto) {
+        if (usuario()) return true;
+        if (window.mostrarMensaje) window.mostrarMensaje("Inicia sesión", texto || "Para realizar esta acción primero debes iniciar sesión.", "info");
+        irALogin();
+        return false;
+    }
+    // Reduce una imagen subida a máx. 600px y la devuelve como data URL (cabe en localStorage).
+    function leerImagen(file, cb) {
+        var r = new FileReader();
+        r.onload = function () {
+            var img = new Image();
+            img.onload = function () {
+                var m = 600, k = Math.min(1, m / Math.max(img.width, img.height));
+                var c = document.createElement("canvas"); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+                c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+                cb(c.toDataURL("image/jpeg", 0.8));
+            };
+            img.onerror = function () { cb(null); };
+            img.src = r.result;
+        };
+        r.onerror = function () { cb(null); };
+        r.readAsDataURL(file);
+    }
+    // Elimina un comentario/reseña (por id) de las dos colecciones donde se guarda.
+    function borrarOpinion(id) {
+        guardarRespuestas(id, []);
+        ["techzone_comentarios_marketing", "techzone_resenas_campana"].forEach(function (k) {
+            try {
+                var a = JSON.parse(localStorage.getItem(k) || "[]");
+                localStorage.setItem(k, JSON.stringify(a.filter(function (x) { return x.id !== id; })));
+            } catch (e) {}
+        });
+    }
+    // Ventana propia de confirmación (reemplaza confirm()).
+    function confirmar(titulo, mensaje, onSi) {
+        var m = document.getElementById("tz-confirmar-generico");
+        if (!m) {
+            m = document.createElement("div"); m.id = "tz-confirmar-generico"; m.className = "tz-modal";
+            m.innerHTML = '<div class="tz-modal-fondo"></div><div class="tz-modal-caja" role="dialog" aria-modal="true">' +
+                '<button type="button" class="tz-modal-cerrar" aria-label="Cerrar">×</button><div class="tz-modal-icono info">?</div>' +
+                '<h3></h3><p></p><div class="tz-confirmar-acciones"><button type="button" class="boton boton-secundario tz-no">Cancelar</button>' +
+                '<button type="button" class="boton tz-modal-boton tz-ok">Sí, eliminar</button></div></div>';
+            document.body.appendChild(m);
+            var cerrar = function () { m.classList.remove("visible"); };
+            m.querySelector(".tz-modal-fondo").addEventListener("click", cerrar);
+            m.querySelector(".tz-modal-cerrar").addEventListener("click", cerrar);
+            m.querySelector(".tz-no").addEventListener("click", cerrar);
+        }
+        m.querySelector("h3").textContent = titulo; m.querySelector("p").textContent = mensaje;
+        var ok = m.querySelector(".tz-ok"), nuevo = ok.cloneNode(true); ok.parentNode.replaceChild(nuevo, ok);
+        nuevo.addEventListener("click", function () { m.classList.remove("visible"); onSi(); });
+        m.classList.add("visible");
+    }
+    // Ventana con todos los detalles de un producto publicado + cantidad y "Agregar al carrito".
+    function detalleProducto(it) {
+        var m = document.getElementById("tz-detalle-prod");
+        if (!m) {
+            m = document.createElement("div"); m.id = "tz-detalle-prod"; m.className = "tz-modal";
+            m.innerHTML = '<div class="tz-modal-fondo"></div><div class="tz-modal-caja" role="dialog" aria-modal="true" style="width:min(780px,100%);max-height:92vh;overflow:auto;text-align:left;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px;align-items:start">' +
+                '<button type="button" class="tz-modal-cerrar" aria-label="Cerrar">×</button>' +
+                '<img class="dp-img" alt="" style="width:100%;height:300px;object-fit:contain;background:#f4f7fc;border-radius:16px">' +
+                '<div><span class="marketing-tag">PRODUCTO C2C</span><h3 class="dp-nombre" style="text-align:left;margin:12px 0 4px"></h3>' +
+                '<p class="dp-precio" style="font-size:28px;font-weight:900;color:#1268e8;margin:4px 0 10px"></p>' +
+                '<p class="dp-desc" style="text-align:left;color:#52647c;line-height:1.7;overflow-wrap:anywhere"></p>' +
+                '<ul class="dp-datos" style="list-style:none;padding:0;margin:14px 0;color:#52647c;font-size:14px;line-height:1.9"></ul>' +
+                '<div style="display:flex;align-items:center;gap:12px;margin:14px 0"><strong>Cantidad</strong>' +
+                '<div class="carrito-cantidad"><button type="button" class="dp-menos">−</button><strong class="dp-cant">1</strong><button type="button" class="dp-mas">+</button></div></div>' +
+                '<p class="dp-total" style="font-weight:800;color:#10213b;margin:6px 0 14px"></p>' +
+                '<button type="button" class="boton dp-agregar" style="width:100%">Agregar al carrito</button></div></div>';
+            document.body.appendChild(m);
+            var cerrar = function () { m.classList.remove("visible"); };
+            m.querySelector(".tz-modal-fondo").addEventListener("click", cerrar);
+            m.querySelector(".tz-modal-cerrar").addEventListener("click", cerrar);
+        }
+        var stock = Math.max(1, Number(it.stock) || 1), cant = 1, precio = Number(it.precio) || 0;
+        m.querySelector(".dp-img").src = it.foto || "img/teclado.jpg";
+        m.querySelector(".dp-img").onerror = function () { this.src = "img/teclado.jpg"; };
+        m.querySelector(".dp-nombre").textContent = it.nombre;
+        m.querySelector(".dp-precio").textContent = "$" + precio.toLocaleString("es-MX") + " MXN";
+        m.querySelector(".dp-desc").textContent = it.descripcion;
+        var ul = m.querySelector(".dp-datos"); ul.innerHTML = "";
+        [["Vendedor", it.vendedor || it.autor || "Usuario"], ["Disponibles", stock + (stock === 1 ? " pieza" : " piezas")], ["Publicación", it.fecha || ""], ["Modalidad", "C2C · Cliente a cliente (simulado)"]].forEach(function (r) {
+            var li = document.createElement("li"), b = document.createElement("strong"); b.textContent = r[0] + ": "; li.append(b, document.createTextNode(r[1])); ul.appendChild(li);
+        });
+        function pintar() {
+            m.querySelector(".dp-cant").textContent = cant;
+            m.querySelector(".dp-total").textContent = "Total: $" + (precio * cant).toLocaleString("es-MX") + " MXN";
+        }
+        function reemplazar(sel, fn) { var o = m.querySelector(sel), n = o.cloneNode(true); o.parentNode.replaceChild(n, o); n.addEventListener("click", fn); }
+        reemplazar(".dp-menos", function () { cant = Math.max(1, cant - 1); pintar(); });
+        reemplazar(".dp-mas", function () { if (cant >= stock) { mostrarMensaje("Cantidad máxima", "Solo hay " + stock + " disponible(s) de este producto.", "info"); return; } cant++; pintar(); });
+        reemplazar(".dp-agregar", function () {
+            if (!usuario()) { m.classList.remove("visible"); requiereSesion("Para agregar productos al carrito primero debes iniciar sesión."); return; }
+            var car = []; try { car = JSON.parse(localStorage.getItem("techzone_carrito") || "[]"); if (!Array.isArray(car)) car = []; } catch (e) { car = []; }
+            var ex = car.filter(function (x) { return x.id === it.id; })[0];
+            if (ex) { ex.cantidad = Math.min(stock, (Number(ex.cantidad) || 0) + cant); ex.stock = stock; }
+            else car.push({ id: it.id, nombre: it.nombre, precio: precio, imagen: it.foto || "img/teclado.jpg", cantidad: cant, stock: stock });
+            localStorage.setItem("techzone_carrito", JSON.stringify(car));
+            var total = car.reduce(function (s, x) { return s + (Number(x.cantidad) || 0); }, 0);
+            document.querySelectorAll(".carrito-badge").forEach(function (b) { b.textContent = total; });
+            m.classList.remove("visible");
+            mostrarMensaje("Agregado al carrito", cant + " × " + it.nombre + " se agregó a tu carrito.");
+        });
+        pintar(); m.classList.add("visible");
+    }
+    // ----- Respuestas (hilo) y comentarios de ejemplo -----
+    var KR = "techzone_respuestas", KS = "techzone_seeds_ocultos";
+    function leerJ(k, d) { try { return JSON.parse(localStorage.getItem(k) || d); } catch (e) { return JSON.parse(d); } }
+    function respuestasDe(id) { return leerJ(KR, "{}")[id] || []; }
+    function guardarRespuestas(id, arr) {
+        var mp = leerJ(KR, "{}"); if (arr.length) mp[id] = arr; else delete mp[id];
+        try { localStorage.setItem(KR, JSON.stringify(mp)); } catch (e) {}
+    }
+    function seedOculto(id) { return leerJ(KS, "[]").indexOf(id) >= 0; }
+    function ocultarSeed(id) { var a = leerJ(KS, "[]"); if (a.indexOf(id) < 0) a.push(id); localStorage.setItem(KS, JSON.stringify(a)); guardarRespuestas(id, []); }
+    function boton(txt, color) {
+        var b = document.createElement("button"); b.type = "button"; b.className = "marketing-button"; b.textContent = txt;
+        b.style.cssText = "padding:7px 13px;font-size:13px;background:" + color; return b;
+    }
+    // Agrega a una tarjeta: botón Responder, lista de respuestas y (opcional) Eliminar.
+    // opt: { puedeEliminar, etiqueta ("comentario"|"reseña"), eliminar: fn }
+    function hilo(card, id, opt) {
+        opt = opt || {};
+        var wrap = document.createElement("div"); wrap.style.marginTop = "12px";
+        var acc = document.createElement("div"); acc.style.cssText = "display:flex;gap:8px;flex-wrap:wrap";
+        var bR = boton("Responder", "#10213b"); acc.appendChild(bR);
+        if (opt.puedeEliminar) {
+            var bD = boton("Eliminar", "#c0392b"); acc.appendChild(bD);
+            bD.addEventListener("click", function () {
+                if (!requiereSesion("Para eliminar primero debes iniciar sesión.")) return;
+                confirmar("¿Estás seguro de eliminar este " + (opt.etiqueta || "comentario") + "?", "Esta acción no se puede deshacer.", opt.eliminar);
+            });
+        }
+        var lista = document.createElement("div"); lista.style.cssText = "margin-top:10px;display:grid;gap:8px;padding-left:14px;border-left:3px solid #dfe7f2";
+        var caja = document.createElement("div"); caja.style.cssText = "display:none;margin-top:10px;gap:8px;flex-wrap:wrap";
+        var inp = document.createElement("input"); inp.type = "text"; inp.maxLength = 300; inp.placeholder = "Escribe tu respuesta…";
+        inp.style.cssText = "flex:1;min-width:180px;padding:10px 12px;border:1px solid #d5deea;border-radius:10px;font:inherit";
+        var bE = boton("Enviar", "#1268e8"), bC = boton("Cancelar", "#6b7a90");
+        caja.append(inp, bE, bC);
+        function pintar() {
+            lista.innerHTML = ""; var rs = respuestasDe(id);
+            lista.style.display = rs.length ? "grid" : "none";
+            var u = usuario();
+            rs.forEach(function (r) {
+                var it = document.createElement("div");
+                var n = document.createElement("strong"); n.textContent = "↳ " + (r.nombre || "Usuario");
+                var p = document.createElement("p"); p.style.margin = "4px 0"; p.textContent = r.texto;
+                var s = document.createElement("small"); s.textContent = r.fecha || "";
+                it.append(n, p, s);
+                if (u && r.sid && r.sid === u.sid) {
+                    var d = boton("Eliminar respuesta", "#c0392b"); d.style.cssText += ";margin-left:10px;padding:4px 10px;font-size:12px";
+                    d.addEventListener("click", function () {
+                        confirmar("¿Estás seguro de eliminar tu respuesta?", "Esta acción no se puede deshacer.", function () {
+                            guardarRespuestas(id, respuestasDe(id).filter(function (x) { return x.id !== r.id; }));
+                            pintar(); mostrarMensaje("Respuesta eliminada", "Tu respuesta se eliminó correctamente.");
+                        });
+                    });
+                    it.appendChild(d);
+                }
+                lista.appendChild(it);
+            });
+        }
+        function enviar() {
+            if (!requiereSesion("Para responder primero debes iniciar sesión.")) return;
+            var u = usuario(), arr = respuestasDe(id);
+            arr.push({ id: "r_" + Date.now(), sid: u.sid, nombre: u.nombre || "Usuario", texto: inp.value.trim() || "Sin comentario", fecha: new Date().toLocaleDateString("es-MX") });
+            guardarRespuestas(id, arr); inp.value = ""; caja.style.display = "none"; pintar();
+            mostrarMensaje("Respuesta agregada", "Tu respuesta se agregó correctamente (simulado).");
+        }
+        bR.addEventListener("click", function () {
+            if (!requiereSesion("Para responder primero debes iniciar sesión.")) return;
+            caja.style.display = "flex"; inp.focus();
+        });
+        bE.addEventListener("click", enviar);
+        inp.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); enviar(); } });
+        bC.addEventListener("click", function () { caja.style.display = "none"; });
+        wrap.append(acc, lista, caja); card.appendChild(wrap); pintar();
+    }
+    return { hilo: hilo, seedOculto: seedOculto, ocultarSeed: ocultarSeed, usuario: usuario, requiereSesion: requiereSesion, leerImagen: leerImagen, borrarOpinion: borrarOpinion, confirmar: confirmar, detalleProducto: detalleProducto };
+})();
+
 document.addEventListener("DOMContentLoaded", function () {
 
     var CLAVE_USUARIO = "techzone_usuario";
@@ -27,18 +224,26 @@ document.addEventListener("DOMContentLoaded", function () {
             admin.textContent = 'Panel del administrador';
             admin.classList.add('menu-admin');
         }
-        // La sesión se toma del mismo sessionStorage que usa el login.
-        // Perfil solo se muestra cuando existe una sesión válida de CLIENTE.
-        var usuarioMenu = null;
-        try {
-            var datoSesion = sessionStorage.getItem(CLAVE_USUARIO);
-            usuarioMenu = datoSesion ? JSON.parse(datoSesion) : null;
-        } catch (e) { usuarioMenu = null; }
-        var sesionActiva = !!(usuarioMenu && typeof usuarioMenu === "object" && usuarioMenu.rol);
-        var clienteActivo = !!(sesionActiva && usuarioMenu.rol === "cliente");
-        if (login) login.hidden = sesionActiva;
-        if (perfil) perfil.hidden = !clienteActivo;
-        if (perfil) menu.appendChild(perfil); // Perfil siempre es la última opción cuando corresponde.
+        // Estado de sesión: sin sesión -> "Iniciar sesión"; con sesión -> "Perfil" + "Cerrar sesión".
+        var u = window.TZ.usuario();
+        var sesionActiva = !!u;
+        var esAdmin = !!(u && u.rol === "admin");
+        function mostrar(el, visible) { if (!el) return; el.hidden = !visible; el.style.display = visible ? "" : "none"; }
+        mostrar(login, !sesionActiva);
+        mostrar(perfil, sesionActiva);
+        // Opción de administrador: el usuario puede elegir entrar como admin cuando quiera.
+        admin.href = esAdmin ? "admin.html" : "login.html?acceso=admin";
+        admin.textContent = esAdmin ? "Panel del administrador" : "Entrar como administrador";
+        var salir = menu.querySelector(".menu-salir");
+        if (!salir) {
+            salir = document.createElement("a");
+            salir.href = "#"; salir.className = "menu-salir"; salir.textContent = "Cerrar sesión";
+            salir.addEventListener("click", function (ev) { ev.preventDefault(); cerrarSesion(); });
+            menu.appendChild(salir);
+        }
+        mostrar(salir, sesionActiva);
+        if (perfil) menu.insertBefore(perfil, admin.nextSibling); // Perfil después de la opción de admin
+        if (salir) menu.appendChild(salir);
     })();
 
     // Las acciones que modifican datos requieren sesión de cliente.
@@ -46,15 +251,12 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener('submit', function (ev) {
         var form = ev.target;
         if (!form || !form.matches) return;
-        var protectedForm = form.matches('#form-publicar, #form-oferta, #form-comentario, #form-resena, #form-resena-campana, form[data-requiere-sesion]') ||
+        var protectedForm = form.matches('#form-publicar, #form-edicion, #form-oferta, #form-comentario, #form-resena, #form-resena-campana, form[data-requiere-sesion]') ||
             !!form.closest('#marketplace-lista');
         if (!protectedForm) return;
-        var activa = false;
-        try { activa = !!sessionStorage.getItem(CLAVE_USUARIO); } catch (e) {}
-        if (!activa) {
+        if (!window.TZ.usuario()) {
             ev.preventDefault(); ev.stopImmediatePropagation();
-            if (window.mostrarMensaje) window.mostrarMensaje('Inicia sesión', 'Para realizar esta acción, primero inicia sesión.', 'info');
-            setTimeout(function () { window.location.href = 'login.html'; }, 1200);
+            window.TZ.requiereSesion('Para publicar, comentar u ofertar primero debes iniciar sesión. Te llevamos al inicio de sesión…');
         }
     }, true);
 
@@ -465,13 +667,14 @@ powerbank: {
     }
 
     function guardarUsuario(usuario) {
+        if (!usuario.sid) usuario.sid = "ses_" + Date.now() + "_" + Math.floor(Math.random() * 1e6);
         sessionStorage.setItem(CLAVE_USUARIO, JSON.stringify(usuario));
     }
 
     function cerrarSesion() {
         sessionStorage.removeItem(CLAVE_USUARIO);
         mostrarMensaje("Sesión cerrada", "Cerraste sesión correctamente.");
-        setTimeout(function () { window.location.href = "index.html"; }, 5000);
+        setTimeout(function () { window.location.href = "inicio.html"; }, 1500);
     }
 
     var usuario = obtenerUsuario();
@@ -507,12 +710,14 @@ powerbank: {
             var correo = document.getElementById("correo").value.trim();
             var existente = obtenerUsuario();
             guardarUsuario({
-                nombre: existente ? existente.nombre : "Cliente TechZone",
+                nombre: existente && existente.rol === "cliente" ? existente.nombre : (correo ? correo.split("@")[0] : "Cliente TechZone"),
                 correo: correo || (existente ? existente.correo : "correo@ejemplo.com"),
                 rol: "cliente"
             });
             mostrarMensaje("Inicio de sesión exitoso", "Has iniciado sesión correctamente (simulado).");
-            setTimeout(function () { window.location.href = "perfil.html"; }, 5000);
+            var volver = null;
+            try { volver = sessionStorage.getItem("techzone_volver"); sessionStorage.removeItem("techzone_volver"); } catch (e) {}
+            setTimeout(function () { window.location.href = volver || "perfil.html"; }, 1500);
         });
     }
 
@@ -766,6 +971,84 @@ powerbank: {
             });
         }
 
+
+        // Publicaciones y comentarios del usuario
+        (function () {
+            var me = (usuario.correo || "").toLowerCase();
+            function leer(k) { try { return JSON.parse(localStorage.getItem(k) || "[]"); } catch (e) { return []; } }
+            function tarjeta(titulo, linea, extra) {
+                var art = document.createElement("article"); art.className = "community-comment";
+                var st = document.createElement("strong"); st.textContent = titulo;
+                var p = document.createElement("p"); p.textContent = linea;
+                art.append(st, p);
+                if (extra) { var sm = document.createElement("small"); sm.textContent = extra; art.appendChild(sm); }
+                return art;
+            }
+            var cont = document.getElementById("perfil-publicaciones"), vacio = document.getElementById("perfil-sin-pubs");
+            function pintarPubs() {
+                if (!cont) return;
+                Array.from(cont.querySelectorAll(".community-comment")).forEach(function (n) { n.remove(); });
+                var sidAct = (window.TZ.usuario() || {}).sid;
+                var pubs = leer("techzone_publicaciones_c2c").filter(function (x) { return sidAct && x.sid === sidAct; });
+                if (vacio) vacio.style.display = pubs.length ? "none" : "";
+                pubs.forEach(function (x) {
+                    var art = document.createElement("article"); art.className = "community-comment";
+                    art.style.cssText = "display:grid;grid-template-columns:90px 1fr;gap:14px;align-items:start";
+                    var img = document.createElement("img"); img.src = x.foto || "img/teclado.jpg"; img.alt = x.nombre;
+                    img.style.cssText = "width:90px;height:90px;object-fit:contain;background:#f4f7fc;border-radius:12px;cursor:pointer";
+                    img.onerror = function () { this.src = "img/teclado.jpg"; };
+                    var info = document.createElement("div");
+                    var n = document.createElement("strong"); n.textContent = x.nombre;
+                    var p = document.createElement("p"); p.style.cssText = "margin:6px 0;font-weight:800;color:#1268e8";
+                    p.textContent = "$" + Number(x.precio).toLocaleString("es-MX") + " MXN · " + (Number(x.stock) || 1) + " disponible(s)";
+                    var sm = document.createElement("small"); sm.textContent = x.fecha || "";
+                    var ac = document.createElement("div"); ac.style.cssText = "margin-top:10px;display:flex;gap:8px;flex-wrap:wrap";
+                    var bv = document.createElement("button"); bv.type = "button"; bv.className = "marketing-button"; bv.style.cssText = "padding:8px 14px;font-size:13px"; bv.textContent = "Ver producto";
+                    bv.addEventListener("click", function () { window.TZ.detalleProducto(x); }); img.addEventListener("click", function () { window.TZ.detalleProducto(x); });
+                    var bd = document.createElement("button"); bd.type = "button"; bd.className = "marketing-button"; bd.style.cssText = "padding:8px 14px;font-size:13px;background:#c0392b"; bd.textContent = "Eliminar";
+                    bd.addEventListener("click", function () {
+                        window.TZ.confirmar("¿Estás seguro de eliminar este producto?", "«" + x.nombre + "» se eliminará de tus publicaciones.", function () {
+                            var todas = leer("techzone_publicaciones_c2c").filter(function (y) { return y.id !== x.id; });
+                            localStorage.setItem("techzone_publicaciones_c2c", JSON.stringify(todas));
+                            pintarPubs();
+                            mostrarMensaje("Producto eliminado", "«" + x.nombre + "» se eliminó de tus publicaciones (simulado).");
+                        });
+                    });
+                    ac.append(bv, bd); info.append(n, p, sm, ac); art.append(img, info); cont.appendChild(art);
+                });
+            }
+            pintarPubs();
+            var contC = document.getElementById("perfil-comentarios"), vacioC = document.getElementById("perfil-sin-comentarios");
+            function pintarComentarios() {
+                if (!contC) return;
+                Array.from(contC.querySelectorAll(".community-comment")).forEach(function (n) { n.remove(); });
+                var coms = leer("techzone_comentarios_marketing").filter(function (x) { return (x.correo || "") === me; });
+                if (vacioC) vacioC.style.display = coms.length ? "none" : "";
+                coms.forEach(function (x) {
+                    var art = document.createElement("article"); art.className = "community-comment";
+                    if (x.estrellas) {
+                        var st = document.createElement("div"); st.className = "stars"; st.style.color = "#e5a000";
+                        st.textContent = "★".repeat(Number(x.estrellas)) + "☆".repeat(5 - Number(x.estrellas)); art.appendChild(st);
+                    }
+                    var t = document.createElement("strong"); t.textContent = (x.tipo === "campana" ? "Reseña de campaña" : "Comentario") + " · " + (x.nombre || "Yo");
+                    var p = document.createElement("p"); p.textContent = x.texto;
+                    var sm = document.createElement("small"); sm.textContent = x.fecha || "";
+                    var del = document.createElement("button"); del.type = "button"; del.className = "marketing-button";
+                    del.style.cssText = "background:#c0392b;padding:8px 14px;font-size:13px;display:block;margin-top:10px";
+                    del.textContent = "Eliminar";
+                    del.addEventListener("click", function () {
+                        var esR = x.tipo === "campana";
+                        window.TZ.confirmar("¿Estás seguro de eliminar " + (esR ? "esta reseña?" : "este comentario?"), "Esta acción no se puede deshacer.", function () {
+                            window.TZ.borrarOpinion(x.id); pintarComentarios();
+                            mostrarMensaje(esR ? "Reseña eliminada" : "Comentario eliminado", "Se eliminó correctamente.");
+                        });
+                    });
+                    art.append(t, p, sm, del); contC.appendChild(art);
+                });
+            }
+            pintarComentarios();
+        })();
+
         var botonSalir = document.getElementById("boton-cerrar-sesion");
         if (botonSalir) {
             botonSalir.addEventListener("click", cerrarSesion);
@@ -958,7 +1241,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     guardarCarrito(carrito); renderCarrito(); actualizarBadgesCarrito();
                 });
                 fila.querySelector('[data-accion="mas"]').addEventListener("click", function () {
-                    item.cantidad = Math.min(10, cantidad + 1);
+                    item.cantidad = Math.min(Number(item.stock) || 10, cantidad + 1);
                     guardarCarrito(carrito); renderCarrito(); actualizarBadgesCarrito();
                 });
                 fila.querySelector(".carrito-eliminar").addEventListener("click", function () {

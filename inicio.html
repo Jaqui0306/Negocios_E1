@@ -20,7 +20,8 @@
 <a href="promociones.html">Promociones</a>
 <a href="campana.html">Campaña</a>
 <a href="comunidad.html">Comunidad y comentarios</a>
-<a href="publicar.html">Publicar producto / Mis publicaciones</a>
+<a href="publicar.html">Publicar producto</a>
+<a href="mis-publicaciones.html">Mis publicaciones</a>
 <a href="subasta.html">Subasta</a>
 <a href="carrito.html">Carrito de compras</a>
 <a href="nosotros.html">Nosotros</a>
@@ -123,14 +124,18 @@
     document.addEventListener('DOMContentLoaded',function(){
       var cont=document.getElementById('marketplace-lista'); var key='techzone_publicaciones_c2c';
       var items=[]; try{items=JSON.parse(localStorage.getItem(key)||'[]')}catch(e){}
+      items=items.filter(function(x){return x.sid;});
       cont.innerHTML='';
       if(!items.length){cont.innerHTML='<p class="marketplace-vacio">Todavía no hay productos publicados. ¡Sé la primera persona en <a href="publicar.html">publicar uno</a>!</p>';return;}
       items.forEach(function(item){var card=document.createElement('article');card.className='marketplace-producto';
-        var img=document.createElement('img');img.src=item.foto||'img/teclado.jpg';img.alt=item.nombre||'Producto publicado';img.onerror=function(){this.src='img/teclado.jpg'};
+        var img=document.createElement('img');img.src=item.foto||'img/teclado.jpg';img.alt=item.nombre||'Producto publicado';img.style.cursor='pointer';img.onerror=function(){this.src='img/teclado.jpg'};
         var body=document.createElement('div');body.className='marketplace-producto-info';var h=document.createElement('h3');h.textContent=item.nombre||'Producto sin nombre';
         var price=document.createElement('strong');price.textContent='$'+Number(item.precio||0).toLocaleString('es-MX')+' MXN';
-        var desc=document.createElement('p');desc.textContent=item.descripcion||'Sin descripción';var link=document.createElement('a');link.href='publicar.html';link.className='boton';link.textContent='Ver publicación';
-        body.append(h,price,desc,link);card.append(img,body);cont.appendChild(card);
+        var stock=document.createElement('small');stock.style.display='block';stock.style.color='#7b8ba2';stock.textContent=(Number(item.stock)||1)+' disponible(s)';
+        var desc=document.createElement('p');desc.textContent=item.descripcion||'Sin descripción';
+        var link=document.createElement('button');link.type='button';link.className='boton';link.textContent='Ver publicación';
+        function abrir(){TZ.detalleProducto(item);} link.addEventListener('click',abrir);img.addEventListener('click',abrir);
+        body.append(h,price,stock,desc,link);card.append(img,body);cont.appendChild(card);
       });
     });
     </script>

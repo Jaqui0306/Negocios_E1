@@ -3607,3 +3607,7 @@ header nav#nav-menu .menu-opciones a.menu-perfil{margin-top:5px!important;paddin
 
 /* Asegura que los elementos ocultos por estado de sesión no se muestren. */
 [hidden] { display: none !important; }
+
+/* Enlaces del menú ocultos según la sesión (mayor especificidad que las reglas globales). */
+header nav#nav-menu .menu-opciones a[hidden]{display:none!important}
+header nav#nav-menu .menu-opciones a.menu-salir{color:#c0392b;font-weight:700}

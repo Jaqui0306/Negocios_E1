@@ -6,6 +6,15 @@
     <title>Publica tu producto | TechZone C2C</title>
     <link rel="icon" type="image/svg+xml" href="img/logo.svg">
     <link rel="stylesheet" href="css/styles.css">
+<style>
+.pub-card{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:start}
+.pub-card img{width:96px;height:96px;object-fit:contain;background:#f4f7fc;border-radius:12px}
+.pub-precio{margin:6px 0;font-weight:800;color:#1268e8}
+.pub-acciones{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.pub-acciones .marketing-button{padding:8px 14px;font-size:13px}
+.pub-preview{display:none;width:120px;height:120px;object-fit:contain;background:#f4f7fc;border-radius:12px;margin-top:10px}
+.pub-vacio{color:#8090a5;padding:20px;border:1px dashed #d0d9e6;border-radius:14px}
+</style>
 </head>
 <body>
 <header>
@@ -18,7 +27,8 @@
 <a href="promociones.html">Promociones</a>
 <a href="campana.html">Campaña</a>
 <a href="comunidad.html">Comunidad y comentarios</a>
-<a href="publicar.html">Publicar producto / Mis publicaciones</a>
+<a href="publicar.html">Publicar producto</a>
+<a href="mis-publicaciones.html">Mis publicaciones</a>
 <a href="subasta.html">Subasta</a>
 <a href="carrito.html">Carrito de compras</a>
 <a href="nosotros.html">Nosotros</a>
@@ -32,49 +42,27 @@
 <main class="marketing-wrap">
     <span class="marketing-kicker">TECHZONE / MODELO C2C</span>
     <h1 class="marketing-heading">Publica tu producto y llega a más personas.</h1>
-    <p class="marketing-lead">
-        En este flujo C2C (cliente a cliente) cualquier usuario puede publicar un artículo.
-        Completa el formulario, presiona Publicar y verás el producto en «Mis publicaciones».
-        Todo es simulado y se guarda en tu navegador.
-    </p>
-
-    <div class="community-layout">
+    <p class="marketing-lead">Llena el formulario, sube una foto y presiona Publicar. Tu producto aparecerá en «Mis publicaciones» (simulado).</p>
+    <div style="max-width:620px">
         <section class="marketing-card community-form">
             <h2>Publica tu producto</h2>
-            <form id="form-publicar">
+            <form id="form-publicar" novalidate>
                 <label for="pub-nombre">Nombre del producto</label>
                 <input id="pub-nombre" maxlength="80" placeholder="Ej. Teclado mecánico RGB">
-
                 <label for="pub-precio">Precio (MXN)</label>
                 <input id="pub-precio" type="number" min="1" step="1" placeholder="Ej. 899">
-
+                <label for="pub-cantidad">Cantidad disponible</label>
+                <input id="pub-cantidad" type="number" min="1" step="1" value="1" placeholder="Ej. 5">
                 <label for="pub-descripcion">Descripción</label>
-                <textarea id="pub-descripcion" maxlength="600" placeholder="Describe estado, características y por qué lo vendes..."></textarea>
-
-                <label for="pub-foto">Foto (URL o deja la de ejemplo)</label>
-                <input id="pub-foto" type="text" placeholder="img/teclado.jpg o https://...">
-                <small style="color:#8090a5;display:block;margin-top:6px;">Si dejas vacío se usará una imagen de ejemplo.</small>
-
+                <textarea id="pub-descripcion" maxlength="600" placeholder="Estado, características y por qué lo vendes..."></textarea>
+                <label for="pub-foto">Foto del producto</label>
+                <input id="pub-foto" type="file" accept="image/*">
+                <img id="pub-preview" class="pub-preview" alt="Vista previa">
                 <button class="marketing-button" style="margin-top:18px;width:100%;" type="submit">Publicar</button>
                 <p class="marketing-status" id="estado-publicar" role="status" aria-live="polite"></p>
             </form>
         </section>
-
-        <section>
-            <h2 style="margin-top:4px;color:#10213b;">Mis publicaciones</h2>
-            <p style="color:#687991;line-height:1.7;margin-bottom:16px;">
-                Aquí aparecen los productos que has publicado en esta sesión (simulado).
-            </p>
-            <div id="lista-publicaciones" class="community-list">
-                <p id="sin-publicaciones" style="color:#8090a5;padding:20px;border:1px dashed #d0d9e6;border-radius:14px;">
-                    Aún no has publicado ningún producto. Usa el formulario para crear el primero.
-                </p>
-            </div>
-            <div class="marketing-nav" style="margin-top:20px;">
-                <a href="perfil.html">Ver en mi perfil →</a>
-                <a href="productos.html">Ir al catálogo →</a>
-            </div>
-        </section>
+        <div class="marketing-nav"><a href="mis-publicaciones.html">Ver mis publicaciones →</a><a href="productos.html">Ir al catálogo →</a></div>
     </div>
 </main>
 
@@ -89,164 +77,30 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    var form = document.getElementById('form-publicar');
-    var lista = document.getElementById('lista-publicaciones');
-    var sin = document.getElementById('sin-publicaciones');
-    var estado = document.getElementById('estado-publicar');
-    var clave = 'techzone_publicaciones_c2c';
-    var editandoId = null;
-
-    function getItems() {
-        try { return JSON.parse(localStorage.getItem(clave) || '[]'); } catch (e) { return []; }
-    }
-    function saveItems(items) {
-        localStorage.setItem(clave, JSON.stringify(items.slice(0, 40)));
-    }
-
-    function crearCard(item) {
-        var art = document.createElement('article');
-        art.className = 'community-comment';
-        art.style.display = 'grid';
-        art.style.gridTemplateColumns = '90px 1fr';
-        art.style.gap = '14px';
-        art.style.alignItems = 'start';
-        art.dataset.id = item.id;
-
-        var img = document.createElement('img');
-        img.src = item.foto || 'img/teclado.jpg';
-        img.alt = item.nombre;
-        img.style.width = '90px';
-        img.style.height = '90px';
-        img.style.objectFit = 'contain';
-        img.style.background = '#f4f7fc';
-        img.style.borderRadius = '12px';
-        img.onerror = function () { this.src = 'img/teclado.jpg'; };
-
-        var info = document.createElement('div');
-        var strong = document.createElement('strong');
-        strong.textContent = item.nombre;
-        var precio = document.createElement('p');
-        precio.style.margin = '6px 0';
-        precio.style.fontWeight = '800';
-        precio.style.color = '#1268e8';
-        precio.textContent = '$' + Number(item.precio).toLocaleString('es-MX') + ' MXN';
-        var desc = document.createElement('p');
-        desc.style.margin = '0';
-        desc.textContent = item.descripcion;
-        var small = document.createElement('small');
-        small.textContent = item.fecha || 'Publicado ahora · Simulado';
-
-        var acciones = document.createElement('div');
-        acciones.style.marginTop = '10px';
-        acciones.style.display = 'flex';
-        acciones.style.gap = '8px';
-        acciones.style.flexWrap = 'wrap';
-
-        var btnEditar = document.createElement('button');
-        btnEditar.type = 'button';
-        btnEditar.className = 'marketing-button';
-        btnEditar.style.padding = '8px 14px';
-        btnEditar.style.fontSize = '13px';
-        btnEditar.style.background = '#10213b';
-        btnEditar.textContent = 'Editar';
-        btnEditar.addEventListener('click', function () {
-            document.getElementById('pub-nombre').value = item.nombre;
-            document.getElementById('pub-precio').value = item.precio;
-            document.getElementById('pub-descripcion').value = item.descripcion;
-            document.getElementById('pub-foto').value = item.foto || '';
-            editandoId = item.id;
-            estado.textContent = 'Editando «' + item.nombre + '». Guarda con el botón Publicar.';
-            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-
-        var btnEliminar = document.createElement('button');
-        btnEliminar.type = 'button';
-        btnEliminar.className = 'marketing-button';
-        btnEliminar.style.padding = '8px 14px';
-        btnEliminar.style.fontSize = '13px';
-        btnEliminar.style.background = '#c0392b';
-        btnEliminar.textContent = 'Eliminar';
-        btnEliminar.addEventListener('click', function () {
-            var items = getItems().filter(function (it) { return it.id !== item.id; });
-            saveItems(items);
-            estado.textContent = '✓ Publicación eliminada (simulado).';
-            if (editandoId === item.id) {
-                editandoId = null;
-                form.reset();
-            }
-            render();
-        });
-
-        acciones.append(btnEditar, btnEliminar);
-        info.append(strong, precio, desc, small, acciones);
-        art.append(img, info);
-        return art;
-    }
-
-    function render() {
-        var items = getItems();
-        Array.from(lista.querySelectorAll('.community-comment')).forEach(function (n) { n.remove(); });
-        if (!items.length) {
-            if (sin) sin.style.display = 'block';
-            return;
-        }
-        if (sin) sin.style.display = 'none';
-        items.forEach(function (it) {
-            lista.appendChild(crearCard(it));
-        });
-    }
-
+    var form = document.getElementById('form-publicar'), estado = document.getElementById('estado-publicar');
+    var fotoIn = document.getElementById('pub-foto'), prev = document.getElementById('pub-preview'), foto = null;
+    fotoIn.addEventListener('change', function () {
+        foto = null; prev.style.display = 'none';
+        if (!fotoIn.files[0]) return;
+        TZ.leerImagen(fotoIn.files[0], function (d) { foto = d; if (d) { prev.src = d; prev.style.display = 'block'; } });
+    });
     form.addEventListener('submit', function (e) {
         e.preventDefault();
-        var nombre = document.getElementById('pub-nombre').value.trim();
-        var precio = document.getElementById('pub-precio').value;
-        var descripcion = document.getElementById('pub-descripcion').value.trim();
-        var foto = document.getElementById('pub-foto').value.trim() || 'img/teclado.jpg';
-
-        // Sin validación obligatoria: se acepta aunque falten datos (valores por defecto)
-        if (!nombre) nombre = 'Producto sin nombre';
-        if (!precio) precio = 0;
-        if (!descripcion) descripcion = 'Sin descripción';
-
-        var items = getItems();
-
-        if (editandoId) {
-            items = items.map(function (it) {
-                if (it.id === editandoId) {
-                    return {
-                        id: it.id,
-                        nombre: nombre,
-                        precio: Number(precio),
-                        descripcion: descripcion,
-                        foto: foto,
-                        fecha: 'Editado ahora · Simulado'
-                    };
-                }
-                return it;
-            });
-            estado.textContent = '✓ Publicación actualizada (simulado).';
-            editandoId = null;
-        } else {
-            var item = {
-                id: 'c2c_' + Date.now(),
-                nombre: nombre,
-                precio: Number(precio),
-                descripcion: descripcion,
-                foto: foto,
-                fecha: 'Publicado ahora · Simulado'
-            };
-            items.unshift(item);
-            estado.textContent = '✓ Publicado (simulado). Ya aparece en Mis publicaciones.';
-        }
-
-        saveItems(items);
-        form.reset();
-        render();
+        var u = TZ.usuario();
+        var nombre = document.getElementById('pub-nombre').value.trim() || 'Producto sin nombre';
+        var precio = Number(document.getElementById('pub-precio').value) || 0;
+        var desc = document.getElementById('pub-descripcion').value.trim() || 'Sin descripción';
+        var stock = Math.max(1, Math.floor(Number(document.getElementById('pub-cantidad').value) || 1));
+        var items = []; try { items = JSON.parse(localStorage.getItem('techzone_publicaciones_c2c') || '[]'); } catch (x) {}
+        items.unshift({ id: 'c2c_' + Date.now(), autor: (u.correo || '').toLowerCase(), sid: u.sid, vendedor: u.nombre || '', nombre: nombre, precio: precio, stock: stock, descripcion: desc, foto: foto || 'img/teclado.jpg', fecha: 'Publicado ' + new Date().toLocaleDateString('es-MX') + ' · Simulado' });
+        try { localStorage.setItem('techzone_publicaciones_c2c', JSON.stringify(items.slice(0, 40))); }
+        catch (x) { mostrarMensaje('No se pudo guardar', 'La imagen es muy pesada. Prueba con otra foto.', 'info'); return; }
+        mostrarMensaje('Producto agregado', '«' + nombre + '» se agregó a tus publicaciones con ' + stock + ' pieza(s) disponible(s) (simulado).');
+        estado.textContent = '';
+        form.reset(); document.getElementById('pub-cantidad').value = 1; foto = null; prev.style.display = 'none';
     });
-
-    render();
 });
 </script>
-
+<script src="js/main.js"></script>
 </body>
 </html>
