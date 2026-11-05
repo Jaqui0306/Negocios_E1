@@ -16,6 +16,16 @@
 .subasta-oferta strong{color:#10213b}
 .subasta-oferta span{color:#1268e8;font-weight:800}
 .subasta-oferta small{color:#8090a5;display:block;margin-top:2px}
+.subasta-catalogo{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin:8px 0 28px}
+.subasta-item{border:2px solid #e1e8f2;border-radius:14px;background:#fff;padding:12px;cursor:pointer;text-align:left;font:inherit;transition:.15s}
+.subasta-item:hover{border-color:#9fc2f7}.subasta-item.activa{border-color:#1268e8;box-shadow:0 0 0 3px rgba(18,104,232,.12)}
+.subasta-item img{width:100%;height:96px;object-fit:contain;background:#f4f7fc;border-radius:10px}
+.subasta-item strong{display:block;color:#10213b;margin-top:8px;font-size:14px}
+.subasta-item span{color:#1268e8;font-weight:800;font-size:14px}.subasta-item small{display:block;color:#8090a5;margin-top:2px}
+.subasta-crear{max-width:620px;margin-top:8px}
+.subasta-crear select,.subasta-crear input,.subasta-crear textarea{width:100%;box-sizing:border-box}
+.subasta-crear .pub-preview{display:none;max-width:160px;margin-top:10px;border-radius:12px}
+.subasta-dueno{display:inline-block;margin:0 0 6px;color:#687991;font-size:13px}
 @media(max-width:800px){.subasta-layout{grid-template-columns:1fr}}
 </style>
 </head>
@@ -42,20 +52,25 @@
 
 <main class="marketing-wrap">
 <span class="marketing-kicker">TECHZONE / SUBASTA SIMULADA</span>
-<h1 class="marketing-heading">Puja por el producto destacado.</h1>
-<p class="marketing-lead">Subasta demostrativa con temporizador visual, campo de oferta y lista de pujas. Todo es simulado: las ofertas se guardan en tu navegador.</p>
+<h1 class="marketing-heading">Puja por un producto o subasta el tuyo.</h1>
+<p class="marketing-lead">Puja por los productos en subasta o agrega el tuyo para subastarlo. Todo es simulado: las subastas y ofertas se guardan en tu navegador.</p>
+
+<h2 style="color:#10213b;margin:4px 0 4px;">Subastas disponibles</h2>
+<p style="color:#687991;margin:0 0 12px;">Selecciona una subasta para ver su detalle y ofertar.</p>
+<div class="subasta-catalogo" id="subasta-catalogo"></div>
 
 <div class="subasta-layout">
 <section class="marketing-card">
 <span class="marketing-tag">EN VIVO · SIMULADO</span>
-<h2 style="margin-top:12px;">Bocina Portátil BoomBox Pro</h2>
-<img src="img/bocina.jpg" alt="Bocina Portátil" style="width:100%;max-height:220px;object-fit:contain;background:#f4f7fc;border-radius:16px;padding:16px;margin:14px 0;">
-<p style="color:#65758c;line-height:1.7;">Sonido potente, batería de 12 h y resistente al agua. Ideal para llevar a cualquier lado.</p>
+<h2 style="margin-top:12px;" id="sub-titulo">Bocina Portátil BoomBox Pro</h2>
+<span class="subasta-dueno" id="sub-dueno"></span>
+<img id="sub-foto" src="img/bocina.jpg" alt="Bocina Portátil" style="width:100%;max-height:220px;object-fit:contain;background:#f4f7fc;border-radius:16px;padding:16px;margin:14px 0;">
+<p id="sub-desc" style="color:#65758c;line-height:1.7;">Sonido potente, batería de 12 h y resistente al agua. Ideal para llevar a cualquier lado.</p>
 <div class="subasta-timer" id="timer-subasta">
 <span>Tiempo restante</span>
 <strong id="timer-texto">00:15:00</strong>
 </div>
-<p style="margin:0;color:#687991;font-size:14px;">Precio base</p>
+<p style="margin:0;color:#687991;font-size:14px;">Oferta más alta</p>
 <p class="subasta-precio" id="precio-actual">$899 MXN</p>
 <p style="color:#8090a5;font-size:13px;margin-bottom:18px;">Oferta mínima actual: <strong id="minima">$900</strong></p>
 
@@ -65,6 +80,7 @@
 <label for="nombre-oferta" style="font-weight:700;color:#203755;margin-top:8px;">Tu nombre (opcional)</label>
 <input id="nombre-oferta" type="text" maxlength="40" placeholder="Ej. Ana" style="width:100%;padding:13px 14px;">
 <button class="marketing-button" type="submit" style="margin-top:12px;width:100%;">Ofertar</button>
+<button class="marketing-button" type="button" id="btn-cancelar-subasta" style="margin-top:10px;width:100%;background:#c0392b;display:none;">Eliminar mi subasta</button>
 <p class="marketing-status" id="estado-oferta" role="status" aria-live="polite"></p>
 </form>
 </section>
@@ -84,6 +100,30 @@
 <a href="productos.html">Ir al catálogo →</a>
 </div>
 </section>
+
+<section class="marketing-card community-form subasta-crear" id="crear-subasta">
+<h2>Subastar mi producto</h2>
+<p style="color:#687991;line-height:1.6;margin-top:0;">Agrega un producto, define el precio base y la duración, y aparecerá en «Subastas disponibles».</p>
+<form id="form-nueva-subasta" data-requiere-sesion novalidate>
+<label for="sub-mis-pubs">Usar una de mis publicaciones (opcional)</label>
+<select id="sub-mis-pubs"><option value="">— Escribir los datos manualmente —</option></select>
+<label for="sub-nombre">Nombre del producto</label>
+<input id="sub-nombre" maxlength="80" placeholder="Ej. Teclado mecánico RGB">
+<label for="sub-base">Precio base (MXN)</label>
+<input id="sub-base" type="number" min="1" step="1" placeholder="Ej. 500">
+<label for="sub-duracion">Duración de la subasta</label>
+<select id="sub-duracion">
+<option value="15">15 minutos</option><option value="60">1 hora</option><option value="360">6 horas</option><option value="1440" selected>24 horas</option><option value="4320">3 días</option>
+</select>
+<label for="sub-descripcion">Descripción</label>
+<textarea id="sub-descripcion" maxlength="600" placeholder="Estado, características..."></textarea>
+<label for="sub-foto-in">Foto del producto</label>
+<input id="sub-foto-in" type="file" accept="image/*">
+<img id="sub-preview" class="pub-preview" alt="Vista previa">
+<button class="marketing-button" style="margin-top:18px;width:100%;" type="submit">Iniciar subasta</button>
+<p class="marketing-status" id="estado-nueva-subasta" role="status" aria-live="polite"></p>
+</form>
+</section>
 </div>
 </main>
 
@@ -94,105 +134,208 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  var claveOfertas = 'techzone_subasta_ofertas';
-  var precioBase = 899;
-  var lista = document.getElementById('lista-ofertas');
-  var estado = document.getElementById('estado-oferta');
-  var precioEl = document.getElementById('precio-actual');
-  var minimaEl = document.getElementById('minima');
-  var timerTexto = document.getElementById('timer-texto');
+  var CLAVE_OFERTAS = 'techzone_subasta_ofertas';      // ofertas de la subasta destacada
+  var CLAVE_SUBASTAS = 'techzone_subastas_usuario';    // subastas creadas por usuarios
+  var $ = function (id) { return document.getElementById(id); };
+  var lista = $('lista-ofertas'), estado = $('estado-oferta'), precioEl = $('precio-actual'), minimaEl = $('minima');
+  var timerTexto = $('timer-texto'), formOferta = $('form-oferta'), catalogo = $('subasta-catalogo');
+  var btnCancelar = $('btn-cancelar-subasta');
 
-  // Temporizador visual (15 minutos simulados, se reinicia al cargar)
-  var segundos = 15 * 60;
-  function actualizarTimer() {
-    if (segundos <= 0) {
-      timerTexto.textContent = '00:00:00';
-      estado.textContent = 'Subasta finalizada.';
-      formOferta.querySelector('button[type=submit]').disabled = true;
-      return;
-    }
-    var h = Math.floor(segundos / 3600);
-    var m = Math.floor((segundos % 3600) / 60);
-    var s = segundos % 60;
-    timerTexto.textContent =
-      String(h).padStart(2, '0') + ':' +
-      String(m).padStart(2, '0') + ':' +
-      String(s).padStart(2, '0');
-    segundos--;
-  }
-  actualizarTimer();
-  setInterval(actualizarTimer, 1000);
+  function leer(k) { try { var x = JSON.parse(localStorage.getItem(k) || '[]'); return Array.isArray(x) ? x : []; } catch (e) { return []; } }
+  function guardar(k, v, max) { try { localStorage.setItem(k, JSON.stringify(v.slice(0, max))); return true; } catch (e) { return false; } }
+  function yo() { return (window.TZ && TZ.usuario()) || null; }
+  function esMia(a) { var u = yo(); return !!(u && a.sid && a.sid === u.sid); }
 
-  function getOfertas() {
-    try { return JSON.parse(localStorage.getItem(claveOfertas) || '[]'); } catch (e) { return []; }
-  }
-  function saveOfertas(arr) {
-    localStorage.setItem(claveOfertas, JSON.stringify(arr.slice(0, 50)));
-  }
-
-  // Ofertas de ejemplo iniciales (solo si no hay nada guardado)
-  if (!getOfertas().length) {
-    saveOfertas([
+  // Subasta destacada (demostrativa): 15 minutos que se reinician al cargar
+  var finDestacada = Date.now() + 15 * 60 * 1000;
+  var destacada = { id: 'destacada', nombre: 'Bocina Portátil BoomBox Pro', descripcion: 'Sonido potente, batería de 12 h y resistente al agua. Ideal para llevar a cualquier lado.', foto: 'img/bocina.jpg', base: 899, fin: finDestacada, fija: true };
+  if (!leer(CLAVE_OFERTAS).length) {
+    guardar(CLAVE_OFERTAS, [
       { nombre: 'Carlos R.', monto: 920, fecha: 'Hace 8 min · Ejemplo' },
       { nombre: 'Valeria M.', monto: 950, fecha: 'Hace 5 min · Ejemplo' },
       { nombre: 'Sofía L.', monto: 980, fecha: 'Hace 2 min · Ejemplo' }
-    ]);
+    ], 50);
   }
 
-  function maxMonto() {
-    var ofs = getOfertas();
-    var max = precioBase;
-    ofs.forEach(function (o) { if (Number(o.monto) > max) max = Number(o.monto); });
-    return max;
+  function todas() { return [destacada].concat(leer(CLAVE_SUBASTAS)); }
+  function ofertasDe(a) { return a.fija ? leer(CLAVE_OFERTAS) : (a.ofertas || []); }
+  function guardarOfertas(a, ofs) {
+    if (a.fija) { guardar(CLAVE_OFERTAS, ofs, 50); return; }
+    var all = leer(CLAVE_SUBASTAS);
+    all.forEach(function (x) { if (x.id === a.id) x.ofertas = ofs.slice(0, 50); });
+    guardar(CLAVE_SUBASTAS, all, 30);
+  }
+  function maxMonto(a) {
+    var m = Number(a.base) || 0;
+    ofertasDe(a).forEach(function (o) { if (Number(o.monto) > m) m = Number(o.monto); });
+    return m;
+  }
+  function hayOfertas(a) { return ofertasDe(a).length > 0; }
+  // Mínimo: la primera oferta puede igualar el precio base; después, al menos $1 más que la más alta
+  function minimaOferta(a) { return hayOfertas(a) ? maxMonto(a) + 1 : Number(a.base); }
+
+  var actualId = 'destacada';
+  function actual() { return todas().filter(function (a) { return a.id === actualId; })[0] || destacada; }
+  function formatoTiempo(ms) {
+    var seg = Math.max(0, Math.floor(ms / 1000));
+    var d = Math.floor(seg / 86400), h = Math.floor((seg % 86400) / 3600), m = Math.floor((seg % 3600) / 60), s = seg % 60;
+    var hhmmss = String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    return d ? d + 'd ' + hhmmss : hhmmss;
+  }
+  function terminada(a) { return Date.now() >= a.fin; }
+
+  function pintarCatalogo() {
+    catalogo.innerHTML = '';
+    todas().forEach(function (a) {
+      var b = document.createElement('button'); b.type = 'button';
+      b.className = 'subasta-item' + (a.id === actualId ? ' activa' : '');
+      var img = document.createElement('img'); img.src = a.foto || 'img/teclado.jpg'; img.alt = a.nombre;
+      img.onerror = function () { this.src = 'img/teclado.jpg'; };
+      var n = document.createElement('strong'); n.textContent = a.nombre;
+      var p = document.createElement('span'); p.textContent = '$' + maxMonto(a).toLocaleString('es-MX') + ' MXN';
+      var sm = document.createElement('small'); sm.textContent = terminada(a) ? 'Finalizada' : (a.fija ? 'Destacada' : (esMia(a) ? 'Tu subasta' : 'De ' + (a.vendedor || 'un usuario')));
+      b.append(img, n, p, sm);
+      b.addEventListener('click', function () { actualId = a.id; pintarTodo(); window.scrollTo({ top: formOferta.closest('section').offsetTop - 90, behavior: 'smooth' }); });
+      catalogo.appendChild(b);
+    });
   }
 
-  function render() {
-    var ofs = getOfertas().slice().sort(function (a, b) { return Number(b.monto) - Number(a.monto); });
+  function pintarDetalle() {
+    var a = actual();
+    $('sub-titulo').textContent = a.nombre;
+    $('sub-desc').textContent = a.descripcion || 'Sin descripción';
+    var f = $('sub-foto'); f.src = a.foto || 'img/teclado.jpg'; f.alt = a.nombre; f.onerror = function () { this.src = 'img/teclado.jpg'; };
+    $('sub-dueno').textContent = a.fija ? '' : (esMia(a) ? 'Esta es tu subasta' : 'Vendedor: ' + (a.vendedor || 'Usuario'));
+    btnCancelar.style.display = (!a.fija && esMia(a)) ? '' : 'none';
+
+    var ofs = ofertasDe(a).slice().sort(function (x, y) { return Number(y.monto) - Number(x.monto); });
     lista.innerHTML = '';
     if (!ofs.length) {
       lista.innerHTML = '<p style="color:#8090a5;padding:16px;border:1px dashed #d0d9e6;border-radius:12px;">Aún no hay ofertas. Sé el primero en pujar.</p>';
-      return;
     }
     ofs.forEach(function (o) {
-      var div = document.createElement('div');
-      div.className = 'subasta-oferta';
+      var div = document.createElement('div'); div.className = 'subasta-oferta';
       var w = document.createElement('div'), st = document.createElement('strong'), sm = document.createElement('small'), sp = document.createElement('span');
       st.textContent = o.nombre || 'Anónimo'; sm.textContent = o.fecha || ''; sp.textContent = '$' + Number(o.monto).toLocaleString('es-MX');
-      w.append(st, sm); div.append(w, sp);
-      lista.appendChild(div);
+      w.append(st, sm); div.append(w, sp); lista.appendChild(div);
     });
-    var max = maxMonto();
-    precioEl.textContent = '$' + max.toLocaleString('es-MX') + ' MXN';
-    minimaEl.textContent = '$' + (max + 1).toLocaleString('es-MX');
+    precioEl.textContent = '$' + maxMonto(a).toLocaleString('es-MX') + ' MXN';
+    minimaEl.textContent = '$' + minimaOferta(a).toLocaleString('es-MX');
+    actualizarTimer();
   }
+  function pintarTodo() { pintarCatalogo(); pintarDetalle(); }
 
+  function actualizarTimer() {
+    var a = actual(), btn = formOferta.querySelector('button[type=submit]');
+    var resta = a.fin - Date.now();
+    if (resta <= 0) {
+      timerTexto.textContent = '00:00:00';
+      estado.style.color = ''; if (!estado.dataset.msg) estado.textContent = 'Subasta finalizada.';
+      btn.disabled = true; return;
+    }
+    timerTexto.textContent = formatoTiempo(resta);
+    btn.disabled = false;
+  }
+  setInterval(function () {
+    actualizarTimer();
+    // Actualiza las etiquetas "Finalizada" del catálogo cuando termina alguna
+    var hayCambio = todas().some(function (a, i) { var el = catalogo.children[i]; return el && el.querySelector('small') && (el.querySelector('small').textContent === 'Finalizada') !== terminada(a); });
+    if (hayCambio) pintarCatalogo();
+  }, 1000);
 
-
-  var formOferta = document.getElementById('form-oferta');
-  var u0 = window.TZ ? TZ.usuario() : null;
-  if (u0 && u0.nombre) document.getElementById('nombre-oferta').value = u0.nombre;
+  var u0 = yo();
+  if (u0 && u0.nombre) $('nombre-oferta').value = u0.nombre;
 
   formOferta.addEventListener('submit', function (e) {
     e.preventDefault();
-    if (segundos <= 0) { estado.style.color = '#c0392b'; estado.textContent = 'La subasta ya terminó.'; return; }
-    var monto = Number(document.getElementById('monto-oferta').value);
-    var nombre = document.getElementById('nombre-oferta').value.trim() || (TZ.usuario() || {}).nombre || 'Anónimo';
-    var min = maxMonto() + 1;
+    var a = actual();
+    estado.dataset.msg = '1';
+    if (terminada(a)) { estado.style.color = '#c0392b'; estado.textContent = 'La subasta ya terminó.'; return; }
+    if (!a.fija && esMia(a)) { estado.style.color = '#c0392b'; estado.textContent = 'No puedes ofertar en tu propia subasta.'; return; }
+    var monto = Number($('monto-oferta').value);
+    var nombre = $('nombre-oferta').value.trim() || (yo() || {}).nombre || 'Anónimo';
+    var min = minimaOferta(a);
     if (!monto || monto < min) {
       estado.style.color = '#c0392b';
       estado.textContent = 'Tu oferta debe ser de al menos $' + min.toLocaleString('es-MX') + ' MXN.';
       return;
     }
     estado.style.color = '';
-    var ofs = getOfertas();
+    var ofs = ofertasDe(a).slice();
     ofs.unshift({ nombre: nombre, monto: monto, fecha: 'Ahora · Oferta simulada' });
-    saveOfertas(ofs);
-    document.getElementById('monto-oferta').value = '';
+    guardarOfertas(a, ofs);
+    $('monto-oferta').value = '';
     estado.textContent = '✓ Oferta registrada (simulado): $' + monto.toLocaleString('es-MX') + ' por ' + nombre;
-    render();
+    pintarTodo();
   });
 
-  render();
+  btnCancelar.addEventListener('click', function () {
+    var a = actual();
+    if (a.fija || !esMia(a)) return;
+    TZ.confirmar('¿Estás seguro de eliminar esta subasta?', '«' + a.nombre + '» se eliminará junto con sus ofertas.', function () {
+      guardar(CLAVE_SUBASTAS, leer(CLAVE_SUBASTAS).filter(function (x) { return x.id !== a.id; }), 30);
+      actualId = 'destacada'; estado.textContent = ''; estado.dataset.msg = '';
+      pintarTodo();
+      mostrarMensaje('Subasta eliminada', 'Tu subasta se eliminó correctamente.');
+    });
+  });
+
+  // ----- Subastar mi producto -----
+  var formNueva = $('form-nueva-subasta'), estadoNueva = $('estado-nueva-subasta');
+  var fotoIn = $('sub-foto-in'), prev = $('sub-preview'), fotoNueva = null;
+  fotoIn.addEventListener('change', function () {
+    fotoNueva = null; prev.style.display = 'none';
+    if (!fotoIn.files[0]) return;
+    TZ.leerImagen(fotoIn.files[0], function (d) { fotoNueva = d; if (d) { prev.src = d; prev.style.display = 'block'; } });
+  });
+
+  // Mis publicaciones (C2C) para prellenar el formulario
+  var selPubs = $('sub-mis-pubs'), misPubs = [];
+  (function () {
+    var u = yo(); if (!u || !u.sid) return;
+    misPubs = leer('techzone_publicaciones_c2c').filter(function (x) { return x.sid === u.sid; });
+    misPubs.forEach(function (x, i) {
+      var o = document.createElement('option'); o.value = String(i); o.textContent = x.nombre + ' · $' + Number(x.precio).toLocaleString('es-MX');
+      selPubs.appendChild(o);
+    });
+  })();
+  selPubs.addEventListener('change', function () {
+    var x = misPubs[Number(selPubs.value)];
+    if (selPubs.value === '' || !x) return;
+    $('sub-nombre').value = x.nombre || '';
+    $('sub-base').value = x.precio || '';
+    $('sub-descripcion').value = x.descripcion || '';
+    fotoNueva = x.foto || null;
+    if (fotoNueva) { prev.src = fotoNueva; prev.style.display = 'block'; }
+  });
+
+  formNueva.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var u = yo(); if (!u) return;
+    var nombre = $('sub-nombre').value.trim();
+    var base = Math.floor(Number($('sub-base').value));
+    estadoNueva.style.color = '#c0392b';
+    if (!nombre) { estadoNueva.textContent = 'Escribe el nombre del producto.'; return; }
+    if (!base || base < 1) { estadoNueva.textContent = 'Indica un precio base mayor a $0.'; return; }
+    estadoNueva.style.color = '';
+    var mins = Number($('sub-duracion').value) || 60;
+    var item = {
+      id: 'sub_' + Date.now(), sid: u.sid, autor: (u.correo || '').toLowerCase(), vendedor: u.nombre || 'Usuario',
+      nombre: nombre, descripcion: $('sub-descripcion').value.trim() || 'Sin descripción',
+      foto: fotoNueva || 'img/teclado.jpg', base: base, fin: Date.now() + mins * 60000, ofertas: [],
+      fecha: 'Publicada ' + new Date().toLocaleDateString('es-MX')
+    };
+    var all = leer(CLAVE_SUBASTAS); all.unshift(item);
+    if (!guardar(CLAVE_SUBASTAS, all, 30)) { mostrarMensaje('No se pudo guardar', 'La imagen es muy pesada. Prueba con otra foto.', 'info'); return; }
+    formNueva.reset(); fotoNueva = null; prev.style.display = 'none'; $('sub-duracion').value = '1440';
+    estadoNueva.textContent = '';
+    actualId = item.id; estado.textContent = ''; estado.dataset.msg = '';
+    pintarTodo();
+    mostrarMensaje('Subasta iniciada', '«' + nombre + '» ya está en subasta con precio base de $' + base.toLocaleString('es-MX') + ' MXN (simulado).');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  pintarTodo();
 });
 </script>
 <script src="js/main.js"></script>

@@ -169,7 +169,8 @@ document.addEventListener('DOMContentLoaded',function(){
    var txtp=document.createElement('p');txtp.textContent=r.texto;
    var date=document.createElement('small');date.textContent=r.fecha||'Publicado recientemente';
    card.append(stars,name,txtp,date);
-   TZ.hilo(card,r.id,{puedeEliminar:!!(yo()&&r.correo===yo()),etiqueta:'reseña',eliminar:function(){TZ.borrarOpinion(r.id);render();mostrarMensaje('Reseña eliminada','Tu reseña se eliminó correctamente.');}});
+   var propia=!!(yo()&&r.correo===yo());
+   TZ.hilo(card,r.id,{puedeEliminar:propia,etiqueta:'reseña',editar:propia?function(){TZ.editarOpinion(Object.assign({tipo:'campana'},r),render);}:null,eliminar:function(){TZ.borrarOpinion(r.id);render();mostrarMensaje('Reseña eliminada','Tu reseña se eliminó correctamente.');}});
    list.appendChild(card);
   });
  }

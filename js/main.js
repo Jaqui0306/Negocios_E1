@@ -119,6 +119,58 @@ window.TZ = (function () {
         });
         pintar(); m.classList.add("visible");
     }
+    // Actualiza una opinión (comentario o reseña) en las dos colecciones donde se guarda.
+    function actualizarOpinion(id, cambios) {
+        ["techzone_comentarios_marketing", "techzone_resenas_campana"].forEach(function (k) {
+            try {
+                var a = JSON.parse(localStorage.getItem(k) || "[]");
+                a.forEach(function (x) { if (x.id === id) { for (var c in cambios) x[c] = cambios[c]; x.fecha = "Editado " + new Date().toLocaleDateString("es-MX"); } });
+                localStorage.setItem(k, JSON.stringify(a));
+            } catch (e) {}
+        });
+    }
+    // Ventana para editar un comentario o una reseña (las reseñas también cambian estrellas).
+    function editarOpinion(item, onSave) {
+        var esR = item.tipo === "campana";
+        var mo = document.getElementById("tz-editar-opinion");
+        if (!mo) {
+            mo = document.createElement("div"); mo.id = "tz-editar-opinion"; mo.className = "tz-modal";
+            mo.innerHTML = '<div class="tz-modal-fondo"></div><div class="tz-modal-caja" role="dialog" aria-modal="true" style="text-align:left">' +
+                '<button type="button" class="tz-modal-cerrar" aria-label="Cerrar">×</button><h3 class="eo-titulo" style="text-align:left"></h3>' +
+                '<div class="eo-estrellas" style="display:flex;gap:4px;align-items:center;margin:8px 0"></div>' +
+                '<textarea class="eo-texto" maxlength="500" style="width:100%;min-height:120px;padding:12px 14px;border:1px solid #d5deea;border-radius:10px;font:inherit;resize:vertical"></textarea>' +
+                '<div class="tz-confirmar-acciones" style="margin-top:14px"><button type="button" class="boton boton-secundario eo-no">Cancelar</button><button type="button" class="boton tz-modal-boton eo-ok">Guardar cambios</button></div></div>';
+            document.body.appendChild(mo);
+            var cerrar = function () { mo.classList.remove("visible"); };
+            mo.querySelector(".tz-modal-fondo").addEventListener("click", cerrar);
+            mo.querySelector(".tz-modal-cerrar").addEventListener("click", cerrar);
+            mo.querySelector(".eo-no").addEventListener("click", cerrar);
+        }
+        mo.querySelector(".eo-titulo").textContent = esR ? "Editar reseña" : "Editar comentario";
+        var ta = mo.querySelector(".eo-texto"); ta.value = (item.texto && item.texto !== "Sin comentario" && item.texto !== "Sin comentario (solo calificación)") ? item.texto : "";
+        var box = mo.querySelector(".eo-estrellas"); box.innerHTML = ""; box.style.display = esR ? "flex" : "none";
+        var valor = Number(item.estrellas) || 5;
+        if (esR) {
+            var bs = [];
+            function pint(n) { bs.forEach(function (b, i) { b.style.color = i < n ? "#f5a400" : "#cbd5e1"; }); }
+            for (var i = 1; i <= 5; i++) (function (n) {
+                var b = document.createElement("button"); b.type = "button"; b.textContent = "★"; b.setAttribute("aria-label", n + " estrellas");
+                b.style.cssText = "background:none;border:0;font-size:34px;line-height:1;cursor:pointer;padding:0 2px";
+                b.addEventListener("click", function () { valor = n; pint(n); }); bs.push(b); box.appendChild(b);
+            })(i);
+            pint(valor);
+        }
+        var ok = mo.querySelector(".eo-ok"), nuevo = ok.cloneNode(true); ok.parentNode.replaceChild(nuevo, ok);
+        nuevo.addEventListener("click", function () {
+            var cambios = { texto: ta.value.trim() || (esR ? "Sin comentario (solo calificación)" : "Sin comentario") };
+            if (esR) cambios.estrellas = valor;
+            actualizarOpinion(item.id, cambios);
+            mo.classList.remove("visible");
+            mostrarMensaje(esR ? "Reseña actualizada" : "Comentario actualizado", "Tus cambios se guardaron correctamente (simulado).");
+            if (onSave) onSave();
+        });
+        mo.classList.add("visible");
+    }
     // ----- Respuestas (hilo) y comentarios de ejemplo -----
     var KR = "techzone_respuestas", KS = "techzone_seeds_ocultos";
     function leerJ(k, d) { try { return JSON.parse(localStorage.getItem(k) || d); } catch (e) { return JSON.parse(d); } }
@@ -140,6 +192,13 @@ window.TZ = (function () {
         var wrap = document.createElement("div"); wrap.style.marginTop = "12px";
         var acc = document.createElement("div"); acc.style.cssText = "display:flex;gap:8px;flex-wrap:wrap";
         var bR = boton("Responder", "#10213b"); acc.appendChild(bR);
+        if (opt.editar) {
+            var bEd = boton("Editar", "#1268e8"); acc.appendChild(bEd);
+            bEd.addEventListener("click", function () {
+                if (!requiereSesion("Para editar primero debes iniciar sesión.")) return;
+                opt.editar();
+            });
+        }
         if (opt.puedeEliminar) {
             var bD = boton("Eliminar", "#c0392b"); acc.appendChild(bD);
             bD.addEventListener("click", function () {
@@ -192,7 +251,7 @@ window.TZ = (function () {
         bC.addEventListener("click", function () { caja.style.display = "none"; });
         wrap.append(acc, lista, caja); card.appendChild(wrap); pintar();
     }
-    return { hilo: hilo, seedOculto: seedOculto, ocultarSeed: ocultarSeed, usuario: usuario, requiereSesion: requiereSesion, leerImagen: leerImagen, borrarOpinion: borrarOpinion, confirmar: confirmar, detalleProducto: detalleProducto };
+    return { editarOpinion: editarOpinion, hilo: hilo, seedOculto: seedOculto, ocultarSeed: ocultarSeed, usuario: usuario, requiereSesion: requiereSesion, leerImagen: leerImagen, borrarOpinion: borrarOpinion, confirmar: confirmar, detalleProducto: detalleProducto };
 })();
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -1018,35 +1077,98 @@ powerbank: {
                 });
             }
             pintarPubs();
-            var contC = document.getElementById("perfil-comentarios"), vacioC = document.getElementById("perfil-sin-comentarios");
-            function pintarComentarios() {
-                if (!contC) return;
-                Array.from(contC.querySelectorAll(".community-comment")).forEach(function (n) { n.remove(); });
-                var coms = leer("techzone_comentarios_marketing").filter(function (x) { return (x.correo || "") === me; });
-                if (vacioC) vacioC.style.display = coms.length ? "none" : "";
-                coms.forEach(function (x) {
+            function pintarOpiniones(contId, vacioId, esResena) {
+                var cont2 = document.getElementById(contId), vac = document.getElementById(vacioId);
+                if (!cont2) return;
+                Array.from(cont2.querySelectorAll(".community-comment")).forEach(function (n) { n.remove(); });
+                var lst = leer("techzone_comentarios_marketing").filter(function (x) { return (x.correo || "") === me && ((x.tipo === "campana") === esResena); });
+                if (vac) vac.style.display = lst.length ? "none" : "";
+                lst.forEach(function (x) {
                     var art = document.createElement("article"); art.className = "community-comment";
-                    if (x.estrellas) {
+                    if (esResena) {
                         var st = document.createElement("div"); st.className = "stars"; st.style.color = "#e5a000";
-                        st.textContent = "★".repeat(Number(x.estrellas)) + "☆".repeat(5 - Number(x.estrellas)); art.appendChild(st);
+                        var ne = Math.min(5, Math.max(1, Number(x.estrellas) || 5));
+                        st.textContent = "★".repeat(ne) + "☆".repeat(5 - ne); art.appendChild(st);
                     }
-                    var t = document.createElement("strong"); t.textContent = (x.tipo === "campana" ? "Reseña de campaña" : "Comentario") + " · " + (x.nombre || "Yo");
+                    var t = document.createElement("strong"); t.textContent = x.nombre || "Yo";
                     var p = document.createElement("p"); p.textContent = x.texto;
                     var sm = document.createElement("small"); sm.textContent = x.fecha || "";
-                    var del = document.createElement("button"); del.type = "button"; del.className = "marketing-button";
-                    del.style.cssText = "background:#c0392b;padding:8px 14px;font-size:13px;display:block;margin-top:10px";
-                    del.textContent = "Eliminar";
+                    var ac = document.createElement("div"); ac.style.cssText = "display:flex;gap:8px;margin-top:10px;flex-wrap:wrap";
+                    var be = document.createElement("button"); be.type = "button"; be.className = "marketing-button"; be.textContent = "Editar";
+                    be.style.cssText = "background:#1268e8;padding:8px 14px;font-size:13px";
+                    be.addEventListener("click", function () { window.TZ.editarOpinion(x, function () { pintarOpiniones(contId, vacioId, esResena); }); });
+                    var del = document.createElement("button"); del.type = "button"; del.className = "marketing-button"; del.textContent = "Eliminar";
+                    del.style.cssText = "background:#c0392b;padding:8px 14px;font-size:13px";
                     del.addEventListener("click", function () {
-                        var esR = x.tipo === "campana";
-                        window.TZ.confirmar("¿Estás seguro de eliminar " + (esR ? "esta reseña?" : "este comentario?"), "Esta acción no se puede deshacer.", function () {
-                            window.TZ.borrarOpinion(x.id); pintarComentarios();
-                            mostrarMensaje(esR ? "Reseña eliminada" : "Comentario eliminado", "Se eliminó correctamente.");
+                        window.TZ.confirmar("¿Estás seguro de eliminar " + (esResena ? "esta reseña?" : "este comentario?"), "Esta acción no se puede deshacer.", function () {
+                            window.TZ.borrarOpinion(x.id); pintarOpiniones(contId, vacioId, esResena);
+                            mostrarMensaje(esResena ? "Reseña eliminada" : "Comentario eliminado", "Se eliminó correctamente.");
                         });
                     });
-                    art.append(t, p, sm, del); contC.appendChild(art);
+                    ac.append(be, del); art.append(t, p, sm, ac); cont2.appendChild(art);
                 });
             }
-            pintarComentarios();
+            pintarOpiniones("perfil-comentarios", "perfil-sin-comentarios", false);
+            pintarOpiniones("perfil-resenas", "perfil-sin-resenas", true);
+
+            // ----- Agregar comentario o reseña desde el perfil -----
+            function guardarLista(k, item, max) {
+                var a = leer(k); a.unshift(item);
+                try { localStorage.setItem(k, JSON.stringify(a.slice(0, max))); } catch (e) {}
+            }
+            function vincularPanel(panelId, abrirId, cerrarIds) {
+                var panel = document.getElementById(panelId), abrir = document.getElementById(abrirId);
+                if (!panel || !abrir) return null;
+                abrir.addEventListener("click", function () { panel.classList.add("visible"); });
+                cerrarIds.forEach(function (id) {
+                    var b = document.getElementById(id);
+                    if (b) b.addEventListener("click", function () { panel.classList.remove("visible"); });
+                });
+                panel.addEventListener("click", function (e) { if (e.target === panel) panel.classList.remove("visible"); });
+                return panel;
+            }
+            function datosAutor() {
+                var u = window.TZ.usuario() || usuario || {};
+                return { correo: (u.correo || "").toLowerCase(), nombre: u.nombre || "Usuario" };
+            }
+
+            // Comentario (misma colección que Comunidad, sin tipo "campana")
+            var panelCom = vincularPanel("panel-nuevo-comentario", "boton-nuevo-comentario", ["cerrar-nuevo-comentario", "cancelar-nuevo-comentario"]);
+            var formCom = document.getElementById("form-nuevo-comentario");
+            if (formCom) formCom.addEventListener("submit", function (e) {
+                e.preventDefault();
+                var a = datosAutor(), campo = document.getElementById("nuevo-comentario-texto");
+                var item = { id: "comentario_" + Date.now(), nombre: a.nombre, texto: campo.value.trim() || "Sin comentario", correo: a.correo, fecha: "Publicado ahora · Comentario simulado" };
+                guardarLista("techzone_comentarios_marketing", item, 100);
+                formCom.reset(); if (panelCom) panelCom.classList.remove("visible");
+                pintarOpiniones("perfil-comentarios", "perfil-sin-comentarios", false);
+                mostrarMensaje("Comentario agregado", "Tu comentario se agregó correctamente (simulado).");
+            });
+
+            // Reseña (misma colección que Campaña, tipo "campana", con estrellas)
+            var panelRes = vincularPanel("panel-nueva-resena", "boton-nueva-resena", ["cerrar-nueva-resena", "cancelar-nueva-resena"]);
+            var formRes = document.getElementById("form-nueva-resena");
+            var btnsEst = Array.from(document.querySelectorAll("#nueva-resena-estrellas button")), txtEst = document.getElementById("nueva-resena-estrellas-txt");
+            var valorEst = 5;
+            function pintarEst(n) { btnsEst.forEach(function (b) { b.classList.toggle("on", Number(b.dataset.v) <= n); }); }
+            function fijarEst(n) { valorEst = n; pintarEst(n); if (txtEst) txtEst.textContent = n + " de 5"; }
+            btnsEst.forEach(function (b) {
+                b.addEventListener("click", function () { fijarEst(Number(b.dataset.v)); });
+                b.addEventListener("mouseenter", function () { pintarEst(Number(b.dataset.v)); });
+            });
+            var contEst = document.getElementById("nueva-resena-estrellas");
+            if (contEst) contEst.addEventListener("mouseleave", function () { pintarEst(valorEst); });
+            fijarEst(5);
+            if (formRes) formRes.addEventListener("submit", function (e) {
+                e.preventDefault();
+                var a = datosAutor();
+                var item = { id: "resena_" + Date.now(), correo: a.correo, nombre: a.nombre, texto: document.getElementById("nueva-resena-texto").value.trim() || "Sin comentario (solo calificación)", estrellas: valorEst, fecha: new Date().toLocaleDateString("es-MX"), tipo: "campana" };
+                guardarLista("techzone_resenas_campana", item, 50);
+                guardarLista("techzone_comentarios_marketing", item, 100);
+                formRes.reset(); fijarEst(5); if (panelRes) panelRes.classList.remove("visible");
+                pintarOpiniones("perfil-resenas", "perfil-sin-resenas", true);
+                mostrarMensaje("Reseña agregada", "Tu reseña se agregó correctamente (simulado).");
+            });
         })();
 
         var botonSalir = document.getElementById("boton-cerrar-sesion");

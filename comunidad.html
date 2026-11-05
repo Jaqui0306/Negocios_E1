@@ -101,23 +101,25 @@ document.addEventListener('DOMContentLoaded', function () {
   if (usuario && usuario.nombre && campoNombre) campoNombre.value = usuario.nombre;
 
   function leerComentarios() {
-    try { return JSON.parse(localStorage.getItem(clave) || '[]'); } catch (e) { return []; }
+    try { return JSON.parse(localStorage.getItem(clave) || '[]').filter(function (x) { return x.tipo !== 'campana'; }); } catch (e) { return []; }
   }
   function crearComentario(item) {
     var card = document.createElement('article');
     card.className = 'community-comment';
-    var estrellas = document.createElement('div'); estrellas.className = 'stars'; estrellas.textContent = item.estrellas ? '★'.repeat(Number(item.estrellas)) + '☆'.repeat(5 - Number(item.estrellas)) : '★★★★★';
     var autor = document.createElement('strong'); autor.textContent = item.nombre || 'Anónimo';
     var texto = document.createElement('p'); texto.textContent = item.texto || 'Sin comentario';
     var small = document.createElement('small'); small.textContent = item.fecha || 'Publicado ahora · Comentario simulado';
-    card.append(estrellas, autor, texto, small);
+    card.append(autor, texto, small);
     var propio = !!(usuario && item.correo && item.correo === (usuario.correo || '').toLowerCase());
-    TZ.hilo(card, item.id, { puedeEliminar: propio, etiqueta: 'comentario', eliminar: function () {
+    TZ.hilo(card, item.id, { puedeEliminar: propio, etiqueta: 'comentario',
+      editar: propio ? function () { TZ.editarOpinion(item, function () { var nu = leerComentarios().filter(function (x) { return x.id === item.id; })[0]; if (nu) card.replaceWith(crearComentario(nu)); }); } : null,
+      eliminar: function () {
       TZ.borrarOpinion(item.id); card.remove(); mostrarMensaje('Comentario eliminado', 'Tu comentario se eliminó correctamente.');
     } });
     return card;
   }
   Array.from(lista.querySelectorAll('.community-comment')).forEach(function (c, i) {
+    var est = c.querySelector('.stars'); if (est) est.remove();
     var id = 'seed_com_' + i;
     if (TZ.seedOculto(id)) { c.remove(); return; }
     TZ.hilo(c, id, { puedeEliminar: true, etiqueta: 'comentario', eliminar: function () {
@@ -136,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
       correo: usuario && usuario.correo ? usuario.correo.toLowerCase() : '',
       fecha: 'Publicado ahora · Comentario simulado'
     };
-    var guardados = leerComentarios();
+    var guardados = []; try { guardados = JSON.parse(localStorage.getItem(clave) || '[]'); } catch (e) {}
     guardados.unshift(item);
     try { localStorage.setItem(clave, JSON.stringify(guardados.slice(0, 100))); } catch (err) {}
     lista.prepend(crearComentario(item));

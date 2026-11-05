@@ -3611,3 +3611,14 @@ header nav#nav-menu .menu-opciones a.menu-perfil{margin-top:5px!important;paddin
 /* Enlaces del menú ocultos según la sesión (mayor especificidad que las reglas globales). */
 header nav#nav-menu .menu-opciones a[hidden]{display:none!important}
 header nav#nav-menu .menu-opciones a.menu-salir{color:#c0392b;font-weight:700}
+
+/* Perfil: agregar comentario / reseña */
+.perfil-agregar{margin:-4px 0 12px}
+.perfil-agregar .boton{padding:8px 16px;font-size:13px}
+.tz-editar-caja textarea{width:100%;box-sizing:border-box;border:1px solid #d9e0e7;border-radius:11px;padding:12px 13px;font:inherit;font-weight:400;outline:none;resize:vertical;min-height:100px}
+.tz-editar-caja textarea:focus{border-color:#176fe5;box-shadow:0 0 0 3px rgba(23,111,229,.1)}
+.perfil-estrellas-sel{display:flex;align-items:center;gap:4px}
+.perfil-estrellas-sel button{background:none;border:0;padding:0 2px;font-size:34px;line-height:1;color:#cbd5e1;cursor:pointer;transition:transform .12s,color .12s}
+.perfil-estrellas-sel button.on{color:#f5a400}
+.perfil-estrellas-sel button:hover{transform:scale(1.15)}
+.perfil-estrellas-sel span{margin-left:10px;color:#687991;font-weight:700;font-size:14px}
