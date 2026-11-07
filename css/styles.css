@@ -3340,6 +3340,10 @@ button[type="submit"],.formulario-card .boton,.login-card .boton,.registro-card 
     display: none !important;
 }
 
+
+
+
+
 .acceso-regresar {
     border: 0;
     background: transparent;
@@ -3542,6 +3546,11 @@ footer{background:#0d1b30;color:#dce6f5}footer a{transition:color .2s}footer a:h
  .admin-layout{grid-template-columns:1fr;padding:0 4%;gap:18px}.admin-sidebar{position:static}.admin-menu{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:480px){.acceso-opcion strong{font-size:15px}.acceso-eleccion-cabecera h2{font-size:27px}.acceso .formulario{padding:30px 22px}.inicio{padding-top:48px;padding-bottom:48px}}
+
+
+
+
+
 
 
 /* Acceso de administrador: cuenta normal o entrada directa */
