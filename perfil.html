@@ -24,6 +24,7 @@
 <a href="mis-publicaciones.html">Mis publicaciones</a>
 <a href="subasta.html">Subasta</a>
 <a href="carrito.html">Carrito de compras</a>
+<a href="mis-compras.html">Mis compras</a>
 <a href="nosotros.html">Nosotros</a>
 <a href="contacto.html">Contacto</a>
 <a href="admin.html" class="menu-admin">Panel del administrador</a>
@@ -71,17 +72,59 @@
             </div>
 
             <p class="perfil-seccion-titulo">Mis comentarios</p>
+            <div class="perfil-agregar"><button type="button" class="boton boton-contorno" id="boton-nuevo-comentario">+ Agregar comentario</button></div>
             <div id="perfil-comentarios" class="community-list" style="margin-bottom:20px;">
                 <div class="mis-compras-vacio" id="perfil-sin-comentarios">
                     Aún no has publicado comentarios. <a href="comunidad.html">Comparte tu primera opinión →</a>
                 </div>
             </div>
 
-            <p class="perfil-seccion-titulo">Mis compras (próximamente)</p>
-            <div class="mis-compras-vacio">
-                Aún no tienes compras registradas. Esta función estará disponible más adelante.
+            <p class="perfil-seccion-titulo">Mis reseñas</p>
+            <div class="perfil-agregar"><button type="button" class="boton boton-contorno" id="boton-nueva-resena">+ Agregar reseña</button></div>
+            <div id="perfil-resenas" class="community-list" style="margin-bottom:20px;">
+                <div class="mis-compras-vacio" id="perfil-sin-resenas">
+                    Aún no has publicado reseñas. <a href="campana.html">Califica la campaña →</a>
+                </div>
             </div>
 
+            <p class="perfil-seccion-titulo">Mis compras · <a href="mis-compras.html" style="text-transform:none;letter-spacing:0">ver todas</a></p>
+            <div id="co-historial" data-compacto style="margin:0 42px 20px;"></div>
+
+
+            <div class="tz-editar-panel" id="panel-nuevo-comentario">
+                <div class="tz-editar-caja">
+                    <button type="button" class="tz-modal-cerrar" id="cerrar-nuevo-comentario" aria-label="Cerrar">×</button>
+                    <h3>Agregar comentario</h3>
+                    <p>Comparte tu experiencia. Aparecerá en Comunidad y en esta sección.</p>
+                    <form id="form-nuevo-comentario">
+                        <label>Comentario<textarea id="nuevo-comentario-texto" maxlength="500" rows="4" placeholder="Comparte tu experiencia..." required></textarea></label>
+                        <div class="tz-editar-acciones">
+                            <button type="button" class="boton boton-contorno" id="cancelar-nuevo-comentario">Cancelar</button>
+                            <button type="submit" class="boton">Publicar comentario</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="tz-editar-panel" id="panel-nueva-resena">
+                <div class="tz-editar-caja">
+                    <button type="button" class="tz-modal-cerrar" id="cerrar-nueva-resena" aria-label="Cerrar">×</button>
+                    <h3>Agregar reseña</h3>
+                    <p>Califica la campaña. Aparecerá en Campaña y en esta sección.</p>
+                    <form id="form-nueva-resena">
+                        <label>¿Cuántas estrellas le das?</label>
+                        <div id="nueva-resena-estrellas" class="perfil-estrellas-sel" role="radiogroup" aria-label="Calificación de una a cinco estrellas">
+                            <button type="button" data-v="1" aria-label="1 estrella">★</button><button type="button" data-v="2" aria-label="2 estrellas">★</button><button type="button" data-v="3" aria-label="3 estrellas">★</button><button type="button" data-v="4" aria-label="4 estrellas">★</button><button type="button" data-v="5" aria-label="5 estrellas">★</button>
+                            <span id="nueva-resena-estrellas-txt">5 de 5</span>
+                        </div>
+                        <label>Reseña (opcional)<textarea id="nueva-resena-texto" maxlength="500" rows="4" placeholder="Cuéntanos qué te pareció..."></textarea></label>
+                        <div class="tz-editar-acciones">
+                            <button type="button" class="boton boton-contorno" id="cancelar-nueva-resena">Cancelar</button>
+                            <button type="submit" class="boton">Publicar reseña</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
             <div class="tz-editar-panel" id="panel-editar-perfil">
                 <div class="tz-editar-caja">
@@ -130,10 +173,8 @@
         <p class="footer-copy">© 2026 TechZone — Tienda de dispositivos electrónicos</p><span class="footer-demo">Sitio demostrativo · Sin base de datos</span>
     </footer>
 
-
-
-    
     <script src="js/main.js"></script>
+    <script src="js/checkout.js"></script>
 
 
 

@@ -42,6 +42,7 @@
 <a href="mis-publicaciones.html">Mis publicaciones</a>
 <a href="subasta.html">Subasta</a>
 <a href="carrito.html">Carrito de compras</a>
+<a href="mis-compras.html">Mis compras</a>
 <a href="nosotros.html">Nosotros</a>
 <a href="contacto.html">Contacto</a>
 <a href="admin.html" class="menu-admin">Panel del administrador</a>
@@ -104,7 +105,7 @@
 <section class="marketing-card community-form subasta-crear" id="crear-subasta">
 <h2>Subastar mi producto</h2>
 <p style="color:#687991;line-height:1.6;margin-top:0;">Agrega un producto, define el precio base y la duración, y aparecerá en «Subastas disponibles».</p>
-<form id="form-nueva-subasta" data-requiere-sesion novalidate>
+<form id="form-nueva-subasta" novalidate>
 <label for="sub-mis-pubs">Usar una de mis publicaciones (opcional)</label>
 <select id="sub-mis-pubs"><option value="">— Escribir los datos manualmente —</option></select>
 <label for="sub-nombre">Nombre del producto</label>
@@ -144,7 +145,13 @@ document.addEventListener('DOMContentLoaded', function () {
   function leer(k) { try { var x = JSON.parse(localStorage.getItem(k) || '[]'); return Array.isArray(x) ? x : []; } catch (e) { return []; } }
   function guardar(k, v, max) { try { localStorage.setItem(k, JSON.stringify(v.slice(0, max))); return true; } catch (e) { return false; } }
   function yo() { return (window.TZ && TZ.usuario()) || null; }
-  function esMia(a) { var u = yo(); return !!(u && a.sid && a.sid === u.sid); }
+  // Para subastar no se exige sesión: sin sesión se usa un identificador de invitado guardado en este navegador.
+  function sidInvitado() {
+    try { var g = localStorage.getItem('techzone_invitado_sid'); if (!g) { g = 'inv_' + Date.now() + '_' + Math.floor(Math.random() * 1e6); localStorage.setItem('techzone_invitado_sid', g); } return g; }
+    catch (e) { return 'inv_local'; }
+  }
+  function duenio() { var u = yo(); return u ? { sid: u.sid, correo: (u.correo || '').toLowerCase(), nombre: u.nombre || 'Usuario' } : { sid: sidInvitado(), correo: '', nombre: 'Invitado' }; }
+  function esMia(a) { var d = duenio(); return !!(a.sid && a.sid === d.sid); }
 
   // Subasta destacada (demostrativa): 15 minutos que se reinician al cargar
   var finDestacada = Date.now() + 15 * 60 * 1000;
@@ -199,8 +206,6 @@ document.addEventListener('DOMContentLoaded', function () {
       catalogo.appendChild(b);
     });
   }
-
-
 
   function pintarDetalle() {
     var a = actual();
@@ -282,6 +287,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  // ----- Subastar mi producto -----
   var formNueva = $('form-nueva-subasta'), estadoNueva = $('estado-nueva-subasta');
   var fotoIn = $('sub-foto-in'), prev = $('sub-preview'), fotoNueva = null;
   fotoIn.addEventListener('change', function () {
@@ -312,7 +318,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   formNueva.addEventListener('submit', function (e) {
     e.preventDefault();
-    var u = yo(); if (!u) return;
+    var u = duenio();
     var nombre = $('sub-nombre').value.trim();
     var base = Math.floor(Number($('sub-base').value));
     estadoNueva.style.color = '#c0392b';
@@ -321,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function () {
     estadoNueva.style.color = '';
     var mins = Number($('sub-duracion').value) || 60;
     var item = {
-      id: 'sub_' + Date.now(), sid: u.sid, autor: (u.correo || '').toLowerCase(), vendedor: u.nombre || 'Usuario',
+      id: 'sub_' + Date.now(), sid: u.sid, autor: u.correo, vendedor: u.nombre,
       nombre: nombre, descripcion: $('sub-descripcion').value.trim() || 'Sin descripción',
       foto: fotoNueva || 'img/teclado.jpg', base: base, fin: Date.now() + mins * 60000, ofertas: [],
       fecha: 'Publicada ' + new Date().toLocaleDateString('es-MX')

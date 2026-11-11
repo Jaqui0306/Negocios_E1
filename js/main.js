@@ -1462,7 +1462,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <div><strong>Compra simulada:</strong> este sitio es un proyecto académico y no realiza cargos reales.</div>
                                 <div><strong>Productos:</strong> revisa que los productos y cantidades de tu carrito sean correctos.</div>
                                 <div><strong>Datos:</strong> la información mostrada se utiliza únicamente para esta demostración.</div>
-                                <div><strong>Servicios:</strong> el envío aparece como gratuito y el proceso de pago se mostrará posteriormente.</div>
+                                <div><strong>Servicios:</strong> el envío es gratuito y en el siguiente paso capturarás tu dirección y elegirás un método de pago (simulado).</div>
                             </div>
                             <label class="tz-politica-check">
                                 <input type="checkbox" id="tz-politica-acepto">

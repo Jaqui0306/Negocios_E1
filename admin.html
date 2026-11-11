@@ -7,6 +7,9 @@
 <link rel="icon" type="image/svg+xml" href="img/logo.svg">
 <link rel="stylesheet" href="css/styles.css">
 </head>
+
+
+
 <body>
 <header>
 <a href="inicio.html" class="logo"><img src="img/logo.svg" alt="TechZone" class="logo-img">TechZone</a>
@@ -20,6 +23,7 @@
 <a href="mis-publicaciones.html">Mis publicaciones</a>
 <a href="subasta.html">Subasta</a>
 <a href="carrito.html">Carrito de compras</a>
+<a href="mis-compras.html">Mis compras</a>
 <a href="nosotros.html">Nosotros</a>
 <a href="contacto.html">Contacto</a>
 <a href="admin.html" class="menu-admin">Panel del administrador</a>
@@ -50,7 +54,7 @@
   <div class="admin-seccion-titulo"><div><span>01</span><h2>Resumen general</h2></div><p>Indicadores simulados de la tienda.</p></div>
   <div class="admin-stats">
     <article class="admin-stat admin-stat-productos"><span>Productos</span><strong id="admin-total-productos">12</strong><small>Registrados en catálogo</small><b>▣</b></article>
-    <article class="admin-stat admin-stat-pedidos"><span>Pedidos</span><strong>5</strong><small>Pedidos simulados</small><b>▤</b></article>
+    <article class="admin-stat admin-stat-pedidos"><span>Pedidos</span><strong id="admin-total-pedidos">0</strong><small>Pedidos recibidos</small><b>▤</b></article>
 <article class="admin-stat admin-stat-promos"><span>Promociones</span><strong id="admin-total-promociones">3</strong><small>Activas actualmente</small><b>◇</b></article>
   </div>
 </section>
@@ -73,12 +77,19 @@
 
 <section class="admin-seccion" id="pedidos-admin">
   <div class="admin-panel">
-    <div class="admin-panel-cabecera"><div><span class="admin-panel-num">03</span><h2>Pedidos</h2><p>Consulta el resumen de pedidos simulados de la tienda.</p></div></div>
+    <div class="admin-panel-cabecera"><div><span class="admin-panel-num">03</span><h2>Pedidos</h2><p>Pedidos reales del checkout: se actualizan solos al llegar una compra y puedes cambiar su estado.</p></div></div>
     <div class="admin-resumen-grid">
-      <div class="admin-resumen-item"><span>Pedidos de hoy</span><strong>2</strong></div>
-      <div class="admin-resumen-item"><span>En preparación</span><strong>3</strong></div>
-      <div class="admin-resumen-item"><span>Entregados</span><strong>5</strong></div>
-</div>
+      <div class="admin-resumen-item"><span>Pedidos de hoy</span><strong id="ped-hoy">0</strong></div>
+      <div class="admin-resumen-item"><span>En preparación / enviados</span><strong id="ped-proceso">0</strong></div>
+      <div class="admin-resumen-item"><span>Entregados</span><strong id="ped-entregados">0</strong></div>
+      <div class="admin-resumen-item"><span>Ventas (sin cancelados)</span><strong id="ped-ventas">$0</strong></div>
+    </div>
+    <div class="admin-tabla-wrap" style="margin-top:16px">
+      <table class="admin-tabla">
+        <thead><tr><th>Pedido</th><th>Fecha</th><th>Cliente</th><th>Artículos</th><th>Pago</th><th>Total</th><th>Estado</th></tr></thead>
+        <tbody id="admin-lista-pedidos"></tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -104,7 +115,7 @@
     <div class="admin-resumen-grid">
       <div class="admin-resumen-item"><span>Catálogo</span><strong>Activo</strong></div>
       <div class="admin-resumen-item"><span>Carrito</span><strong>Funcionando</strong></div>
-      <div class="admin-resumen-item"><span>Checkout</span><strong>Próximamente</strong></div>
+      <div class="admin-resumen-item"><span>Checkout</span><strong>Funcionando</strong></div>
       <div class="admin-resumen-item"><span>Promociones</span><strong>Funcionando</strong></div>
     </div>
   </div>
@@ -155,6 +166,8 @@
     </div>
   </div>
 </div>
+
+
 <div class="tz-admin-modal" id="admin-promocion-modal" aria-hidden="true">
   <div class="tz-admin-fondo"></div>
   <div class="tz-admin-caja">
@@ -179,6 +192,13 @@
 <div class="tz-admin-modal" id="admin-eliminar-promo-modal" aria-hidden="true">
   <div class="tz-admin-fondo"></div><div class="tz-admin-caja admin-confirmacion"><h2>Eliminar promoción</h2><p id="admin-eliminar-promo-texto">¿Seguro que deseas eliminar esta promoción?</p><div class="admin-form-acciones"><button type="button" class="boton boton-secundario" id="admin-no-eliminar-promo">Cancelar</button><button type="button" class="boton boton-peligro" id="admin-si-eliminar-promo">Sí, eliminar</button></div></div>
 </div>
+
+
+
+
+
+
 <script src="js/main.js"></script>
+<script src="js/checkout.js"></script>
 </body>
 </html>

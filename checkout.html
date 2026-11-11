@@ -8,7 +8,12 @@
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<header><a href="inicio.html" class="logo"><img src="img/logo.svg" alt="TechZone" class="logo-img">TechZone</a><nav id="nav-menu" aria-label="Navegación principal"><details class="menu-desplegable"><summary aria-label="Abrir menú de navegación">☰ Menú</summary><div class="menu-opciones">
+<header>
+<a href="inicio.html" class="logo">
+<img src="img/logo.svg" alt="TechZone" class="logo-img">
+TechZone
+</a>
+<nav id="nav-menu" aria-label="Navegación principal"><details class="menu-desplegable"><summary aria-label="Abrir menú de navegación">☰ Menú</summary><div class="menu-opciones">
 <a href="inicio.html">Inicio</a>
 <a href="productos.html">Catálogo</a>
 <a href="promociones.html">Promociones</a>
@@ -18,15 +23,127 @@
 <a href="mis-publicaciones.html">Mis publicaciones</a>
 <a href="subasta.html">Subasta</a>
 <a href="carrito.html">Carrito de compras</a>
+<a href="mis-compras.html">Mis compras</a>
 <a href="nosotros.html">Nosotros</a>
 <a href="contacto.html">Contacto</a>
 <a href="admin.html" class="menu-admin">Panel del administrador</a>
 <a href="login.html" class="menu-login">Iniciar sesión</a>
 <a href="perfil.html" class="menu-perfil" hidden>Perfil</a>
-</div></details></nav></header>
-<main class="checkout-placeholder">
-<div class="checkout-card"><div class="checkout-icon">💳</div><h1>Checkout próximamente</h1><p>Este es el paso siguiente de la compra. En este bloque solo se muestra el placeholder; el formulario de pago se agregará en el Bloque 4.</p><a href="carrito.html" class="boton">← Regresar al carrito</a></div>
+</div></details></nav>
+</header>
+<div class="pagina-cabecera"><div class="envoltura"><h1>Checkout</h1><p>Completa tu compra en 3 pasos. Todo es simulado: no se realiza ningún cargo real.</p></div></div>
+
+<main class="co-main" id="co-app">
+
+<section id="co-vacio" class="co-vacio-caja" hidden><h2>Tu carrito está vacío</h2><p>Agrega productos para poder pagar.</p><a class="boton" href="productos.html">Explorar catálogo</a></section>
+
+<div class="co-layout" id="co-flujo">
+<div class="co-panel">
+<ol class="co-stepper" aria-label="Pasos del checkout">
+<li class="activo" aria-current="step"><span>1</span>Dirección</li>
+<li><span>2</span>Pago</li>
+<li><span>3</span>Confirmación</li>
+</ol>
+
+<!-- Paso 1 -->
+<section id="co-paso-1">
+<h2>Dirección de envío</h2>
+<form id="co-form-dir" class="co-form" novalidate>
+<div class="co-campo co-full"><label for="dir-nombre">Nombre completo</label><input id="dir-nombre" autocomplete="name" maxlength="80"></div>
+<div class="co-campo"><label for="dir-correo">Correo electrónico</label><input id="dir-correo" type="email" autocomplete="email" maxlength="80"></div>
+<div class="co-campo"><label for="dir-tel">Teléfono (10 dígitos)</label><input id="dir-tel" type="tel" inputmode="numeric" autocomplete="tel" maxlength="14" placeholder="5512345678"></div>
+<div class="co-campo co-full"><label for="dir-calle">Calle y número</label><input id="dir-calle" autocomplete="address-line1" maxlength="120" placeholder="Av. Reforma 123, int. 4"></div>
+<div class="co-campo"><label for="dir-colonia">Colonia</label><input id="dir-colonia" maxlength="60"></div>
+<div class="co-campo"><label for="dir-cp">Código postal</label><input id="dir-cp" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="06000"></div>
+<div class="co-campo"><label for="dir-ciudad">Ciudad</label><input id="dir-ciudad" maxlength="60" autocomplete="address-level2"></div>
+<div class="co-campo"><label for="dir-estado">Estado</label><input id="dir-estado" maxlength="40" autocomplete="address-level1"></div>
+<div class="co-botones co-full"><a class="boton boton-contorno" href="carrito.html">← Carrito</a><button type="submit" class="boton">Continuar al pago →</button></div>
+</form>
+</section>
+
+<!-- Paso 2 -->
+<section id="co-paso-2" hidden>
+<h2>Método de pago</h2>
+<form id="co-form-pago" class="co-form" novalidate>
+<div class="co-opciones co-full" role="radiogroup" aria-label="Método de pago">
+<label class="co-opcion"><input type="radio" name="co-metodo" value="tarjeta" checked><span class="co-op-icono">💳</span><span><strong>Tarjeta</strong><small>Crédito o débito</small></span></label>
+<label class="co-opcion"><input type="radio" name="co-metodo" value="transferencia"><span class="co-op-icono">🏦</span><span><strong>Transferencia</strong><small>SPEI</small></span></label>
+<label class="co-opcion"><input type="radio" name="co-metodo" value="wallet"><span class="co-op-icono">👛</span><span><strong>E-wallet</strong><small>Saldo TechZone Pay</small></span></label>
+</div>
+<p class="co-error co-full" id="co-error-metodo" role="alert"></p>
+
+<div id="co-pan-tarjeta" class="co-subpanel co-full">
+<div class="co-form">
+<div class="co-campo co-full"><label for="co-titular">Nombre en la tarjeta</label><input id="co-titular" autocomplete="cc-name" maxlength="60"></div>
+<div class="co-campo co-full"><label for="co-num">Número de tarjeta</label><input id="co-num" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456" maxlength="19"></div>
+<div class="co-campo"><label for="co-exp">Vencimiento (MM/AA)</label><input id="co-exp" inputmode="numeric" autocomplete="cc-exp" placeholder="08/29" maxlength="5"></div>
+<div class="co-campo"><label for="co-cvv">CVV</label><input id="co-cvv" inputmode="numeric" autocomplete="off" placeholder="123" maxlength="4" type="password"></div>
+</div>
+<p class="co-ayuda">Simulado: usa cualquier número de 16 dígitos (ej. 4242 4242 4242 4242). No se guarda el número completo ni el CVV.</p>
+</div>
+
+<div id="co-pan-transferencia" class="co-subpanel co-full" hidden>
+<dl class="co-datos">
+<div><dt>Banco</dt><dd>Banco TechZone (demostrativo)</dd></div>
+<div><dt>Beneficiario</dt><dd>TechZone S.A. de C.V.</dd></div>
+<div><dt>CLABE</dt><dd>0123 4567 8901 2345 67</dd></div>
+<div><dt>Referencia</dt><dd id="co-ref">—</dd></div>
+</dl>
+<p class="co-ayuda">Datos ficticios. Al pulsar «Pagar» en el último paso, la transferencia se da por recibida (simulado).</p>
+</div>
+
+<div id="co-pan-wallet" class="co-subpanel co-full" hidden>
+<div class="co-wallet"><div><span>Saldo disponible</span><strong id="co-saldo">—</strong></div><button type="button" class="boton boton-contorno" id="co-recargar">+ Recargar $5,000</button></div>
+<p class="co-aviso" id="co-wallet-aviso"></p>
+</div>
+
+<div class="co-botones co-full"><button type="button" class="boton boton-contorno" id="co-atras-2">← Atrás</button><button type="submit" class="boton">Revisar pedido →</button></div>
+</form>
+</section>
+
+<!-- Paso 3 -->
+<section id="co-paso-3" hidden>
+<h2>Confirma tu compra</h2>
+<div class="co-conf">
+<div class="co-conf-bloque"><div class="co-conf-cab"><h3>Enviar a</h3><button type="button" class="co-link" id="co-editar-dir">Editar</button></div><p id="co-conf-dir"></p></div>
+<div class="co-conf-bloque"><div class="co-conf-cab"><h3>Método de pago</h3><button type="button" class="co-link" id="co-editar-metodo">Editar</button></div><p id="co-conf-metodo"></p></div>
+<div class="co-conf-bloque co-conf-total"><span>Total a pagar</span><strong id="co-conf-total"></strong></div>
+</div>
+<div class="co-botones"><button type="button" class="boton boton-contorno" id="co-atras-3">← Atrás</button><button type="button" class="boton co-pagar" id="co-pagar">Pagar</button></div>
+<p class="co-ayuda">Al pagar aceptas que esta es una compra simulada de un proyecto académico.</p>
+</section>
+</div>
+
+<aside class="co-resumen" aria-label="Resumen de compra">
+<h2>Resumen</h2>
+<ul class="co-items" id="co-items"></ul>
+<div class="co-fila"><span>Subtotal</span><b id="co-subtotal"></b></div>
+<div class="co-fila" id="co-fila-desc" hidden><span>Descuento <small id="co-codigo"></small></span><b id="co-descuento" class="co-verde"></b></div>
+<div class="co-fila"><span>Envío</span><b>Gratis</b></div>
+<div class="co-fila co-fila-total"><span>Total</span><b id="co-total"></b></div>
+</aside>
+</div>
+
+<section id="co-exito" class="co-exito" hidden aria-live="polite">
+<div class="co-exito-icono">✓</div>
+<h2>Pago aprobado</h2>
+<p class="co-exito-sub">¡Gracias por tu compra! Hemos registrado tu pedido (simulado).</p>
+<div class="co-exito-num"><span>Número de pedido</span><strong id="ex-num"></strong></div>
+<div class="co-exito-det"><div><span>Fecha</span><b id="ex-fecha"></b></div><div><span>Pago</span><b id="ex-metodo"></b></div></div>
+<h3>Resumen de compra</h3>
+<ul class="co-exito-lista" id="ex-items"></ul>
+<div class="co-fila co-fila-total"><span>Total pagado</span><b id="ex-total"></b></div>
+<p class="co-ayuda" id="ex-nota"></p>
+<div class="co-botones co-centro"><a class="boton" id="ex-comprobante" href="#">Ver comprobante</a><a class="boton boton-contorno" href="mis-compras.html">Mis compras</a><a class="boton boton-contorno" href="productos.html">Seguir comprando</a></div>
+</section>
+
 </main>
+<footer>
+<div class="footer-envoltura"><div class="footer-marca"><img src="img/logo.svg" alt="">TechZone</div></div>
+<p class="footer-copy">© 2026 TechZone — Tienda de dispositivos electrónicos</p>
+<span class="footer-demo">Sitio demostrativo · Compra simulada</span>
+</footer>
 <script src="js/main.js"></script>
+<script src="js/checkout.js"></script>
 </body>
 </html>
