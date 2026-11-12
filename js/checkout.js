@@ -86,7 +86,7 @@ window.TZP = (function () {
             '<div class="co-t-totales"><div><span>Subtotal</span><span>' + fmt(p.subtotal) + '</span></div>' +
             (p.descuento > 0 ? '<div><span>Descuento' + (p.codigo ? ' (' + esc(p.codigo) + ')' : '') + '</span><span>−' + fmt(p.descuento) + '</span></div>' : '') +
             '<div><span>Envío</span><span>Gratis</span></div>' +
-            '<div class="co-t-total"><span>Total pagado</span><span>' + fmt(p.total) + '</span></div></div>' +
+            '<div class="co-t-total"><span>' + (p.estado === "Pendiente de pago" ? "Total a pagar" : "Total pagado") + '</span><span>' + fmt(p.total) + '</span></div></div>' +
             '<div class="co-t-pie"><p>' + esc(NEGOCIO.nombre) + ' · RFC ' + esc(NEGOCIO.rfc) + '</p><p>Documento demostrativo sin validez fiscal. No se realizó ningún cargo real.</p></div></article>';
     }
 
@@ -170,9 +170,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ----- Paso 2: método de pago -----
     var radios = document.querySelectorAll('input[name="co-metodo"]');
-    var paneles = { tarjeta: $("co-pan-tarjeta"), transferencia: $("co-pan-transferencia"), wallet: $("co-pan-wallet") };
+    var paneles = { tarjeta: $("co-pan-tarjeta"), transferencia: $("co-pan-transferencia"), efectivo: $("co-pan-efectivo"), wallet: $("co-pan-wallet") };
     var refTransf = "TZ" + String(Date.now()).slice(-8);
     $("co-ref").textContent = refTransf;
+    var refEfectivo = "EF" + String(Date.now()).slice(-8);
+    $("co-ref-efectivo").textContent = refEfectivo; $("co-monto-efectivo").textContent = P.fmt(total);
     function pintarWallet() {
         var s = P.saldo();
         $("co-saldo").textContent = P.fmt(s);
@@ -213,6 +215,8 @@ document.addEventListener("DOMContentLoaded", function () {
             metodo = { tipo: "tarjeta", etiqueta: "Tarjeta •••• " + (num.slice(-4) || "----"), titular: nombre };
         } else if (t === "transferencia") {
             metodo = { tipo: "transferencia", etiqueta: "Transferencia · ref. " + refTransf };
+        } else if (t === "efectivo") {
+            metodo = { tipo: "efectivo", etiqueta: "Efectivo contra entrega · ref. " + refEfectivo };
         } else {
             if (P.saldo() < total) { $("co-error-metodo").textContent = "Tu saldo no alcanza para esta compra. Recarga saldo simulado."; return; }
             metodo = { tipo: "wallet", etiqueta: "E-wallet TechZone Pay" };
@@ -239,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(function () {
             if (metodo.tipo === "wallet") P.setSaldo(P.saldo() - total);
             var pedido = {
-                num: P.numeroPedido(), folio: P.siguienteFolio(), fecha: new Date().toISOString(), owner: P.dueno(), estado: "Pagado",
+                num: P.numeroPedido(), folio: P.siguienteFolio(), fecha: new Date().toISOString(), owner: P.dueno(), estado: metodo.tipo === "efectivo" ? "Pendiente de pago" : "Pagado",
                 cliente: { nombre: direccion.nombre, correo: direccion.correo, telefono: direccion.telefono },
                 direccion: { calle: direccion.calle, colonia: direccion.colonia, ciudad: direccion.ciudad, estado: direccion.estado, cp: direccion.cp },
                 metodo: { tipo: metodo.tipo, etiqueta: metodo.etiqueta },
@@ -260,12 +264,15 @@ document.addEventListener("DOMContentLoaded", function () {
     function mostrarExito(p) {
         $("co-flujo").hidden = true;
         var ex = $("co-exito"); ex.hidden = false;
+        var ef = p.metodo.tipo === "efectivo";
+        $("ex-titulo").textContent = ef ? "Pedido confirmado" : "Pago aprobado";
+        $("ex-total-lbl").textContent = ef ? "Total a pagar al recibir" : "Total pagado";
         $("ex-num").textContent = p.num;
         $("ex-metodo").textContent = p.metodo.etiqueta;
         $("ex-fecha").textContent = P.fechaLarga(p.fecha);
         $("ex-items").innerHTML = p.items.map(function (i) { return '<li><span>' + i.cantidad + ' × ' + P.esc(i.nombre) + '</span><b>' + P.fmt(i.precio * i.cantidad) + '</b></li>'; }).join("");
         $("ex-total").textContent = P.fmt(p.total);
-        $("ex-nota").textContent = p.metodo.tipo === "transferencia" ? "Pago por transferencia registrado (simulado). Conserva tu referencia " + refTransf + "." : "";
+        $("ex-nota").textContent = p.metodo.tipo === "efectivo" ? "Pagarás " + P.fmt(p.total) + " en efectivo al recibir tu pedido. Referencia " + refEfectivo + "." : p.metodo.tipo === "transferencia" ? "Pago por transferencia registrado (simulado). Conserva tu referencia " + refTransf + "." : "";
         $("ex-comprobante").href = "comprobante.html?pedido=" + encodeURIComponent(p.num);
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -326,7 +333,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     var tbody = document.getElementById("admin-lista-pedidos");
     if (!tbody) return;
-    var P = window.TZP, ESTADOS = ["Pagado", "En preparación", "Enviado", "Entregado", "Cancelado"];
+    var P = window.TZP, ESTADOS = ["Pendiente de pago", "Pagado", "En preparación", "Enviado", "Entregado", "Cancelado"];
     var $ = function (id) { return document.getElementById(id); };
     function pintar() {
         var ps = P.ordenar(P.todos()), hoy = new Date().toDateString();

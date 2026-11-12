@@ -3740,3 +3740,6 @@ header nav#nav-menu .menu-opciones a.menu-salir{color:#c0392b;font-weight:700}
 
 .ped-estado{padding:8px 10px;border:1px solid #cdd8e6;border-radius:8px;font:inherit;font-size:14px;background:#fff;color:#10213b}
 .co-estado.est-cancelado{background:#fde8e6;color:#c0392b}.co-estado.est-enviado,.co-estado.est-en-preparación{background:#eaf2ff;color:#1268e8}
+
+.co-opciones{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))!important}
+.co-estado.est-pendiente-de-pago{background:#fff4d6;color:#8a6100}

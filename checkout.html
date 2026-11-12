@@ -68,6 +68,7 @@ TechZone
 <div class="co-opciones co-full" role="radiogroup" aria-label="Método de pago">
 <label class="co-opcion"><input type="radio" name="co-metodo" value="tarjeta" checked><span class="co-op-icono">💳</span><span><strong>Tarjeta</strong><small>Crédito o débito</small></span></label>
 <label class="co-opcion"><input type="radio" name="co-metodo" value="transferencia"><span class="co-op-icono">🏦</span><span><strong>Transferencia</strong><small>SPEI</small></span></label>
+<label class="co-opcion"><input type="radio" name="co-metodo" value="efectivo"><span class="co-op-icono">💵</span><span><strong>Efectivo</strong><small>Pagas al recibir</small></span></label>
 <label class="co-opcion"><input type="radio" name="co-metodo" value="wallet"><span class="co-op-icono">👛</span><span><strong>E-wallet</strong><small>Saldo TechZone Pay</small></span></label>
 </div>
 <p class="co-error co-full" id="co-error-metodo" role="alert"></p>
@@ -90,6 +91,15 @@ TechZone
 <div><dt>Referencia</dt><dd id="co-ref">—</dd></div>
 </dl>
 <p class="co-ayuda">Datos ficticios. Al pulsar «Pagar» en el último paso, la transferencia se da por recibida (simulado).</p>
+</div>
+
+<div id="co-pan-efectivo" class="co-subpanel co-full" hidden>
+<dl class="co-datos">
+<div><dt>Modalidad</dt><dd>Pago contra entrega</dd></div>
+<div><dt>Referencia</dt><dd id="co-ref-efectivo">—</dd></div>
+<div><dt>Monto a pagar</dt><dd id="co-monto-efectivo">—</dd></div>
+</dl>
+<p class="co-ayuda">Pagarás en efectivo al recibir tu pedido; ten el monto exacto a la mano. Tu pedido queda como «Pendiente de pago» hasta que el administrador confirme el cobro (simulado).</p>
 </div>
 
 <div id="co-pan-wallet" class="co-subpanel co-full" hidden>
@@ -126,13 +136,13 @@ TechZone
 
 <section id="co-exito" class="co-exito" hidden aria-live="polite">
 <div class="co-exito-icono">✓</div>
-<h2>Pago aprobado</h2>
+<h2 id="ex-titulo">Pago aprobado</h2>
 <p class="co-exito-sub">¡Gracias por tu compra! Hemos registrado tu pedido (simulado).</p>
 <div class="co-exito-num"><span>Número de pedido</span><strong id="ex-num"></strong></div>
 <div class="co-exito-det"><div><span>Fecha</span><b id="ex-fecha"></b></div><div><span>Pago</span><b id="ex-metodo"></b></div></div>
 <h3>Resumen de compra</h3>
 <ul class="co-exito-lista" id="ex-items"></ul>
-<div class="co-fila co-fila-total"><span>Total pagado</span><b id="ex-total"></b></div>
+<div class="co-fila co-fila-total"><span id="ex-total-lbl">Total pagado</span><b id="ex-total"></b></div>
 <p class="co-ayuda" id="ex-nota"></p>
 <div class="co-botones co-centro"><a class="boton" id="ex-comprobante" href="#">Ver comprobante</a><a class="boton boton-contorno" href="mis-compras.html">Mis compras</a><a class="boton boton-contorno" href="productos.html">Seguir comprando</a></div>
 </section>
